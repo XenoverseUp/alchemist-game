@@ -16,3 +16,17 @@ After cloning the repo first time, make sure your branch is development (<code>g
 3. git push -u origin branch-task-name
 
 For commit messages use conventions indicated in [this](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13) document. Such as _fix-potion-brewing-area_. 
+
+
+##Details of The Game
+**Potions(name, point value, unique recipes)**
+Romictmce (10, ginger, zinc, porcini)
+Poigi-Joicie (7, sage, portobello)
+Bodion (13, dill, quartz, oyster)
+Plovee (2, cilantro, fluorite) 
+Poticon (6, sage, copper) 
+Pacice (9,  ginger)
+Roin (4, rosemary, magnesium, portobello)
+Rungton (15, cilantro, porcini)
+Potion (5, sage, oyster)
+Potie (11, dill, hedgehog)
