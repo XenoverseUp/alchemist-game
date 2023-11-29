@@ -32,7 +32,7 @@ For commit messages use conventions indicated in [this](https://gist.github.com/
 - Potie (11, dill, hedgehog)
 
 
-## Ingredients(name, identifier unique, color, value, …)
+## _Ingredients(name, identifier unique, color, value)_
 		 	 	 							
 ### Herb 
 - h_1:ginger, yellow, 3
@@ -53,4 +53,35 @@ For commit messages use conventions indicated in [this](https://gist.github.com/
 - mu_2:porcini, yellow, 10
 - mu_3:oyster, white, 9
 - mu_4:hedgehog, brown, 2
+
+
+### _Publication Cards(specific requirements, point value)_
+
+- ARTFAIC: Requirement: player has more than 2 minerals in its inventory
+- ARTFACC: Requirement: Player has value > 50
+- MFCTIIC: Requirement: player has at least 1 herb in its inventory
+- MCTICND: Requirement: player’s herb values sum > 7
+- DEDRICD: Requirement: Player has made 3 mushrooms in its inventory
+- MERIDUD: Requirement: player owns at least 1 mineral in its inventory
+
+
+
+
+
+## _Artifact Cards(effect-type, ability)_
+
+- Elixir of Insight: one-time effect; allows a player to view the top three cards of the ingredient deck and rearrange them in any order
+
+- Philosopher’s Compass: one-time effect; Once per round, the player can swap the position of two alchemy markers on the Deduction Board. (one-time or once per round???)
+
+- Request Potion: one-time effect; Player chooses getting one of the potions that another player has and adding their own inventory.
+
+- Terminate the Player: one-time; player skips that round and does nothing.
+
+
+
+
+## _Alchemy Markers_
+
+- Player holds the position of its Alchemy Marker
 
