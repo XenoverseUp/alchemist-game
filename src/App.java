@@ -1,8 +1,16 @@
 import domain.TheAlchemistGame;
+import ui.Window;
+import ui.WindowBuilder;
 
 public class App {
     public static void main(String[] args) throws Exception {
         TheAlchemistGame game = new TheAlchemistGame();
-        game.initialize();
+        Window window = new WindowBuilder().width(1920).height(1080).buildWindow();
+        window.setRegister(game);
+        
+
+
+
+    
     }  
 }
