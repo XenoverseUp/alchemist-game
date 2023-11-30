@@ -16,9 +16,7 @@ public class Window {
         window.setSize(width, height);
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setVisible(true);
         window.setResizable(false);
-        window.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         
         VLogin loginView = new VLogin();
         JPanel loginPanel = loginView.getContentPanel();
@@ -26,6 +24,8 @@ public class Window {
         loginPanel.setLocation(0, 0);
         loginPanel.setVisible(true);
         window.add(loginPanel);
+        window.setVisible(true);
+
 
     }
 
