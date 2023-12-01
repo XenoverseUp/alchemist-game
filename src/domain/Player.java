@@ -9,7 +9,7 @@ public class Player {
     private int reputation = 0;
     
 
-    Player(int id, String name, Avatar avatar) {
+    public Player(int id, String name, Avatar avatar) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
