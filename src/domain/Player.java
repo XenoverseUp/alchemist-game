@@ -5,6 +5,7 @@ public class Player {
     public int id;
     public String name;
     public Avatar avatar;
+    public Inventory inventory;
     private int sickness = 0;
     private int reputation = 0;
     
@@ -14,6 +15,7 @@ public class Player {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
+        this.inventory = new Inventory();
     }
 
 
