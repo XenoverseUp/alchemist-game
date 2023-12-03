@@ -44,7 +44,7 @@ public class VLogin extends VGameComponent {
     private JPanel createUserForm(String title, int userIndex) {
         JPanel form = new JPanel();
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
-        form.setBackground(new Color(255,255,255, 0));
+        form.setBackground(new Color(255,255,255));
 
 
     	// a text to inform user
