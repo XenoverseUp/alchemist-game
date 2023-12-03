@@ -24,10 +24,10 @@ public abstract class VComponent implements Renderable {
         panel.setBackground(Color.WHITE);
         panel.setSize(Window.window.getSize());
         panel.setLayout(null);
-        this.buildView();
+        this.render();
     }
 
-    protected abstract void buildView();
+    protected abstract void render();
 
     @Override
     public JPanel getContentPanel() {

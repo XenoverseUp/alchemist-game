@@ -30,7 +30,7 @@ public class VLogin extends VGameComponent {
     public VLogin(TheAlchemistGame game) { super(game); }
 
     @Override
-    protected void buildView() {
+    protected void render() {
         JPanel firstUserForm = createUserForm("Enter a name for the first Alchemist:", 0);
         JPanel secondUserForm = createUserForm("Enter a name for the second Alchemist:", 1);
 
@@ -39,8 +39,6 @@ public class VLogin extends VGameComponent {
 
         this.panel.add(secondUserForm);
         this.panel.add(firstUserForm);
-       
-        
     }
 
     private JPanel createUserForm(String title, int userIndex) {

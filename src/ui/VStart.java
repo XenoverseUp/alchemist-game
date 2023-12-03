@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import enums.View;
 
 public class VStart extends VComponent {
-    protected void buildView() {
+    protected void render() {
         BufferedImage img = null;
 
         try {

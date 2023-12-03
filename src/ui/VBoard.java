@@ -11,7 +11,7 @@ public class VBoard extends VGameComponent {
     public VBoard(TheAlchemistGame game) { super(game); }
 
     @Override
-    protected void buildView() {
+    protected void render() {
         // !TODO: Replace with Graphics2D canvas.
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         JLabel text = new JLabel("Game Board");

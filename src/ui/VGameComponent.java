@@ -22,5 +22,5 @@ public abstract class VGameComponent extends VComponent {
         this.game = game;
     }
 
-    protected abstract void buildView();
+    protected abstract void render();
 }
