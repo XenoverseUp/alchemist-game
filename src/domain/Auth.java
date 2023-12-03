@@ -21,6 +21,17 @@ public class Auth {
         this.currentUser += 1;
         this.currentUser %= 2;
     }
+    
+    public void addIngredientCardToCurrentPlayer(IngredientCard ingredient){
+    	
+    	players.get(currentUser).inventory.addIngredientCard(ingredient);
+    }
+    
+    public void addArtifactCardToCurrentPlayer(ArtifactCard artifact){
+    	
+    	players.get(currentUser).inventory.addArtifactCard(artifact);
+    }
+
 
 
 }

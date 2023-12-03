@@ -3,8 +3,8 @@ package domain;
 import enums.Avatar;
 
 public class TheAlchemistGame {
-    public Auth auth;
-    public Board gameBoard;
+    private Auth auth;
+    private Board gameBoard;
     
 
     public TheAlchemistGame() {
@@ -15,15 +15,25 @@ public class TheAlchemistGame {
     public void createUser(String userName, Avatar a) {
     	auth.createUser(userName, a);
     }
+    
+    public void toggleCurrentUser() {
+    	
+    	gameBoard.toggleCurrentUser();
+    }
 
     public void initializeGame() {
     	
     	gameBoard = new Board(this.auth);
     	gameBoard.ingredientCardDeck.shuffle();
+    	gameBoard.dealCards();
     	gameBoard.artifactCardDeck.shuffle();
+    	gameBoard.dealGolds();
     	
-    	for (Player p: gameBoard.getAuth().players) {
-    		p.inventory.addGold(3);
-    	}
     } 
+    
+    public void forageIngredient() {
+    	
+    	gameBoard.forageIngredient();
+    	
+    }
 }
