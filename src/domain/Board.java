@@ -53,6 +53,14 @@ public class Board {
 			
 	}
 	
+	public void buyArtifact() {
+		
+		ArtifactCard aCard = this.artifactCardDeck.drawCard();
+		this.auth.addArtifactCardToCurrentPlayer(aCard);
+		this.auth.removeGoldFromCurrentUser(aCard.price);
+	}
+	
+
 
 	
 	
