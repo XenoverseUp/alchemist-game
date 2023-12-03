@@ -7,6 +7,15 @@ public class IngredientCard {
     private String color;
     private int value;
 
+
+	public IngredientCard(String name, int id, int value, String color) {
+		this.name = name;
+		this.id = id;
+		this.value = value;
+		this.color = color;
+
+	}
+
 	public int getId() {
 		return id;
 	}
