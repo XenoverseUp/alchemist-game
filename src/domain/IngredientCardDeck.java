@@ -14,16 +14,16 @@ public class IngredientCardDeck {
 	IngredientCard ingredientCard_4 = new Herb("dill", 4, 11, "green");
 	IngredientCard ingredientCard_5 = new Herb("sage", 5, 13, "lilac");
 
-	IngredientCard ingredientCard_6 = new Mineral("copper", 1, 5, "grey");
-	IngredientCard ingredientCard_7 = new Mineral("magnesium", 2, 9, "white");
-	IngredientCard ingredientCard_8 = new Mineral("fluorite", 3, 10, "white");
-	IngredientCard ingredientCard_9 = new Mineral("zinc", 4, 12, "grey");
-	IngredientCard ingredientCard_10 = new Mineral("quartz", 5, 3, "purple");
+	IngredientCard ingredientCard_6 = new Mineral("copper", 6, 5, "grey");
+	IngredientCard ingredientCard_7 = new Mineral("magnesium", 7, 9, "white");
+	IngredientCard ingredientCard_8 = new Mineral("fluorite", 8, 10, "white");
+	IngredientCard ingredientCard_9 = new Mineral("zinc", 9, 12, "grey");
+	IngredientCard ingredientCard_10 = new Mineral("quartz", 10, 3, "purple");
 
-	IngredientCard ingredientCard_11 = new Mushroom("portobello", 1, 20, "brown");
-	IngredientCard ingredientCard_12 = new Mushroom("porcini", 2, 10, "yellow");
-	IngredientCard ingredientCard_13 = new Mushroom("oyster", 3, 9, "white");
-	IngredientCard ingredientCard_14 = new Mushroom("hedgehog", 4, 2, "brown");
+	IngredientCard ingredientCard_11 = new Mushroom("portobello", 11, 20, "brown");
+	IngredientCard ingredientCard_12 = new Mushroom("porcini", 12, 10, "yellow");
+	IngredientCard ingredientCard_13 = new Mushroom("oyster", 13, 9, "white");
+	IngredientCard ingredientCard_14 = new Mushroom("hedgehog", 14, 2, "brown");
 
 	ingredientCardDeck.add(ingredientCard_1);
 	ingredientCardDeck.add(ingredientCard_2);
@@ -57,8 +57,13 @@ public class IngredientCardDeck {
 	}
 	
 	
-	public void removeIngredient(int ingredientId) {
-		
+	public void removeIngredient(String ingredientName) {
+
+		for (int i=0; i<ingredientCardDeck.size(); i++) {
+			if (ingredientCardDeck.get(i).name.equals(ingredientName)){
+				ingredientCardDeck.remove(ingredientCardDeck.get(i));
+			}
+		}
 		
 	}
 	
