@@ -1,6 +1,6 @@
 import domain.TheAlchemistGame;
-import UI.Window;
-import UI.WindowBuilder;
+import ui.Window;
+import ui.WindowBuilder;
 
 public class App {
     public static void main(String[] args) throws Exception {
