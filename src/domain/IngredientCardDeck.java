@@ -1,6 +1,8 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class IngredientCardDeck {
 	
@@ -45,7 +47,7 @@ public class IngredientCardDeck {
 
 
 	public void shuffle() {
-		
+		Collections.shuffle(ingredientCardDeck);
 		
 	}
 	
@@ -68,7 +70,7 @@ public class IngredientCardDeck {
 	}
 	
 	public void addCard(IngredientCard card) {
-		
+		//where to initialize this card???
 		this.ingredientCardDeck.add(card);
 	}
 	
