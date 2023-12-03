@@ -1,48 +1,36 @@
 package ui;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
+import javax.swing.JFrame;
 import java.awt.*;
+import java.util.LinkedHashMap;
 
 import domain.TheAlchemistGame;
+import enums.View;
+import interfaces.Renderable;
 
 public class Window {
-
-    static JFrame window;
-    private TheAlchemistGame game;
+    static JFrame frame;
+    static Router router;
 
     public Window(String title, int width, int height, TheAlchemistGame game) {
-    	this.game = game;
-        window = new JFrame(title);
-        window.setSize(width, height);
-        window.setLocationRelativeTo(null);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
- 
-       
-        
-        VLogin loginView = new VLogin(game);
-        JPanel loginPanel = loginView.getContentPanel();
-        loginPanel.setVisible(true);
-        
-        
-        window.add(loginPanel);
-        window.setVisible(true);
-       
+        frame = new JFrame(title);
+        frame.setSize(width, height);
 
+        LinkedHashMap<View, Renderable> views = new LinkedHashMap<>() {{
+            put(View.Start, new VStart());
+            put(View.Login, new VLogin(game));
+            put(View.Board, new VBoard(game));
+        }};
 
-    }
-
-    public void setRegister(TheAlchemistGame g) {
-        this.game = g;
+        router = new Router(View.Start, frame, views);
     }
 
 
-
-
-
-
-    
-    
+    public void init() {
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    }
 }

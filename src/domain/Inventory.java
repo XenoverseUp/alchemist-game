@@ -29,10 +29,10 @@ public class Inventory {
 	}
 	
 	public void removeGold(int amount) {
-		
 		this.gold -= amount;
 	}
 	
+
 	public IngredientCard getIngredient(int ingredientId) {
 		
 		IngredientCard iCard = null;

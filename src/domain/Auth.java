@@ -1,4 +1,5 @@
 package domain;
+
 import java.util.ArrayList;
 import enums.Avatar;
 
@@ -8,7 +9,8 @@ public class Auth {
 
     public int createUser(String name, Avatar avatar) {
         for (Player p : this.players) {
-            if (p.name.equals(name)) return 1;
+            if (p.name.equals(name))
+                return 1;
         }
 
         Player player = new Player(this.players.size(), name, avatar);
@@ -20,6 +22,27 @@ public class Auth {
     public void toggleCurrentUser() {
         this.currentUser += 1;
         this.currentUser %= 2;
+        System.out.println("It's " + players.get(currentUser).name + "'s turn.");
+    }
+    
+    public void addGoldToCurrentUser(int amount) {
+    	
+    	players.get(currentUser).inventory.addGold(amount);
+    }
+    
+    public void addIngredientCardToCurrentPlayer(IngredientCard ingredient){
+    	
+    	players.get(currentUser).inventory.addIngredientCard(ingredient);
+    }
+    
+    public void addArtifactCardToCurrentPlayer(ArtifactCard artifact){
+    	
+    	players.get(currentUser).inventory.addArtifactCard(artifact);
+    }
+    
+    public IngredientCard getIngredientCardFromCurrentPlayer(int ingredientId) {
+    	
+    	return players.get(currentUser).inventory.getIngredient(ingredientId);
     }
     
     public void addGoldToCurrentUser(int amount) {

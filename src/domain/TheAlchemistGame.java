@@ -1,6 +1,7 @@
 package domain;
 
 import enums.Avatar;
+import javax.swing.SwingUtilities;
 
 public class TheAlchemistGame {
     private Auth auth;
@@ -36,16 +37,16 @@ public class TheAlchemistGame {
     	gameBoard.forageIngredient();
     	
     }
-    
+
     public void transmuteIngredient(int ingredientId) {
-    	
     	gameBoard.transmuteIngredient(ingredientId);
     	
     }
+
     
     public void buyArtifact() {
     	gameBoard.buyArtifact();
     }
     
-    
+
 }
