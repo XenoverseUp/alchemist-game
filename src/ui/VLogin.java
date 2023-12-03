@@ -34,6 +34,7 @@ public class VLogin implements Renderable, ActionListener {
     JButton nextButton;
     JTextField userNameTextField;
     ButtonGroup avatarsButtonGroup;
+    int formIndex = 0;
     
 
     public VLogin(TheAlchemistGame game) {
@@ -88,9 +89,6 @@ public class VLogin implements Renderable, ActionListener {
         this.panel.add(nextButton);
         this.panel.add(Box.createVerticalGlue());
         
-       
- 
-        
     }
 
     public JPanel getContentPanel() {
@@ -107,23 +105,17 @@ public class VLogin implements Renderable, ActionListener {
 			Avatar playerAvatar = null;
 			
 			for (Enumeration<AbstractButton> buttons = avatarsButtonGroup.getElements(); buttons.hasMoreElements();) {
-				 
 				AbstractButton avatarButton = buttons.nextElement();
-				
+
 				if(avatarButton.isSelected()) {
-					
 					avatarName = avatarButton.getText();
-					
 				}
-				
 			}
 			
 			for (Avatar a: Avatar.values()) {
 				
-				if(a.toString().equals(avatarName)) {
-					
+				if(a.toString().equals(avatarName)) {	
 					playerAvatar = a;
-					
 				}
 			}
 			game.createUser(playerName, playerAvatar);
