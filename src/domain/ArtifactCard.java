@@ -5,6 +5,15 @@ public class ArtifactCard {
 
 	private String effectType;
 	private String ability;
+	private String name;
+
+
+	public ArtifactCard(String effectType, String ability, String name) {
+		this.effectType = effectType;
+		this.ability = ability;
+		this.name = name;
+
+	}
 
 	
 	public String getEffectType() {
