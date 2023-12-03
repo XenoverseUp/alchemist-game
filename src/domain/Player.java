@@ -8,6 +8,7 @@ public class Player {
     private int sickness = 0;
     private int reputation = 0;
     
+    
 
     public Player(int id, String name, Avatar avatar) {
         this.id = id;

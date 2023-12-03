@@ -1,0 +1,24 @@
+package ui;
+
+import javax.swing.JLabel;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+
+import java.awt.*;
+import domain.TheAlchemistGame;
+
+public class VBoard extends VGameComponent {
+    public VBoard(TheAlchemistGame game) { super(game); }
+
+    @Override
+    protected void buildView() {
+        // !TODO: Replace with Graphics2D canvas.
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JLabel text = new JLabel("Game Board");
+        text.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(Box.createVerticalGlue());
+        panel.add(text);
+        panel.add(Box.createVerticalGlue());
+    }
+}
