@@ -45,6 +45,14 @@ public class Board {
 		
 	}
 	
+	public void transmuteIngredient(int ingredientId) {
+		
+		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(ingredientId);
+		this.auth.addGoldToCurrentUser(1);
+		this.ingredientCardDeck.addCard(iCard);
+			
+	}
+	
 
 	
 	

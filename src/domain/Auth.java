@@ -22,6 +22,11 @@ public class Auth {
         this.currentUser %= 2;
     }
     
+    public void addGoldToCurrentUser(int amount) {
+    	
+    	players.get(currentUser).inventory.addGold(amount);
+    }
+    
     public void addIngredientCardToCurrentPlayer(IngredientCard ingredient){
     	
     	players.get(currentUser).inventory.addIngredientCard(ingredient);
@@ -30,6 +35,11 @@ public class Auth {
     public void addArtifactCardToCurrentPlayer(ArtifactCard artifact){
     	
     	players.get(currentUser).inventory.addArtifactCard(artifact);
+    }
+    
+    public IngredientCard getIngredientCardFromCurrentPlayer(int ingredientId) {
+    	
+    	return players.get(currentUser).inventory.getIngredient(ingredientId);
     }
 
 
