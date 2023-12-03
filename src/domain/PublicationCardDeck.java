@@ -9,6 +9,7 @@ public class PublicationCardDeck {
 
 
     public PublicationCardDeck() {
+        
 		PublicationCard publicationCard_1 = new PublicationCard("ARTFAIC", "player has more than 2 minerals in its inventory", 10);
         PublicationCard publicationCard_2 = new PublicationCard("ARTFACC", "Player has value > 50", 9);
         PublicationCard publicationCard_3 = new PublicationCard("MFCTIIC", "player has at least 1 herb in its inventory", 3);
