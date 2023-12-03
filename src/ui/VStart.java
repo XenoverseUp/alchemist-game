@@ -23,7 +23,7 @@ public class VStart extends VComponent {
         }
 
         JLabel background = new JLabel(new ImageIcon(img));
-        background.setBounds(new Rectangle(0,0,Window.window.getWidth(), Window.window.getHeight()));
+        background.setBounds(new Rectangle(0,0,Window.frame.getWidth(), Window.frame.getHeight()));
         panel.add(background);
 
         JButton startButton = new JButton("Start");

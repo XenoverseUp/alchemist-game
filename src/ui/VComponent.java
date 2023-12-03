@@ -22,7 +22,7 @@ public abstract class VComponent implements Renderable {
 
     protected VComponent() {
         panel.setBackground(Color.WHITE);
-        panel.setSize(Window.window.getSize());
+        panel.setSize(Window.frame.getSize());
         panel.setLayout(null);
         this.render();
     }

@@ -34,8 +34,8 @@ public class VLogin extends VGameComponent {
         JPanel firstUserForm = createUserForm("Enter a name for the first Alchemist:", 0);
         JPanel secondUserForm = createUserForm("Enter a name for the second Alchemist:", 1);
 
-        firstUserForm.setBounds(0, 0, Window.window.getWidth() / 2, Window.window.getHeight());
-        secondUserForm.setBounds(Window.window.getWidth() / 2 - 1, 0, Window.window.getWidth() / 2, Window.window.getHeight());
+        firstUserForm.setBounds(0, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
+        secondUserForm.setBounds(Window.frame.getWidth() / 2 - 1, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
 
         this.panel.add(secondUserForm);
         this.panel.add(firstUserForm);

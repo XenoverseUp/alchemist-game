@@ -9,12 +9,12 @@ import enums.View;
 import interfaces.Renderable;
 
 public class Window {
-    static JFrame window;
+    static JFrame frame;
     static Router router;
 
     public Window(String title, int width, int height, TheAlchemistGame game) {
-        window = new JFrame(title);
-        window.setSize(width, height);
+        frame = new JFrame(title);
+        frame.setSize(width, height);
 
         LinkedHashMap<View, Renderable> views = new LinkedHashMap<>() {{
             put(View.Start, new VStart());
@@ -22,15 +22,15 @@ public class Window {
             put(View.Board, new VBoard(game));
         }};
 
-        router = new Router(View.Start, window, views);
+        router = new Router(View.Start, frame, views);
     }
 
 
     public void init() {
-        window.setLocationRelativeTo(null);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setVisible(true);
-        window.setResizable(false);
-        window.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
     }
 }
