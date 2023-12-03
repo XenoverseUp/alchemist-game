@@ -8,6 +8,9 @@ public class Inventory {
 	private ArrayList<ArtifactCard> artifactCards = new ArrayList<>();
 	private ArrayList<IngredientCard> ingredientCards = new ArrayList<>();
 	
+	
+	
+	
 	public void addIngredientCard(IngredientCard ingredient) {
 		
 		this.ingredientCards.add(ingredient);
@@ -25,6 +28,19 @@ public class Inventory {
 		this.gold += amount;
 	}
 	
+	public IngredientCard getIngredient(int ingredientId) {
+		
+		IngredientCard iCard = null;
+		
+		for (IngredientCard i: ingredientCards) {
+			if (i.getId() == ingredientId) {
+				
+				iCard = this.ingredientCards.remove(ingredientCards.indexOf(i));
+				
+			}
+		}
+		
+		return iCard;
+	}
 	
-
 }

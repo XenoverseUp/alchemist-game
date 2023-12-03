@@ -24,14 +24,36 @@ public class Board {
 			}
 		}
 	}
-
-	public Auth getAuth() {
-		return auth;
+	
+	public void dealGolds() {
+		
+		for (Player p: auth.players) {
+    		p.inventory.addGold(3);
+    	}
+	}
+	
+	public void toggleCurrentUser() {
+		
+		auth.toggleCurrentUser();
 	}
 
-	public void setAuth(Auth auth) {
-		this.auth = auth;
+	
+	public void forageIngredient() {
+		
+		IngredientCard icard = this.ingredientCardDeck.drawCard();
+		auth.addIngredientCardToCurrentPlayer(icard);
+		
 	}
+	
+	public void transmuteIngredient(int ingredientId) {
+		
+		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(ingredientId);
+		this.auth.addGoldToCurrentUser(1);
+		this.ingredientCardDeck.addCard(iCard);
+			
+	}
+	
+
 	
 	
 	

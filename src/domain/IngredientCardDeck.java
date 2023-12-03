@@ -18,10 +18,17 @@ public class IngredientCardDeck {
 		return iCard;	
 	}
 	
+	
 	public void removeIngredient(int ingredientId) {
 		
 		
 	}
+	
+	public void addCard(IngredientCard card) {
+		
+		this.ingredientCardDeck.add(card);
+	}
+	
 	
 	
 	
