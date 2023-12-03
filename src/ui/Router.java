@@ -1,4 +1,4 @@
-package UI;
+package ui;
 
 import java.util.Map;
 import java.util.Stack;
