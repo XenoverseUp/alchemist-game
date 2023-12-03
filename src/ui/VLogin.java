@@ -77,45 +77,42 @@ public class VLogin extends VGameComponent {
         ButtonGroup avatarsButtonGroup = new ButtonGroup();
 
         for (Avatar a: Avatar.values()) {
-        	
         	JRadioButton avatar = new JRadioButton(a.toString());
         	avatar.setAlignmentX(Component.CENTER_ALIGNMENT);
-            avatar.setBackground(Color.WHITE);
         	avatarsButtonGroup.add(avatar);
         	form.add(avatar);
         	
         }
 
         nextButton.addActionListener(event -> {
-            if(event.getSource() == nextButton) {
-                String playerName = userNameTextField.getText();
-                String avatarName = null;
-                Avatar playerAvatar = null;
-                
-                for (Enumeration<AbstractButton> buttons = avatarsButtonGroup.getElements(); buttons.hasMoreElements();) {
-                    AbstractButton avatarButton = buttons.nextElement();
+            String playerName = userNameTextField.getText();
+            String avatarName = null;
+            Avatar playerAvatar = null;
+            
+            for (Enumeration<AbstractButton> buttons = avatarsButtonGroup.getElements(); buttons.hasMoreElements();) {
+                AbstractButton avatarButton = buttons.nextElement();
 
-                    if(avatarButton.isSelected()) {
-                        avatarName = avatarButton.getText();
-                    }
+                if(avatarButton.isSelected()) {
+                    avatarName = avatarButton.getText();
                 }
-                
-                for (Avatar a: Avatar.values()) {
-                    if(a.toString().equals(avatarName)) {	
-                        playerAvatar = a;
-                    }
+            }
+            
+            for (Avatar a: Avatar.values()) {
+                if(a.toString().equals(avatarName)) {	
+                    playerAvatar = a;
                 }
+            }
 
-                game.createUser(playerName, playerAvatar);
-                // !TODO: Add error handling
+            game.createUser(playerName, playerAvatar);
+            // !TODO: Add error handling
 
-                if (userIndex == 0) this.isFirstPlayerReady = true;
-                else if (userIndex == 1) this.isSecondPlayerReady = true;
+            if (userIndex == 0) this.isFirstPlayerReady = true;
+            else if (userIndex == 1) this.isSecondPlayerReady = true;
 
-                if (isFirstPlayerReady && isSecondPlayerReady) Window.router.setView(View.Board);
+            if (isFirstPlayerReady && isSecondPlayerReady) Window.router.setView(View.Board);
 
-                nextButton.setText("Ready");
-		    }
+            nextButton.setText("Ready");
+		    
         });
 
         form.add(Box.createVerticalStrut(32));
