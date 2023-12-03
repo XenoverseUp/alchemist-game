@@ -2,7 +2,7 @@ package ui;
 
 import java.awt.Color;
 import javax.swing.JPanel;
-import interfaces.Renderable;
+import interfaces.IRenderable;
 
 /**
  * @abstract
@@ -17,7 +17,7 @@ import interfaces.Renderable;
  * @see VStart.java
  * 
  */
-public abstract class VComponent implements Renderable {
+public abstract class VComponent implements IRenderable {
     protected JPanel panel = new JPanel();
 
     protected VComponent() {

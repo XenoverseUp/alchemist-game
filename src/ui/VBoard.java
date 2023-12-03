@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import java.awt.*;
 import domain.TheAlchemistGame;
+import enums.View;
 
 public class VBoard extends VGameComponent {
     public VBoard(TheAlchemistGame game) { super(game); }
@@ -21,6 +22,9 @@ public class VBoard extends VGameComponent {
         
         JButton button = new JButton("Click");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(event -> {
+           Window.router.setView(View.About); 
+        });
 
         panel.add(Box.createVerticalGlue());
         panel.add(text);

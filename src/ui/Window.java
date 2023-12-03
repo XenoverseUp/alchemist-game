@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 
 import domain.TheAlchemistGame;
 import enums.View;
-import interfaces.Renderable;
+import interfaces.IRenderable;
 
 public class Window {
     static JFrame frame;
@@ -16,10 +16,11 @@ public class Window {
         frame = new JFrame(title);
         frame.setSize(width, height);
 
-        LinkedHashMap<View, Renderable> views = new LinkedHashMap<>() {{
+        LinkedHashMap<View, IRenderable> views = new LinkedHashMap<>() {{
             put(View.Start, new VStart());
             put(View.Login, new VLogin(game));
             put(View.Board, new VBoard(game));
+            put(View.About, new VAbout());
         }};
 
         router = new Router(View.Start, frame, views);

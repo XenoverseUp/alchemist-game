@@ -2,6 +2,6 @@ package interfaces;
 
 import javax.swing.JPanel;
 
-public interface Renderable {
+public interface IRenderable {
     public JPanel getContentPanel();
 }

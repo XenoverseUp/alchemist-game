@@ -6,14 +6,14 @@ import java.util.Stack;
 import javax.swing.JFrame;
 
 import enums.View;
-import interfaces.Renderable;
+import interfaces.IRenderable;
 
 public class Router {
     private View currentView;
     private Stack<View> history = new Stack<>();
-    private Map<View, Renderable> views;
+    private Map<View, IRenderable> views;
 
-    public Router(View initialView, JFrame window, Map<View, Renderable> views) {
+    public Router(View initialView, JFrame window, Map<View, IRenderable> views) {
         this.views = views;
         this.setView(initialView);
     }
@@ -23,7 +23,7 @@ public class Router {
 
         Window.frame.getContentPane().removeAll();
 
-        Renderable component = views.get(view);
+        IRenderable component = views.get(view);
 
         component.getContentPanel().setPreferredSize(Window.frame.getSize());
         component.getContentPanel().setLocation(0, 0);

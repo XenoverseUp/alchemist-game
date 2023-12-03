@@ -4,5 +4,7 @@ public enum View {
     Start,
     Login,
     Board,
-    End
+    End,
+    About,
+
 }

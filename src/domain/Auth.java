@@ -22,52 +22,28 @@ public class Auth {
     public void toggleCurrentUser() {
         this.currentUser += 1;
         this.currentUser %= 2;
+        
         System.out.println("It's " + players.get(currentUser).name + "'s turn.");
     }
-    
+
     public void addGoldToCurrentUser(int amount) {
-    	
-    	players.get(currentUser).inventory.addGold(amount);
-    }
-    
-    public void addIngredientCardToCurrentPlayer(IngredientCard ingredient){
-    	
-    	players.get(currentUser).inventory.addIngredientCard(ingredient);
-    }
-    
-    public void addArtifactCardToCurrentPlayer(ArtifactCard artifact){
-    	
-    	players.get(currentUser).inventory.addArtifactCard(artifact);
-    }
-    
-    public IngredientCard getIngredientCardFromCurrentPlayer(int ingredientId) {
-    	
-    	return players.get(currentUser).inventory.getIngredient(ingredientId);
-    }
-    
-    public void addGoldToCurrentUser(int amount) {
-    	
     	players.get(currentUser).inventory.addGold(amount);
     }
     
     public void removeGoldFromCurrentUser(int amount) {
-    	
     	players.get(currentUser).inventory.removeGold(amount);
     }
     
     
     public void addIngredientCardToCurrentPlayer(IngredientCard ingredient){
-    	
     	players.get(currentUser).inventory.addIngredientCard(ingredient);
     }
     
     public void addArtifactCardToCurrentPlayer(ArtifactCard artifact){
-    	
     	players.get(currentUser).inventory.addArtifactCard(artifact);
     }
     
     public IngredientCard getIngredientCardFromCurrentPlayer(int ingredientId) {
-    	
     	return players.get(currentUser).inventory.getIngredient(ingredientId);
     }
 
