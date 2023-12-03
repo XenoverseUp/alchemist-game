@@ -16,13 +16,15 @@ public class IngredientCard {
 
 	}
 
-	public int getId() {
-		return id;
-	}
+
+
+	IngredientCard ingredientCard_1 = new Herb("ginger", 1, 3, "yellow");
+	IngredientCard ingredientCard_2 = new Herb("rosemary", 2, 5, "green");
+	IngredientCard ingredientCard_3 = new Herb("cilantro", 3, 9, "green");
+	IngredientCard ingredientCard_4 = new Herb("dill", 4, 11, "green");
+	IngredientCard ingredientCard_5 = new Herb("sage", 5, 13, "lilac");
+
 	
-	public String getName() {
-		return name;
-	}
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -30,15 +32,11 @@ public class IngredientCard {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getColor() {
-		return color;
-	}
+	
 	public void setColor(String color) {
 		this.color = color;
 	}
-	public int getValue() {
-		return value;
-	}
+	
 	public void setValue(int value) {
 		this.value = value;
 	}
