@@ -1,25 +1,24 @@
 package ui;
 
-import java.awt.Color;
-
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import interfaces.Renderable;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 
-public class VBoard implements Renderable {
-    JPanel panel;
+import java.awt.*;
+import domain.TheAlchemistGame;
 
-    public VBoard() {
-        panel = new JPanel();
-        
-        JLabel logoOfApplication = new JLabel();
-		logoOfApplication.setText("Board");
-		logoOfApplication.setForeground(new Color(0,50,50));
+public class VBoard extends VGameComponent {
+    public VBoard(TheAlchemistGame game) { super(game); }
 
-        panel.add(logoOfApplication);
-    }
+    @Override
+    protected void buildView() {
+        // !TODO: Replace with Graphics2D canvas.
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JLabel text = new JLabel("Game Board");
+        text.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    public JPanel getContentPanel() {
-        return this.panel;
+        panel.add(Box.createVerticalGlue());
+        panel.add(text);
+        panel.add(Box.createVerticalGlue());
     }
 }

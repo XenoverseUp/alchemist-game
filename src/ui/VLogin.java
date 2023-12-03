@@ -4,16 +4,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,36 +21,42 @@ import javax.swing.border.LineBorder;
 
 import domain.TheAlchemistGame;
 import enums.Avatar;
-import interfaces.Renderable;
+import enums.View;
 
-public class VLogin implements Renderable, ActionListener {
-	TheAlchemistGame game;
-    JPanel panel;
-    JLabel enterUsername1;
-    JButton nextButton;
-    JTextField userNameTextField;
-    ButtonGroup avatarsButtonGroup;
-    int formIndex = 0;
+public class VLogin extends VGameComponent {
+    private boolean isFirstPlayerReady = false;
+    private boolean isSecondPlayerReady = false;
     
+    public VLogin(TheAlchemistGame game) { super(game); }
 
-    public VLogin(TheAlchemistGame game) {
-    	this.game = game;
-        panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setSize(Window.window.getSize());
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        this.buildView();
+    @Override
+    protected void buildView() {
+        JPanel firstUserForm = createUserForm("Enter a name for the first Alchemist:", 0);
+        JPanel secondUserForm = createUserForm("Enter a name for the second Alchemist:", 1);
+
+        firstUserForm.setBounds(0, 0, Window.window.getWidth() / 2, Window.window.getHeight());
+        secondUserForm.setBounds(Window.window.getWidth() / 2 - 1, 0, Window.window.getWidth() / 2, Window.window.getHeight());
+
+        this.panel.add(secondUserForm);
+        this.panel.add(firstUserForm);
+       
+        
     }
 
-    public void buildView() {
+    private JPanel createUserForm(String title, int userIndex) {
+        JPanel form = new JPanel();
+        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
+        form.setBackground(new Color(255,255,255, 0));
+
+
     	// a text to inform user
-        enterUsername1 = new JLabel();
-        enterUsername1.setText("Enter a name for Alchemist 1: ");
-        enterUsername1.setFont(new Font("Arial", Font.BOLD, 18));
-        enterUsername1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel enterUsername = new JLabel();
+        enterUsername.setText(title);
+        enterUsername.setFont(new Font("Arial", Font.BOLD, 18));
+        enterUsername.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // text box to enter the username
-        userNameTextField = new JTextField(16);
+        JTextField userNameTextField = new JTextField(16);
         userNameTextField.setFont(new Font("Arial", Font.PLAIN, 16));;
         userNameTextField.setMaximumSize(new Dimension(200, 20));
         userNameTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -62,66 +64,66 @@ public class VLogin implements Renderable, ActionListener {
         userNameTextField.setBorder(new CompoundBorder(new LineBorder(new Color(200,200,200)),new EmptyBorder(6, 4, 6, 4)));
 
         // button to pass to the next page
-        nextButton = new JButton("Next");
+        JButton nextButton = new JButton("Next");
         nextButton.setForeground(new Color(255,50,50));
         nextButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        nextButton.addActionListener(this);
         
         // add information text and name text box to the page
-        this.panel.add(Box.createVerticalGlue());
-        this.panel.add(enterUsername1);
-        this.panel.add(Box.createVerticalStrut(24));
-        this.panel.add(userNameTextField);
-        this.panel.add(Box.createVerticalStrut(24));
+        form.add(Box.createVerticalGlue());
+        form.add(enterUsername);
+        form.add(Box.createVerticalStrut(24));
+        form.add(userNameTextField);
+        form.add(Box.createVerticalStrut(24));
 
         // group of radio buttons to select an avatar
-        avatarsButtonGroup = new ButtonGroup();
+        ButtonGroup avatarsButtonGroup = new ButtonGroup();
 
         for (Avatar a: Avatar.values()) {
         	
         	JRadioButton avatar = new JRadioButton(a.toString());
         	avatar.setAlignmentX(Component.CENTER_ALIGNMENT);
+            avatar.setBackground(Color.WHITE);
         	avatarsButtonGroup.add(avatar);
-        	this.panel.add(avatar);
+        	form.add(avatar);
         	
         }
-        this.panel.add(Box.createVerticalStrut(32));
-        this.panel.add(nextButton);
-        this.panel.add(Box.createVerticalGlue());
-        
+
+        nextButton.addActionListener(event -> {
+            if(event.getSource() == nextButton) {
+                String playerName = userNameTextField.getText();
+                String avatarName = null;
+                Avatar playerAvatar = null;
+                
+                for (Enumeration<AbstractButton> buttons = avatarsButtonGroup.getElements(); buttons.hasMoreElements();) {
+                    AbstractButton avatarButton = buttons.nextElement();
+
+                    if(avatarButton.isSelected()) {
+                        avatarName = avatarButton.getText();
+                    }
+                }
+                
+                for (Avatar a: Avatar.values()) {
+                    if(a.toString().equals(avatarName)) {	
+                        playerAvatar = a;
+                    }
+                }
+
+                game.createUser(playerName, playerAvatar);
+                // !TODO: Add error handling
+
+                if (userIndex == 0) this.isFirstPlayerReady = true;
+                else if (userIndex == 1) this.isSecondPlayerReady = true;
+
+                if (isFirstPlayerReady && isSecondPlayerReady) Window.router.setView(View.Board);
+
+                nextButton.setText("Ready");
+		    }
+        });
+
+        form.add(Box.createVerticalStrut(32));
+        form.add(nextButton);
+        form.add(Box.createVerticalGlue());
+
+        return form;
     }
-
-    public JPanel getContentPanel() {
-        return this.panel;
-    }
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource() == nextButton) {
-			
-			String playerName = userNameTextField.getText();
-			String avatarName = null;
-			Avatar playerAvatar = null;
-			
-			for (Enumeration<AbstractButton> buttons = avatarsButtonGroup.getElements(); buttons.hasMoreElements();) {
-				AbstractButton avatarButton = buttons.nextElement();
-
-				if(avatarButton.isSelected()) {
-					avatarName = avatarButton.getText();
-				}
-			}
-			
-			for (Avatar a: Avatar.values()) {
-				
-				if(a.toString().equals(avatarName)) {	
-					playerAvatar = a;
-				}
-			}
-			game.createUser(playerName, playerAvatar);
-			
-		}
-		
-	}
-    
 }
