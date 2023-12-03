@@ -6,7 +6,7 @@ public class PublicationCard {
     private int value;
 
 
-    public PublicationCard(String name, int id, String requirement, int value) {
+    public PublicationCard(String name, String requirement, int value) {
 		this.name = name;
 		this.requirement = requirement;
 		this.value = value;
