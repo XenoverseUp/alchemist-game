@@ -3,7 +3,7 @@ package domain;
 public class IngredientCard {
 
 	private int id;
-    String name;
+    private String name;
     private String color;
     private int value;
 
