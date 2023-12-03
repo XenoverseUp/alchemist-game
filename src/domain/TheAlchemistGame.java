@@ -36,9 +36,16 @@ public class TheAlchemistGame {
     	gameBoard.forageIngredient();
     	
     }
+    
     public void transmuteIngredient(int ingredientId) {
     	
     	gameBoard.transmuteIngredient(ingredientId);
     	
     }
+    
+    public void buyArtifact() {
+    	gameBoard.buyArtifact();
+    }
+    
+    
 }
