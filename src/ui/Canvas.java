@@ -9,7 +9,7 @@ import enums.BoardState;
 
 public class Canvas extends JPanel {
         public Timer timer;
-        private int FPS = 120;
+        private int FPS = 60;
         private int x = 0;
         private int y = 0;
         private int velocityX = 1;
@@ -26,6 +26,7 @@ public class Canvas extends JPanel {
                     repaint();
                 }
             });
+            
             timer.start();
         }
 
@@ -39,7 +40,6 @@ public class Canvas extends JPanel {
             g.setStroke(new BasicStroke());
             g.fillRect(x, y, 100, 100);
 
-            super.paintComponent(g);
         }
 
         private void update() {
