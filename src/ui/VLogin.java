@@ -110,7 +110,7 @@ public class VLogin extends VGameComponent {
             if (userIndex == 0) this.isFirstPlayerReady = true;
             else if (userIndex == 1) this.isSecondPlayerReady = true;
 
-            if (isFirstPlayerReady && isSecondPlayerReady) router.setView(View.Board);
+            if (isFirstPlayerReady && isSecondPlayerReady) router.to(View.Board);
 
             nextButton.setText("Ready");
 		    

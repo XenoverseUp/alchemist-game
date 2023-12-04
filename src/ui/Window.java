@@ -24,7 +24,7 @@ public class Window {
 
         router = Router.getInstance();
         router.populate(views);
-        router.setView(View.Start);
+        router.to(View.Start);
     }
 
 

@@ -24,7 +24,7 @@ public class Router {
         this.views = views;
     }
 
-    public void setView(View nextView) {
+    public void to(View nextView) {
         if (currentView != null) {
             history.push(currentView);
             views.get(currentView).unmounted();
@@ -49,7 +49,7 @@ public class Router {
     public void navigateBack() {
         View previous = history.pop();
         if (previous != null) 
-            setView(previous);
+            to(previous);
     }
 
     public View getCurrentView() { return this.currentView; }

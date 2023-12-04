@@ -35,7 +35,7 @@ public class VStart extends VComponent {
 
 
         startButton.addActionListener(event -> {
-            router.setView(View.Login);
+            router.to(View.Login);
         });
     }
 }
