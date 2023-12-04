@@ -23,7 +23,7 @@ public class Window {
             put(View.About, new VAbout());
         }};
 
-        router = new Router(View.Start, frame, views);
+        router = new Router(View.Board, frame, views);
     }
 
 

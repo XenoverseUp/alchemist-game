@@ -22,7 +22,6 @@ public abstract class VComponent implements IRenderable {
 
     protected VComponent() {
         panel.setBackground(Color.WHITE);
-        panel.setSize(Window.frame.getSize());
         panel.setLayout(null);
         this.render();
     }

@@ -7,7 +7,7 @@ public class IngredientCardDeck {
 	private ArrayList<IngredientCard> ingredientCardDeck = new ArrayList<>();
 	
 	public void shuffle() {
-		
+
 		
 	}
 	
