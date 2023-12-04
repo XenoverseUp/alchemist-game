@@ -24,6 +24,7 @@ import enums.Avatar;
 import enums.View;
 
 public class VLogin extends VGameComponent {
+    private Router router = Router.getInstance();
     private boolean isFirstPlayerReady = false;
     private boolean isSecondPlayerReady = false;
     
@@ -109,7 +110,7 @@ public class VLogin extends VGameComponent {
             if (userIndex == 0) this.isFirstPlayerReady = true;
             else if (userIndex == 1) this.isSecondPlayerReady = true;
 
-            if (isFirstPlayerReady && isSecondPlayerReady) Window.router.setView(View.Board);
+            if (isFirstPlayerReady && isSecondPlayerReady) router.setView(View.Board);
 
             nextButton.setText("Ready");
 		    

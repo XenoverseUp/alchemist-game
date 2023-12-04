@@ -9,7 +9,7 @@ import enums.View;
 
 public class Window {
     static JFrame frame;
-    static Router router;
+    private Router router;
 
     public Window(String title, int width, int height, TheAlchemistGame game) {
         frame = new JFrame(title);
@@ -22,7 +22,9 @@ public class Window {
             put(View.About, new VAbout());
         }};
 
-        router = new Router(View.Start, frame, views);
+        router = Router.getInstance();
+        router.populate(views);
+        router.setView(View.Start);
     }
 
 

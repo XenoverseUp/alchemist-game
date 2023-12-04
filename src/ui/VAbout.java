@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class VAbout extends VComponent {
+    private Router router = Router.getInstance();
 
     @Override
     protected void render() {
@@ -13,7 +14,7 @@ public class VAbout extends VComponent {
         JButton back = new JButton("Back");
         back.setBounds(0, 50, 50, 20);
         back.addActionListener(event -> {
-            Window.router.navigateBack();
+            router.navigateBack();
         });
 
         panel.add(text);

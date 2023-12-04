@@ -3,18 +3,25 @@ package ui;
 import java.util.Map;
 import java.util.Stack;
 
-import javax.swing.JFrame;
-
 import enums.View;
 
 public class Router {
+    private static Router instance = null;
+
     private View currentView;
     private Stack<View> history = new Stack<>();
     private Map<View, VComponent> views;
 
-    public Router(View initialView, JFrame window, Map<View, VComponent> views) {
+
+    public static synchronized Router getInstance() {
+        if (instance == null)
+            instance = new Router();
+ 
+        return instance;
+    }
+
+    public void populate(Map<View, VComponent> views) {
         this.views = views;
-        this.setView(initialView);
     }
 
     public void setView(View nextView) {

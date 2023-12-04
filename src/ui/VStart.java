@@ -13,6 +13,9 @@ import javax.swing.JLabel;
 import enums.View;
 
 public class VStart extends VComponent {
+    private Router router = Router.getInstance();
+
+    @Override
     protected void render() {
         BufferedImage img = null;
 
@@ -32,7 +35,7 @@ public class VStart extends VComponent {
 
 
         startButton.addActionListener(event -> {
-            Window.router.setView(View.Login);
+            router.setView(View.Login);
         });
     }
 }

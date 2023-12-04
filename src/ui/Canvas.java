@@ -9,11 +9,11 @@ import enums.BoardState;
 
 public class Canvas extends JPanel {
         private Timer timer;
-        private int FPS = 60;
+        private int FPS = 80;
         private int x = 0;
         private int y = 0;
-        private int velocityX = 1;
-        private int velocityY = 2;
+        private int velocityX = 2;
+        private int velocityY = 3;
         private BoardState state = BoardState.Table;
 
 
