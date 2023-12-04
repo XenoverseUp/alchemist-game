@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import enums.BoardState;
 
 public class Canvas extends JPanel {
-        public Timer timer;
+        private Timer timer;
         private int FPS = 60;
         private int x = 0;
         private int y = 0;
@@ -18,6 +18,7 @@ public class Canvas extends JPanel {
 
 
         public Canvas() {
+            setBackground(Color.red);
             int delay = 1000 / FPS;
             timer = new Timer(delay, new ActionListener() {
                 @Override
@@ -27,18 +28,24 @@ public class Canvas extends JPanel {
                 }
             });
             
-            timer.start();
+            timer.stop();
         }
 
         @Override
         public void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
+
             int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
             int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
 
 
             Graphics2D g = (Graphics2D) graphics;
-            g.setStroke(new BasicStroke());
+            g.setPaint(Color.BLUE);
             g.fillRect(x, y, 100, 100);
+
+            
+
+            g.dispose();
 
         }
 
@@ -57,5 +64,14 @@ public class Canvas extends JPanel {
 
             this.x += this.velocityX;
             this.y += this.velocityY;
+        }
+
+
+        public void start() {
+            this.timer.start();
+        }
+        
+        public void stop() {
+            this.timer.stop();
         }
     }
