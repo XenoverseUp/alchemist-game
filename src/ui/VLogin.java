@@ -23,7 +23,7 @@ import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
 
-public class VLogin extends VGameComponent {
+public class VLogin extends VComponent {
     private Router router = Router.getInstance();
     private boolean isFirstPlayerReady = false;
     private boolean isSecondPlayerReady = false;

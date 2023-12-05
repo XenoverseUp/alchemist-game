@@ -12,7 +12,7 @@ import enums.View;
 
 import domain.TheAlchemistGame;
 
-public class VCardDeck extends VGameComponent {
+public class VCardDeck extends VComponent {
     private Router router = Router.getInstance();
 
     public VCardDeck(TheAlchemistGame game) {

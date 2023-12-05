@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.JFrame;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 
 import domain.TheAlchemistGame;
@@ -14,6 +16,16 @@ public class Window {
     public Window(String title, int width, int height, TheAlchemistGame game) {
         frame = new JFrame(title);
         frame.setSize(width, height);
+        
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
+        } catch (IOException|FontFormatException e) {
+            System.err.println(e);
+        }
+
+        frame.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
+
 
         LinkedHashMap<View, VComponent> views = new LinkedHashMap<>() {{
             put(View.Start, new VStart());

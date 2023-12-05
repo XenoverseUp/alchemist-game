@@ -21,7 +21,7 @@ public class Auth {
 
     public void toggleCurrentUser() {
         this.currentUser += 1;
-        this.currentUser %= 2;
+        if (this.currentUser == players.size()) this.currentUser = 0;
         
         System.out.println("It's " + players.get(currentUser).name + "'s turn.");
     }

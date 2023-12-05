@@ -10,6 +10,7 @@ public class TheAlchemistGame {
 
     public TheAlchemistGame() {
     	auth = new Auth();
+        gameBoard = new Board(auth);
     	
     }
     
@@ -18,8 +19,12 @@ public class TheAlchemistGame {
     }
     
     public void toggleCurrentUser() {
-    	
+    	System.out.println("Toggled");
     	gameBoard.toggleCurrentUser();
+    }
+
+    public Player getCurrentUser() {
+        return auth.players.get(auth.currentUser);
     }
 
     public void initializeGame() {

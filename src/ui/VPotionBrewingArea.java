@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 
 import domain.TheAlchemistGame;
 
-public class VPotionBrewingArea extends VGameComponent {
+public class VPotionBrewingArea extends VComponent {
     private Router router = Router.getInstance();
 
     public VPotionBrewingArea(TheAlchemistGame game) { super(game); }

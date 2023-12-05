@@ -37,6 +37,7 @@ public class Canvas extends JPanel {
         
         private MouseAdapter mouseAdapter = new MouseEvents();
         private BoardState state = BoardState.Table;
+        private boolean nextButtonPressed = false;
 
         private BufferedImage bg = null; 
         private BufferedImage titleLarge = null; 
@@ -51,6 +52,9 @@ public class Canvas extends JPanel {
         private BufferedImage cardDeckOutlineHover = null;
         private BufferedImage publicationAreaOutline = null;
         private BufferedImage publicationAreaOutlineHover = null;
+        private BufferedImage buttonSprite = null;
+        private BufferedImage buttonPressedSprite = null;
+        private BufferedImage verticalStrip = null;
 
 
 
@@ -81,11 +85,12 @@ public class Canvas extends JPanel {
                 cardDeckOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/CardDeckOutlineHover.png"));
                 publicationAreaOutline = ImageIO.read(new File("./src/resources/image/HUD/PublicationAreaOutline.png"));
                 publicationAreaOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/PublicationAreaOutlineHover.png"));
+                buttonSprite = ImageIO.read(new File("./src/resources/image/HUD/button.png"));
+                buttonPressedSprite = ImageIO.read(new File("./src/resources/image/HUD/buttonPressed.png"));
+                verticalStrip = ImageIO.read(new File("./src/resources/image/HUD/SidebarStrip.png"));
             } catch (IOException e) {
                 System.out.println(e);
             }
-
-      
 
             int delay = 1000 / FPS;
             timer = new Timer(delay, new ActionListener() {
@@ -115,45 +120,63 @@ public class Canvas extends JPanel {
             g.setPaint(new Color(25, 25, 25));
             g.fillRect(1233, 0, width - 1233, height);
 
+            g.drawImage(verticalStrip, null, 1230, 0);
+
             g.setPaint(Color.white);
-            g.setFont(new Font("Arial", Font.BOLD, 18));
+            g.setFont(new Font("Itim-Regular", Font.BOLD, 18));
             g.drawString("Beril", 1248, 35);
+
             
             // Draw title
-            setCurrentPlayer(g, "Can");
+            setCurrentPlayer(g, game.getCurrentUser().name);
             
             // Draw outlines
             g.setPaint(Color.BLACK);
-            g.setFont(new Font("Arial", Font.BOLD, 12));
+            g.setFont(new Font("Itim-Regular", Font.BOLD, 12));
             
             g.drawImage(inventoryOutline, null, 434, 316);
-            g.drawString("Inventory", 531, 333);
+            g.drawString("Inventory", 528, 333);
             if (boardHover == BoardHover.Inventory) 
                 g.drawImage(inventoryOutlineHover, null, 422, 348);
                 
             g.drawImage(deductionOutline, null, 188, 388);
-            g.drawString("Deduction Board", 203, 405);
+            g.drawString("Deduction Board", 200, 405);
             if (boardHover == BoardHover.DeductionBoard) 
                 g.drawImage(deductionOutlineHover, null, 227, 381);
            
             g.drawImage(pbaOutline, null, 799, 294);
-            g.drawString("Potion Brewing Area", 867, 311);
+            g.drawString("Potion Brewing Area", 863, 311);
             if (boardHover == BoardHover.PotionBrewingArea) 
                 g.drawImage(pbaOutlineHover, null, 787, 318);
             
             g.drawImage(cardDeckOutline, null, -24, 567);
-            g.drawString("Card Deck", 24, 584);
+            g.drawString("Card Deck", 22, 584);
             if (boardHover == BoardHover.CardDeck) 
                 g.drawImage(cardDeckOutlineHover, null, -36, 606);
            
            
             g.drawImage(publicationAreaOutline, null, 520, 175);
-            g.drawString("Publication Area", 535, 192);
+            g.drawString("Publication Area", 532, 192);
             if (boardHover == BoardHover.PublicationArea) 
                 g.drawImage(publicationAreaOutlineHover, null, 611, 175);
 
-            g.setPaint(Color.BLUE);
-            g.fillRect(x, y, 100, 100);
+            // Fill Sidebar
+
+            if (nextButtonPressed) {
+                g.setPaint(new Color(200, 200, 200));
+                BufferedImage scaledButton = getScaledImage(buttonPressedSprite, 175, 50);
+                g.drawImage(scaledButton, null, 1250, 675);
+                drawCenteredString(g, "Next", new Rectangle(1250, 678, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+            } else {
+                g.setPaint(Color.WHITE);
+                BufferedImage scaledButton = getScaledImage(buttonSprite, 175, 50);
+                g.drawImage(scaledButton, null, 1250, 675);
+                drawCenteredString(g, "Next", new Rectangle(1250, 670, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+            }
+            
+
+            g.setPaint(Color.ORANGE);
+            g.fillOval(x, y, 100, 100);
 
             
             // g.drawRect(258, 540, 200, 70);
@@ -199,6 +222,24 @@ public class Canvas extends JPanel {
                     router.to(View.DeductionBoard);
                 else if (publicationArea.contains(p)) 
                     router.to(View.PublicationArea);
+                else if (new Rectangle(1250, 675,175, 50).contains(p)) { 
+                    // Next Button
+                    nextButtonPressed = true;
+                    Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                Point p = e.getPoint();
+
+                if (new Rectangle(1250, 675,175, 50).contains(p)) { 
+                    game.toggleCurrentUser();
+                }
+                
+                Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                nextButtonPressed = false;
             }
 
             @Override
@@ -242,6 +283,7 @@ public class Canvas extends JPanel {
             g.setFont(font);
             g.drawString(text, x, y);
         }
+    
 
         private BufferedImage getScaledImage(BufferedImage image, int width, int height) {
             int imageWidth  = image.getWidth();
@@ -261,7 +303,7 @@ public class Canvas extends JPanel {
             BufferedImage scaledTitle = getScaledImage(titleLarge, (int)(titleLarge.getWidth() * 0.75), (int)(titleLarge.getHeight() * 0.75));
             
             g.drawImage(scaledTitle, null, width / 2 - scaledTitle.getWidth() / 2, -16);
-            g.setFont(new Font("Arial", Font.BOLD, 24));
+            g.setFont(new Font("Itim-Regular", Font.BOLD, 24));
             
             drawCenteredString(
                 g, 
@@ -269,7 +311,7 @@ public class Canvas extends JPanel {
                 new Rectangle(width / 2 - scaledTitle.getWidth() / 2, 
                 -16, 
                 scaledTitle.getWidth(), scaledTitle.getHeight()), 
-                new Font("Arial", Font.BOLD, 28)
+                new Font("Itim-Regular", Font.BOLD, 28)
             );
 
             

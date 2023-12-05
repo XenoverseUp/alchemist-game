@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 
 import domain.TheAlchemistGame;
 
-public class VDeductionBoard extends VGameComponent {
+public class VDeductionBoard extends VComponent {
     private Router router = Router.getInstance();
     
     public VDeductionBoard(TheAlchemistGame game) { super(game); }

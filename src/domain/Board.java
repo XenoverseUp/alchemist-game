@@ -33,7 +33,6 @@ public class Board {
 	}
 	
 	public void toggleCurrentUser() {
-		
 		auth.toggleCurrentUser();
 	}
 

@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.Color;
 import javax.swing.JPanel;
+
+import domain.TheAlchemistGame;
 import interfaces.IRenderable;
 
 /**
@@ -23,10 +25,18 @@ import interfaces.IRenderable;
  */
 public abstract class VComponent implements IRenderable {
     protected JPanel panel = new JPanel();
+    protected TheAlchemistGame game = null;
 
     protected VComponent() {
         panel.setBackground(Color.WHITE);
         panel.setLayout(null);
+        this.render();
+    }
+
+    protected VComponent(TheAlchemistGame game) {
+        panel.setBackground(Color.WHITE);
+        panel.setLayout(null);
+        this.game = game;
         this.render();
     }
 
