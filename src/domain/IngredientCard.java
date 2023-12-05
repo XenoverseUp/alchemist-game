@@ -3,7 +3,7 @@ package domain;
 public class IngredientCard {
 
 	private int id;
-    private String name;
+    String name;
     private String color;
     private int value;
 
@@ -15,6 +15,7 @@ public class IngredientCard {
 		this.color = color;
 
 	}
+
 
 	
 	public void setName(String name) {
@@ -33,4 +34,17 @@ public class IngredientCard {
 		this.value = value;
 	}
 
+
+	public int getId() {
+		return id;
+	}
+	
+	public String getColor() {
+		return color;
+	}
+
+	public int getValue() {
+		return value;
+	}
+	
 }

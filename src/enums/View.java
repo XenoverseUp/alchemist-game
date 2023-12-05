@@ -6,5 +6,4 @@ public enum View {
     Board,
     End,
     About,
-
 }

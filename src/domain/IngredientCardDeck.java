@@ -26,6 +26,7 @@ public class IngredientCardDeck {
 	IngredientCard ingredientCard_12 = new Mushroom("porcini", 12, 10, "yellow");
 	IngredientCard ingredientCard_13 = new Mushroom("oyster", 13, 9, "white");
 	IngredientCard ingredientCard_14 = new Mushroom("hedgehog", 14, 2, "brown");
+	
 
 	ingredientCardDeck.add(ingredientCard_1);
 	ingredientCardDeck.add(ingredientCard_2);
@@ -45,7 +46,6 @@ public class IngredientCardDeck {
 	}
 
 
-
 	public void shuffle() {
 		Collections.shuffle(ingredientCardDeck);
 		
@@ -57,6 +57,15 @@ public class IngredientCardDeck {
 		
 		return iCard;	
 	}
+
+	public IngredientCard getById(int id) {
+		for (IngredientCard i : ingredientCardDeck) {
+			if (i.getId() == id) return i;
+		}
+		
+		return null;
+	}
+
 	
 	
 	public void removeIngredient(String ingredientName) {
@@ -70,8 +79,8 @@ public class IngredientCardDeck {
 	}
 	
 	public void addCard(IngredientCard card) {
-		//where to initialize this card???
-		this.ingredientCardDeck.add(card);
+		
+		ingredientCardDeck.add(card);
 	}
 	
 	
