@@ -47,6 +47,13 @@ public class TheAlchemistGame {
     public void buyArtifact() {
     	gameBoard.buyArtifact();
     }
+
+    public IngredientCard drawIngredientCard() {
+        IngredientCard card = gameBoard.ingredientCardDeck.drawCard();
+        auth.players.get(auth.currentUser).inventory.addIngredientCard(card);
+
+        return card;
+    }
     
 
 }
