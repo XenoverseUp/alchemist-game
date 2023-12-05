@@ -41,6 +41,12 @@ public class Canvas extends JPanel {
 
         private BufferedImage inventoryOutline = null;
         private BufferedImage inventoryOutlineHover = null;
+        private BufferedImage deductionOutline = null;
+        private BufferedImage deductionOutlineHover = null;
+        private BufferedImage pbaOutline = null;
+        private BufferedImage pbaOutlineHover = null;
+        private BufferedImage cardDeckOutline = null;
+        private BufferedImage cardDeckOutlineHover = null;
 
 
         private Rectangle deductionBoardArea = new Rectangle(258, 540, 200, 70);
@@ -61,6 +67,12 @@ public class Canvas extends JPanel {
                 bg = ImageIO.read(new File("./src/resources/image/board.jpg"));
                 inventoryOutline = ImageIO.read(new File("./src/resources/image/HUD/InventoryOutline.png"));
                 inventoryOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/InventoryOutlineHover.png"));
+                deductionOutline = ImageIO.read(new File("./src/resources/image/HUD/DeductionOutline.png"));
+                deductionOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/DeductionOutlineHover.png"));
+                pbaOutline = ImageIO.read(new File("./src/resources/image/HUD/PBAOutline.png"));
+                pbaOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/PBAOutlineHover.png"));
+                cardDeckOutline = ImageIO.read(new File("./src/resources/image/HUD/cardDeckOutline.png"));
+                cardDeckOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/cardDeckOutlineHover.png"));
             } catch (IOException e) {
                 System.out.println(e);
             }
@@ -103,18 +115,28 @@ public class Canvas extends JPanel {
             setCurrentPlayer(g, "Can");
             
             // Draw outlines
-            g.drawImage(inventoryOutline, null, 434, 316);
-
-            g.setFont(new Font("Arial", Font.BOLD, 12));
             g.setPaint(Color.BLACK);
+            g.setFont(new Font("Arial", Font.BOLD, 12));
+            
+            g.drawImage(inventoryOutline, null, 434, 316);
             g.drawString("Inventory", 531, 333);
             if (boardHover == BoardHover.Inventory) 
-                g.drawImage(inventoryOutlineHover, null, 422, 349);
-
-
-
-
-
+                g.drawImage(inventoryOutlineHover, null, 422, 348);
+                
+            g.drawImage(deductionOutline, null, 188, 388);
+            g.drawString("Deduction Board", 203, 405);
+            if (boardHover == BoardHover.DeductionBoard) 
+                g.drawImage(deductionOutlineHover, null, 227, 381);
+           
+            g.drawImage(pbaOutline, null, 799, 294);
+            g.drawString("Potion Brewing Area", 867, 311);
+            if (boardHover == BoardHover.PotionBrewingArea) 
+                g.drawImage(pbaOutlineHover, null, 787, 318);
+            
+            g.drawImage(cardDeckOutline, null, -24, 567);
+            g.drawString("Card Deck", 24, 584);
+            if (boardHover == BoardHover.CardDeck) 
+                g.drawImage(cardDeckOutlineHover, null, -36, 606);
 
             g.setPaint(Color.BLUE);
             g.fillRect(x, y, 100, 100);
