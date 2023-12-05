@@ -14,7 +14,7 @@ public class VBoard extends VGameComponent {
 
     @Override
     protected void render() {
-        canvas = new Canvas();
+        canvas = new Canvas(game);
         canvas.setBounds(0, 0,  Window.frame.getWidth(), Window.frame.getHeight());
         panel.add(canvas);
     }
