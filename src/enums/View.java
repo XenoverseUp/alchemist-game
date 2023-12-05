@@ -9,5 +9,6 @@ public enum View {
     Inventory,
     PotionBrewingArea,
     DeductionBoard,
-    CardDeck
+    CardDeck,
+    PublicationArea
 }

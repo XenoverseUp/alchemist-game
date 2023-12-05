@@ -5,5 +5,6 @@ public enum BoardHover {
     PotionBrewingArea,
     Inventory,
     DeductionBoard,
-    CardDeck
+    CardDeck,
+    PublicationArea
 }

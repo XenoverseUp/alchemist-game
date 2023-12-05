@@ -24,6 +24,7 @@ public class Window {
             put(View.CardDeck, new VCardDeck(game));
             put(View.DeductionBoard, new VDeductionBoard(game));
             put(View.PotionBrewingArea, new VPotionBrewingArea(game));
+            put(View.PublicationArea, new VPublicationArea(game));
         }};
 
         router = Router.getInstance();

@@ -49,12 +49,16 @@ public class Canvas extends JPanel {
         private BufferedImage pbaOutlineHover = null;
         private BufferedImage cardDeckOutline = null;
         private BufferedImage cardDeckOutlineHover = null;
+        private BufferedImage publicationAreaOutline = null;
+        private BufferedImage publicationAreaOutlineHover = null;
 
 
-        private Rectangle deductionBoardArea = new Rectangle(258, 540, 200, 70);
+
+        private Rectangle deductionBoardArea = new Rectangle(258, 440, 200, 170);
         private Rectangle inventoryArea = new Rectangle(458, 340, 220, 190);
         private Rectangle cardArea = new Rectangle(0, 540, 220, 190);
-        private Rectangle potionBrewingArea = new Rectangle(780, 280, 290, 300);
+        private Rectangle potionBrewingArea = new Rectangle(780, 280, 290, 200);
+        private Rectangle publicationArea = new Rectangle(620, 180, 200, 190);
 
 
         public Canvas(TheAlchemistGame game) {
@@ -73,8 +77,10 @@ public class Canvas extends JPanel {
                 deductionOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/DeductionOutlineHover.png"));
                 pbaOutline = ImageIO.read(new File("./src/resources/image/HUD/PBAOutline.png"));
                 pbaOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/PBAOutlineHover.png"));
-                cardDeckOutline = ImageIO.read(new File("./src/resources/image/HUD/cardDeckOutline.png"));
-                cardDeckOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/cardDeckOutlineHover.png"));
+                cardDeckOutline = ImageIO.read(new File("./src/resources/image/HUD/CardDeckOutline.png"));
+                cardDeckOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/CardDeckOutlineHover.png"));
+                publicationAreaOutline = ImageIO.read(new File("./src/resources/image/HUD/PublicationAreaOutline.png"));
+                publicationAreaOutlineHover = ImageIO.read(new File("./src/resources/image/HUD/PublicationAreaOutlineHover.png"));
             } catch (IOException e) {
                 System.out.println(e);
             }
@@ -139,6 +145,12 @@ public class Canvas extends JPanel {
             g.drawString("Card Deck", 24, 584);
             if (boardHover == BoardHover.CardDeck) 
                 g.drawImage(cardDeckOutlineHover, null, -36, 606);
+           
+           
+            g.drawImage(publicationAreaOutline, null, 520, 175);
+            g.drawString("Publication Area", 535, 192);
+            if (boardHover == BoardHover.PublicationArea) 
+                g.drawImage(publicationAreaOutlineHover, null, 611, 175);
 
             g.setPaint(Color.BLUE);
             g.fillRect(x, y, 100, 100);
@@ -148,6 +160,7 @@ public class Canvas extends JPanel {
             // g.drawRect(458, 340, 220, 190);
             // g.drawRect(0, 540, 220, 190);
             // g.drawRect(780, 280, 290, 300);
+            // g.drawRect(620, 180, 200, 190);
 
 
             g.dispose();
@@ -184,13 +197,18 @@ public class Canvas extends JPanel {
                     router.to(View.CardDeck);
                 else if (deductionBoardArea.contains(p)) 
                     router.to(View.DeductionBoard);
+                else if (publicationArea.contains(p)) 
+                    router.to(View.PublicationArea);
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
                 Point p = e.getPoint();
 
-                if (potionBrewingArea.contains(p)) {
+                if (publicationArea.contains(p)) {
+                    Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    boardHover = BoardHover.PublicationArea;
+                } else if (potionBrewingArea.contains(p)) {
                     Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                     boardHover = BoardHover.PotionBrewingArea;
                 } else if (inventoryArea.contains(p)) {
@@ -242,14 +260,14 @@ public class Canvas extends JPanel {
         private void setCurrentPlayer(Graphics2D g, String name) {
             BufferedImage scaledTitle = getScaledImage(titleLarge, (int)(titleLarge.getWidth() * 0.75), (int)(titleLarge.getHeight() * 0.75));
             
-            g.drawImage(scaledTitle, null, width / 2 - scaledTitle.getWidth() / 2, 10);
+            g.drawImage(scaledTitle, null, width / 2 - scaledTitle.getWidth() / 2, -16);
             g.setFont(new Font("Arial", Font.BOLD, 24));
             
             drawCenteredString(
                 g, 
                 name, 
                 new Rectangle(width / 2 - scaledTitle.getWidth() / 2, 
-                10, 
+                -16, 
                 scaledTitle.getWidth(), scaledTitle.getHeight()), 
                 new Font("Arial", Font.BOLD, 28)
             );
