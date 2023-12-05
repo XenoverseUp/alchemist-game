@@ -6,46 +6,44 @@ import javax.swing.SwingUtilities;
 public class TheAlchemistGame {
     private Auth auth;
     private Board gameBoard;
-    
 
     public TheAlchemistGame() {
-    	auth = new Auth();
-    	
+        auth = new Auth();
+
     }
-    
+
     public void createUser(String userName, Avatar a) {
-    	auth.createUser(userName, a);
+        auth.createUser(userName, a);
     }
-    
+
     public void toggleCurrentUser() {
-    	
-    	gameBoard.toggleCurrentUser();
+
+        gameBoard.toggleCurrentUser();
     }
 
     public void initializeGame() {
-    	
-    	gameBoard = new Board(this.auth);
-    	gameBoard.ingredientCardDeck.shuffle();
-    	gameBoard.dealCards();
-    	gameBoard.artifactCardDeck.shuffle();
-    	gameBoard.dealGolds();
-    	
-    } 
-    
+
+        gameBoard = new Board(this.auth);
+        gameBoard.ingredientCardDeck.shuffle();
+        gameBoard.dealCards();
+        gameBoard.artifactCardDeck.shuffle();
+        gameBoard.dealGolds();
+
+    }
+
     public void forageIngredient() {
-    	
-    	gameBoard.forageIngredient();
-    	
+
+        gameBoard.forageIngredient();
+
     }
 
     public void transmuteIngredient(int ingredientId) {
-    	gameBoard.transmuteIngredient(ingredientId);
-    	
+        gameBoard.transmuteIngredient(ingredientId);
+
     }
 
-    
     public void buyArtifact() {
-    	gameBoard.buyArtifact();
+        gameBoard.buyArtifact();
     }
 
     public IngredientCard drawIngredientCard() {
@@ -54,6 +52,12 @@ public class TheAlchemistGame {
 
         return card;
     }
-    
+
+    public ArtifactCard drawArtifactCard() {
+        ArtifactCard card = gameBoard.artifactCardDeck.drawCard();
+        auth.players.get(auth.currentUser).inventory.addArtifactCard(card);
+
+        return card;
+    }
 
 }
