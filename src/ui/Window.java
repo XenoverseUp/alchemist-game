@@ -20,6 +20,10 @@ public class Window {
             put(View.Login, new VLogin(game));
             put(View.Board, new VBoard(game));
             put(View.About, new VAbout());
+            put(View.Inventory, new VInventory(game));
+            put(View.CardDeck, new VCardDeck(game));
+            put(View.DeductionBoard, new VDeductionBoard(game));
+            put(View.PotionBrewingArea, new VPotionBrewingArea(game));
         }};
 
         router = Router.getInstance();

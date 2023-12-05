@@ -20,12 +20,14 @@ import java.io.IOException;
 
 import enums.BoardHover;
 import enums.BoardState;
+import enums.View;
 
 public class Canvas extends JPanel {
         private Timer timer;
         private int FPS = 80;
         private TheAlchemistGame game;
         private BoardHover boardHover = BoardHover.None;
+        private Router router = Router.getInstance();
         
         private int x = 0;
         private int y = 0;
@@ -175,13 +177,13 @@ public class Canvas extends JPanel {
                 Point p = e.getPoint();
                 
                 if (potionBrewingArea.contains(p)) 
-                    System.out.println("Clicked Potion Brewing Area.");
+                    router.to(View.PotionBrewingArea);
                 else if (inventoryArea.contains(p)) 
-                    System.out.println("Clicked Inventory.");
+                    router.to(View.Inventory);
                 else if (cardArea.contains(p)) 
-                    System.out.println("Clicked Card Deck.");
+                    router.to(View.CardDeck);
                 else if (deductionBoardArea.contains(p)) 
-                    System.out.println("Clicked Deduction Board.");  
+                    router.to(View.DeductionBoard);
             }
 
             @Override
@@ -189,21 +191,20 @@ public class Canvas extends JPanel {
                 Point p = e.getPoint();
 
                 if (potionBrewingArea.contains(p)) {
-                    Window.frame.setCursor(Cursor.HAND_CURSOR);
+                    Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                     boardHover = BoardHover.PotionBrewingArea;
                 } else if (inventoryArea.contains(p)) {
-                    Window.frame.setCursor(Cursor.HAND_CURSOR);
+                    Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                     boardHover = BoardHover.Inventory;
                 } else if (cardArea.contains(p)) {
-                    Window.frame.setCursor(Cursor.HAND_CURSOR);
+                    Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                     boardHover = BoardHover.CardDeck;
                 } else if (deductionBoardArea.contains(p)) {
-                    Window.frame.setCursor(Cursor.HAND_CURSOR);
+                    Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                     boardHover = BoardHover.DeductionBoard;
                 } else {
                     boardHover = BoardHover.None;
-                    Window.frame.setCursor(Cursor.DEFAULT_CURSOR);
-
+                    Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 }
             }
         }

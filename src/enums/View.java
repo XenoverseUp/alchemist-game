@@ -6,5 +6,8 @@ public enum View {
     Board,
     End,
     About,
-
+    Inventory,
+    PotionBrewingArea,
+    DeductionBoard,
+    CardDeck
 }

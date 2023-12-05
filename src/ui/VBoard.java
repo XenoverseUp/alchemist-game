@@ -1,5 +1,7 @@
 package ui;
 
+import java.awt.Cursor;
+
 import domain.TheAlchemistGame;
 
 public class VBoard extends VGameComponent {
@@ -22,5 +24,6 @@ public class VBoard extends VGameComponent {
     @Override
     protected void unmounted() {
         canvas.stop();
+        Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 }
