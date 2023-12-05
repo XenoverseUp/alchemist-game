@@ -19,5 +19,20 @@ public class Potion {
 
 	}
 
+  public boolean checkIngredient(IngredientCard card) {
+
+    for (IngredientCard ingredientCard: recipe) {
+      if (card==ingredientCard) {
+        return true;
+      }
+
+  
+    }
+
+    return false;
+
+
+  }
+
     
 }

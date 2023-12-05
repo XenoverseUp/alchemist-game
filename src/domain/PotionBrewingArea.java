@@ -85,5 +85,14 @@ public class PotionBrewingArea {
 
 	}
 
+    public Potion combine(IngredientCard ingredientCard1, IngredientCard ingredientCard2) {
+        for (Potion potion : potions) {
+            if (potion.checkIngredient(ingredientCard1) && potion.checkIngredient(ingredientCard2)) return potion;
+        }
+
+       
+        return null;
+    }
+
     
 }
