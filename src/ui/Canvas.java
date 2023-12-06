@@ -166,12 +166,12 @@ public class Canvas extends JPanel {
                 g.setPaint(new Color(200, 200, 200));
                 BufferedImage scaledButton = getScaledImage(buttonPressedSprite, 175, 50);
                 g.drawImage(scaledButton, null, 1250, 675);
-                drawCenteredString(g, "Next", new Rectangle(1250, 678, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+                drawCenteredString(g, "Next Turn", new Rectangle(1250, 678, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
             } else {
                 g.setPaint(Color.WHITE);
                 BufferedImage scaledButton = getScaledImage(buttonSprite, 175, 50);
                 g.drawImage(scaledButton, null, 1250, 675);
-                drawCenteredString(g, "Next", new Rectangle(1250, 670, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+                drawCenteredString(g, "Next Turn", new Rectangle(1250, 670, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
             }
             
 
