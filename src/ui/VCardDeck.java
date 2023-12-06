@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,7 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.BoxLayout;
 import enums.View;
 
 import domain.TheAlchemistGame;
@@ -90,10 +87,8 @@ public class VCardDeck extends VComponent {
         BufferedImage artifactCardPile = null;
         
         try {
-            if (type == "ingredient") 
-                ingredientCardPile = ImageIO.read(new File("./src/resources/image/ingredientCardPile.png"));
-            else 
-                artifactCardPile = ImageIO.read(new File("./src/resources/image/artifactCardPile.png"));
+            if (type == "ingredient") ingredientCardPile = ImageIO.read(new File("./src/resources/image/ingredientCardPile.png"));
+            else artifactCardPile = ImageIO.read(new File("./src/resources/image/artifactCardPile.png"));
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -106,8 +101,6 @@ public class VCardDeck extends VComponent {
 
         deckPic.setBounds(0, 0, pile.getWidth(), pile.getHeight());
         pile.add(deckPic);
-
-
 
         JButton button = new JButton(buttonText);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

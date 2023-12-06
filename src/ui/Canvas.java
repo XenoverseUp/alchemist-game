@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 
 import enums.BoardHover;
-import enums.BoardState;
 import enums.View;
 
 public class Canvas extends JPanel {
@@ -35,7 +34,6 @@ public class Canvas extends JPanel {
         private int velocityY = 3;
         
         private MouseAdapter mouseAdapter = new MouseEvents();
-        private BoardState state = BoardState.Table;
         private boolean nextButtonPressed = false;
 
         private BufferedImage bg = null; 
