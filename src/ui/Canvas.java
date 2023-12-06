@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -211,8 +210,10 @@ public class Canvas extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 Point p = e.getPoint();
-                
-                if (potionBrewingArea.contains(p)) 
+
+                if (publicationArea.contains(p)) 
+                    router.to(View.PublicationArea);
+                else if (potionBrewingArea.contains(p)) 
                     router.to(View.PotionBrewingArea);
                 else if (inventoryArea.contains(p)) 
                     router.to(View.Inventory);
@@ -220,8 +221,6 @@ public class Canvas extends JPanel {
                     router.to(View.CardDeck);
                 else if (deductionBoardArea.contains(p)) 
                     router.to(View.DeductionBoard);
-                else if (publicationArea.contains(p)) 
-                    router.to(View.PublicationArea);
                 else if (new Rectangle(1250, 675,175, 50).contains(p)) { 
                     // Next Button
                     nextButtonPressed = true;
