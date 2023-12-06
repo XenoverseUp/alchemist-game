@@ -40,6 +40,10 @@ public class PublicationCardDeck {
 		return pCard;	
 	}
 
+    public ArrayList<PublicationCard> getPublicationCardDeck(){
+        return this.publicationCardDeck;
+    }
+
 
 
 

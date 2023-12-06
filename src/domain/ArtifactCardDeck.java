@@ -36,4 +36,8 @@ public class ArtifactCardDeck {
 		return aCard;	
 	}
 
+	public ArrayList<ArtifactCard> getArtifactCardDeck(){
+		return this.artifactCardDeck;
+	}
+
 }

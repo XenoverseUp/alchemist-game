@@ -15,7 +15,6 @@ public class PotionBrewingArea {
         ArrayList<IngredientCard> recipe_1 = new ArrayList<IngredientCard>();
         recipe_1.add(new Herb("ginger", 1, 3, "yellow"));
         recipe_1.add(new Mineral("zinc", 9, 12, "grey"));
-        recipe_1.add(new Mushroom("porcini", 12, 10, "yellow"));
 		Potion potion_1 = new Potion("Romictmce", 10,recipe_1 );
         potions.add(potion_1);
 
@@ -29,7 +28,6 @@ public class PotionBrewingArea {
         ArrayList<IngredientCard> recipe_3 = new ArrayList<IngredientCard>();
         recipe_3.add(new Herb("dill", 4, 11, "green"));
         recipe_3.add(new Mineral("quartz", 10, 3, "purple"));
-        recipe_3.add(new Mushroom("oyster", 13, 9, "white"));
 		Potion potion_3= new Potion("Bodion", 10,recipe_3 );
         potions.add(potion_3);
 
@@ -50,6 +48,7 @@ public class PotionBrewingArea {
 
         ArrayList<IngredientCard> recipe_6 = new ArrayList<IngredientCard>();
         recipe_6.add(new Herb("ginger", 1, 3, "yellow"));
+        recipe_6.add(new Mineral("copper", 6, 5, "grey"));
 		Potion potion_6 = new Potion("Pacice", 9,recipe_6 );
         potions.add(potion_6);
 
@@ -57,7 +56,6 @@ public class PotionBrewingArea {
         ArrayList<IngredientCard> recipe_7 = new ArrayList<IngredientCard>();
         recipe_7.add(new Herb("rosemary", 2, 5, "green"));
         recipe_7.add(new Mineral("magnesium", 7, 9, "white"));
-        recipe_7.add(new Mushroom("portobello", 11, 20, "brown"));
 		Potion potion_7 = new Potion("Roin", 4,recipe_7 );
         potions.add(potion_7);
 

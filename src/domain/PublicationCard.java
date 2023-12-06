@@ -27,6 +27,18 @@ public class PublicationCard {
 		this.value = value;
 	}
 
+	public String getRequirement(){
+		return this.requirement;
+	}
+
+	public String getName(){
+		return this.name;
+	}
+
+	public int getValue(){
+		return this.value;
+	}
+
 
 
 }
