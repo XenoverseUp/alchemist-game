@@ -47,8 +47,7 @@ public class IngredientCardDeck {
 
 
 	public void shuffle() {
-		Collections.shuffle(ingredientCardDeck);
-		
+		Collections.shuffle(ingredientCardDeck);		
 	}
 	
 	public IngredientCard drawCard() {

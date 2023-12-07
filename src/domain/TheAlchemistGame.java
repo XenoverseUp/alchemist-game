@@ -8,8 +8,8 @@ public class TheAlchemistGame {
     private Board gameBoard;
 
     public TheAlchemistGame() {
-        auth = new Auth();
-
+    	auth = new Auth();
+      gameBoard = new Board(auth);
     }
 
     public void createUser(String userName, Avatar a) {
@@ -17,29 +17,26 @@ public class TheAlchemistGame {
     }
 
     public void toggleCurrentUser() {
-
         gameBoard.toggleCurrentUser();
     }
 
-    public void initializeGame() {
+    public Player getCurrentUser() {
+        return auth.players.get(auth.currentUser);
+    }
 
-        gameBoard = new Board(this.auth);
+    public void initializeGame() {
         gameBoard.ingredientCardDeck.shuffle();
         gameBoard.dealCards();
         gameBoard.artifactCardDeck.shuffle();
         gameBoard.dealGolds();
-
     }
 
     public void forageIngredient() {
-
         gameBoard.forageIngredient();
-
     }
 
     public void transmuteIngredient(int ingredientId) {
         gameBoard.transmuteIngredient(ingredientId);
-
     }
 
     public void buyArtifact() {
