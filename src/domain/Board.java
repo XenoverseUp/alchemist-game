@@ -21,6 +21,7 @@ public class Board {
 		}
 	}
 	
+	
 	public void dealGolds() {
 		for (Player p: auth.players) {
     		p.inventory.addGold(3);
@@ -49,7 +50,11 @@ public class Board {
 		this.auth.addArtifactCardToCurrentPlayer(aCard);
 		this.auth.removeGoldFromCurrentUser(aCard.getPrice());
 	}
+
 	
+	public Auth getAuth() {
+		return auth;
+	}
 
 
 	

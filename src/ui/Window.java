@@ -20,12 +20,12 @@ public class Window {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Cubano.ttf")));
         } catch (IOException|FontFormatException e) {
             System.err.println(e);
         }
 
         frame.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
-
 
         LinkedHashMap<View, VComponent> views = new LinkedHashMap<>() {{
             put(View.Start, new VStart());

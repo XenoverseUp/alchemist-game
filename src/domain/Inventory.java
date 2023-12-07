@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 
+
 public class Inventory {
 	
 	private int gold = 0;
@@ -45,5 +46,7 @@ public class Inventory {
 	public int getGold() {
 		return gold;
 	}
+
+	
 	
 }

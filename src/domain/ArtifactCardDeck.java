@@ -55,4 +55,13 @@ public class ArtifactCardDeck {
 		return this.artifactCardDeck;
 	}
 
+	public int getPriceOfNextArtifact(){
+
+		if (artifactCardDeck.size() == 0){
+			return -1;
+		}
+
+		return artifactCardDeck.get(artifactCardDeck.size() - 1).getPrice();
+	}
+
 }

@@ -29,7 +29,7 @@ public class VLogin extends VComponent {
     private Router router = Router.getInstance();
     private boolean isFirstPlayerReady = false;
     private boolean isSecondPlayerReady = false;
-    
+
     public VLogin(TheAlchemistGame game) { super(game); }
 
     @Override
@@ -47,7 +47,7 @@ public class VLogin extends VComponent {
     private JPanel createUserForm(String title, int userIndex) {
         JPanel form = new JPanel();
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
-        form.setBackground(new Color(255,255,255));
+        form.setOpaque(false);
 
 
     	// a text to inform user
@@ -56,13 +56,13 @@ public class VLogin extends VComponent {
         enterUsername.setFont(new Font("Itim-Regular", Font.BOLD, 18));
         enterUsername.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        
+
         // Info text
         JLabel info = new JLabel("Please enter a name for the alchemist.");
         info.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
         info.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        
+
         // text box to enter the username
         JTextField userNameTextField = new JTextField("Name");
         userNameTextField.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
@@ -91,13 +91,13 @@ public class VLogin extends VComponent {
                 }
             }
         });
-        
+
 
         // button to pass to the next page
         JButton nextButton = new JButton("Next");
         nextButton.setForeground(new Color(255,50,50));
         nextButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         // add information text and name text box to the page
         form.add(Box.createVerticalGlue());
         form.add(enterUsername);
@@ -129,7 +129,7 @@ public class VLogin extends VComponent {
             String playerName = userNameTextField.getText().equals("Name") ? "" : userNameTextField.getText();
             String avatarName = null;
             Avatar playerAvatar = null;
-            
+
             for (Enumeration<AbstractButton> buttons = avatarsButtonGroup.getElements(); buttons.hasMoreElements();) {
                 AbstractButton avatarButton = buttons.nextElement();
 
@@ -137,20 +137,21 @@ public class VLogin extends VComponent {
                     avatarName = avatarButton.getText();
                 }
             }
-            
+
             for (Avatar a: Avatar.values()) {
-                if(a.toString().equals(avatarName)) {	
+                if(a.toString().equals(avatarName)) {
                     playerAvatar = a;
                 }
             }
 
             int result = game.createUser(playerName, playerAvatar);
 
-            if (result == 0) {                
-                if (userIndex == 0) this.isFirstPlayerReady = true; 
+            if (result == 0) {
+                if (userIndex == 0) this.isFirstPlayerReady = true;
                 else if (userIndex == 1) this.isSecondPlayerReady = true;
 
                 nextButton.setText("Ready");
+                userNameTextField.setEditable(false);
                 info.setText("Waiting for other alchemist.");
                 info.setForeground(Color.black);
             } else if (result == 1) {
@@ -160,11 +161,9 @@ public class VLogin extends VComponent {
                 info.setText("Name cannot be empty.");
                 info.setForeground(Color.red);
             }
-            
 
             if (isFirstPlayerReady && isSecondPlayerReady) router.to(View.Board);
 
-		    
         });
 
         form.add(Box.createVerticalStrut(32));

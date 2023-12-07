@@ -1,6 +1,7 @@
 package domain;
 
 import enums.Avatar;
+import interfaces.ICurrentUserListener;
 
 public class TheAlchemistGame {
     private Auth auth;
@@ -54,6 +55,15 @@ public class TheAlchemistGame {
         auth.players.get(auth.currentUser).inventory.addArtifactCard(card);
 
         return card;
+    }
+
+    public int getPriceOfNextArtifact(){
+        return gameBoard.artifactCardDeck.getPriceOfNextArtifact();
+    }
+
+    public void addCurrentUserListener(ICurrentUserListener currentUserListener){
+
+        gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
 }
