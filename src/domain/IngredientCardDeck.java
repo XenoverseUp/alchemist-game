@@ -51,9 +51,7 @@ public class IngredientCardDeck {
 	}
 	
 	public IngredientCard drawCard() {
-		
 		IngredientCard iCard = ingredientCardDeck.remove(ingredientCardDeck.size() - 1);
-		
 		return iCard;	
 	}
 

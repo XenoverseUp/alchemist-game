@@ -29,6 +29,10 @@ public class Auth {
     public void addGoldToCurrentUser(int amount) {
     	players.get(currentUser).inventory.addGold(amount);
     }
+
+    public Player getCurrentPlayer() {
+        return this.players.get(currentUser);
+    }
     
     public void removeGoldFromCurrentUser(int amount) {
     	players.get(currentUser).inventory.removeGold(amount);

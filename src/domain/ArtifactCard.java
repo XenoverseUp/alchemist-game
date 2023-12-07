@@ -3,30 +3,33 @@ package domain;
 
 public class ArtifactCard {
 
-	private String effectType;
-	private String ability;
-	private String name;
+	private final String effectType;
+	private final String ability;
+	private final String name;
+	private final int price;
 
 
-	public ArtifactCard(String effectType, String ability, String name) {
+	public ArtifactCard(String effectType, String ability, String name, int price) {
 		this.effectType = effectType;
 		this.ability = ability;
 		this.name = name;
-
+		this.price = price;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public int getPrice() {
+		return price;
+	}
 	
 	public String getEffectType() {
 		return effectType;
 	}
-	public void setEffectType(String effectType) {
-		this.effectType = effectType;
-	}
+
 	public String getAbility() {
 		return ability;
-	}
-	public void setAbility(String ability) {
-		this.ability = ability;
 	}
 
 	

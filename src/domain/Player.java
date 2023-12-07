@@ -39,5 +39,13 @@ public class Player {
         this.sickness = value;
     }
 
+    public int getSickness() {
+        return sickness;
+    }
+
+    public int getReputation() {
+        return reputation;
+    }
+
 
 }

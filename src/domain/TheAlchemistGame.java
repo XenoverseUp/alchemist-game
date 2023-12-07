@@ -1,7 +1,6 @@
 package domain;
 
 import enums.Avatar;
-import javax.swing.SwingUtilities;
 
 public class TheAlchemistGame {
     private Auth auth;

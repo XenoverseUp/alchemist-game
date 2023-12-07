@@ -1,11 +1,8 @@
 package domain;
 
-/**
- * AlchemyMarker
- */
 public class AlchemyMarker {
 
-    private int id;
+    private final int id;
     public boolean associated;
 
     public AlchemyMarker(int id) {
@@ -21,6 +18,10 @@ public class AlchemyMarker {
     public boolean dissociate() {
         this.associated = false;
         return associated;
+    }
+
+    public int getId() {
+        return id;
     }
 
 }
