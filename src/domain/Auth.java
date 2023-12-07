@@ -8,6 +8,8 @@ public class Auth {
     public int currentUser = 0;
 
     public int createUser(String name, Avatar avatar) {
+        if (name.equals("") || name == null) return 2;
+
         for (Player p : this.players) {
             if (p.name.equals(name))
                 return 1;

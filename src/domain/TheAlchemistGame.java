@@ -11,8 +11,8 @@ public class TheAlchemistGame {
       gameBoard = new Board(auth);
     }
 
-    public void createUser(String userName, Avatar a) {
-        auth.createUser(userName, a);
+    public int createUser(String userName, Avatar a) {
+       return auth.createUser(userName, a);
     }
 
     public void toggleCurrentUser() {
