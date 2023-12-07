@@ -55,17 +55,17 @@ public class VPotionBrewingArea extends VComponent {
 
         JButton makePotion = new JButton("Make a Potion");
         makePotion.setBounds(850, 400, 150, 30);
-        makePotion.addActionListener(event -> {
+        makePotion.addActionListener(event -> { // will call combine, addPotion
         });
 
         JButton doExperiment = new JButton("Do the experiment");
         doExperiment.setBounds(620, 350, 150, 30);
-        doExperiment.addActionListener(event -> {
+        doExperiment.addActionListener(event -> { // will call make experiment
         });
 
         JButton selectIngredients = new JButton("Select Ingredients");
         selectIngredients.setBounds(370, 250, 150, 30);
-        selectIngredients.addActionListener(event -> router.to(View.Inventory));
+        selectIngredients.addActionListener(event -> router.to(View.Inventory)); // may call remove ingredient card?
 
         brewingPanel.add(back);
         brewingPanel.add(doExperiment);
