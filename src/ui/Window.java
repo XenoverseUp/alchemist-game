@@ -18,35 +18,11 @@ public class Window {
         frame = new JFrame(title);
         frame.setSize(width, height);
 
-        frame.addKeyListener(new KeyListener() {
-            public void keyPressed(KeyEvent ke) {
-                if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
-                    if (router.getCurrentView() == View.Pause) {
-                        if (router.hasPreviousView()) 
-                            router.navigateBack();
-                    } else router.to(View.Pause);
-                }
-                if (ke.getKeyCode() == KeyEvent.VK_UP) {
-                    if(router.getCurrentView() == View.Help) {
-                        if (router.hasPreviousView())
-                            router.navigateBack();
-                    } else router.to(View.Help);
-                }
-
-            }
-
-            public void keyReleased(KeyEvent ke) {
-            }
-
-            public void keyTyped(KeyEvent ke) {
-            }
-        });
-
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Cubano.ttf")));
-        } catch (IOException|FontFormatException e) {
+        } catch (IOException | FontFormatException e) {
 
             System.err.println(e);
         }
@@ -71,6 +47,32 @@ public class Window {
         router = Router.getInstance();
         router.populate(views);
         router.to(View.Start);
+        frame.setFocusable(true);
+        frame.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent ke) {
+                if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
+                    if (router.getCurrentView() == View.Pause) {
+                        if (router.hasPreviousView())
+                            router.navigateBack();
+                    } else
+                        router.to(View.Pause);
+                }
+                if (ke.getKeyCode() == KeyEvent.VK_UP) {
+                    if (router.getCurrentView() == View.Help) {
+                        if (router.hasPreviousView())
+                            router.navigateBack();
+                    } else
+                        router.to(View.Help);
+                }
+
+            }
+
+            public void keyReleased(KeyEvent ke) {
+            }
+
+            public void keyTyped(KeyEvent ke) {
+            }
+        });
     }
 
     public void init() {
