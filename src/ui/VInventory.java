@@ -29,6 +29,7 @@ import interfaces.ICurrentUserListener;
 
 public class VInventory extends VComponent implements ICurrentUserListener {
     private Router router = Router.getInstance();
+    private JLabel titleText;
 
     public VInventory(TheAlchemistGame game) { 
         super(game); 
@@ -52,14 +53,17 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
         titlePic.setBounds((int)(Window.frame.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
         
+        titleText = new JLabel("",  SwingConstants.CENTER);
+        titleText.setForeground(Color.white);
+        titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
+        titleText.setBounds((int)(Window.frame.getWidth() / 2 - 498 / 2 * 0.75), -16, (int)(498 * 0.75), (int)(109 * 0.75));
 
         JButton closePic = new JButton(new ImageIcon(close.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         closePic.setBounds(10, 10, 60, 60);
-        closePic.addActionListener(event -> {
-            router.to(View.Board);
-        });
+        closePic.addActionListener(e -> router.to(View.Board));
 
         
+        panel.add(titleText);
         panel.add(titlePic);
         panel.add(closePic);
 
@@ -71,11 +75,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
         int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
 
-        JLabel titleText = new JLabel(String.format("%s's Inventory", game.getCurrentUser().name),  SwingConstants.CENTER);
-
-        titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
-        titleText.setForeground(Color.red);
-        titleText.setBounds((int)(Window.frame.getWidth() / 3 - 498 / 2 * 0.75), -16, (int)(498 * 0.75), (int)(109 * 0.75));
+        this.titleText.setText(String.format("%s's Inventory", game.getCurrentUser().name));
         
         JPanel cards = new JPanel();
         cards.setLayout(new BoxLayout(cards, BoxLayout.Y_AXIS));
@@ -94,14 +94,12 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         System.err.println("Hello");
 
 
-        panel.add(titleText);
         panel.add(scrollPane);
     }
 
     @Override
-    public void onCurrentUserChangeEvent() {
+    public void onCurrentUserChange() {
         // TODO Auto-generated method stub
-        System.out.println("I ınvented observer pattern d'dem");
     }
 
 }

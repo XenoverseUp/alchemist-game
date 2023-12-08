@@ -22,6 +22,7 @@ public class Router {
 
     public void populate(Map<View, VComponent> views) {
         this.views = views;
+        this.views.forEach((k, v) -> v.render());
     }
 
     public void to(View nextView) {

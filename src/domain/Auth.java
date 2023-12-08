@@ -26,7 +26,7 @@ public class Auth {
     public void toggleCurrentUser() {
         this.currentUser += 1;
         if (this.currentUser == players.size()) this.currentUser = 0;
-        publishCurrentUser();
+        publishCurrentUserChange();
         
         System.out.println("It's " + players.get(currentUser).name + "'s turn.");
     }
@@ -58,16 +58,11 @@ public class Auth {
 
     // Method for observer pattern
     public void addCurrentUserListener(ICurrentUserListener currentUserListener){
-
 		currentUserListeners.add(currentUserListener);
 	}
 
     // Method for observer pattern
-	public void publishCurrentUser(){
-		for(ICurrentUserListener listener: currentUserListeners){
-			listener.onCurrentUserChangeEvent();
-		}
+	public void publishCurrentUserChange(){
+		for(ICurrentUserListener listener : currentUserListeners) listener.onCurrentUserChange();
 	}
-
-
 }
