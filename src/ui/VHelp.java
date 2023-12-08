@@ -16,7 +16,7 @@ public class VHelp extends VComponent {
         BufferedImage help_img = null;
 
         try {
-            help_img = ImageIO.read(new File("./src/resources/image/help screen bg.jpg"));
+            help_img = ImageIO.read(new File("./src/resources/image/blurred-bg.png"));
         } catch (IOException e) {
             System.out.println(e);
         }
