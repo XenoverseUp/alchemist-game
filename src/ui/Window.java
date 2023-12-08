@@ -26,6 +26,13 @@ public class Window {
                             router.navigateBack();
                     } else router.to(View.Pause);
                 }
+                if (ke.getKeyCode() == KeyEvent.VK_UP) {
+                    if(router.getCurrentView() == View.Help) {
+                        if (router.hasPreviousView())
+                            router.navigateBack();
+                    } else router.to(View.Help);
+                }
+
             }
 
             public void keyReleased(KeyEvent ke) {
