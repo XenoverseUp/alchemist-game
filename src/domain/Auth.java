@@ -2,12 +2,16 @@ package domain;
 
 import java.util.ArrayList;
 import enums.Avatar;
+import interfaces.ICurrentUserListener;
 
 public class Auth {
     public ArrayList<Player> players = new ArrayList<>(2);
     public int currentUser = 0;
+    private ArrayList<ICurrentUserListener> currentUserListeners = new ArrayList<>();
 
     public int createUser(String name, Avatar avatar) {
+        if (name.equals("") || name == null) return 2;
+
         for (Player p : this.players) {
             if (p.name.equals(name))
                 return 1;
@@ -21,13 +25,18 @@ public class Auth {
 
     public void toggleCurrentUser() {
         this.currentUser += 1;
-        this.currentUser %= 2;
+        if (this.currentUser == players.size()) this.currentUser = 0;
+        publishCurrentUser();
         
         System.out.println("It's " + players.get(currentUser).name + "'s turn.");
     }
 
     public void addGoldToCurrentUser(int amount) {
     	players.get(currentUser).inventory.addGold(amount);
+    }
+
+    public Player getCurrentPlayer() {
+        return this.players.get(currentUser);
     }
     
     public void removeGoldFromCurrentUser(int amount) {
@@ -47,6 +56,18 @@ public class Auth {
     	return players.get(currentUser).inventory.getIngredient(ingredientId);
     }
 
+    // Method for observer pattern
+    public void addCurrentUserListener(ICurrentUserListener currentUserListener){
+
+		currentUserListeners.add(currentUserListener);
+	}
+
+    // Method for observer pattern
+	public void publishCurrentUser(){
+		for(ICurrentUserListener listener: currentUserListeners){
+			listener.onCurrentUserChangeEvent();
+		}
+	}
 
 
 }

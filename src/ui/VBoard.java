@@ -1,34 +1,32 @@
 package ui;
 
-import javax.swing.JLabel;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import java.awt.Cursor;
 
-import java.awt.*;
 import domain.TheAlchemistGame;
-import enums.View;
+import enums.Avatar;
 
-public class VBoard extends VGameComponent {
+public class VBoard extends VComponent {
     public VBoard(TheAlchemistGame game) { super(game); }
+
+    Canvas canvas;
+
+    @Override
+    protected void mounted() {
+        canvas.start();
+    }
 
     @Override
     protected void render() {
-        // !TODO: Replace with Graphics2D canvas.
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
-        JLabel text = new JLabel("Game Board");
-        text.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        JButton button = new JButton("Click");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.addActionListener(event -> {
-           Window.router.setView(View.About); 
-        });
+        // game.createUser("Ata", Avatar.Celestial);
+        // game.createUser("Can", Avatar.Serene);
+        canvas = new Canvas(game);
+        canvas.setBounds(0, 0,  Window.frame.getWidth(), Window.frame.getHeight());
+        panel.add(canvas);
+    }
 
-        panel.add(Box.createVerticalGlue());
-        panel.add(text);
-        panel.add(button);
-        panel.add(Box.createVerticalGlue());
+    @Override
+    protected void unmounted() {
+        canvas.stop();
+        Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 }

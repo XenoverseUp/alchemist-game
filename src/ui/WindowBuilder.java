@@ -29,7 +29,7 @@ public class WindowBuilder {
     }
 
     public Window buildWindow() {
-        return (new Window(_title, _width, _height, _game));
+        return new Window(_title, _width, _height, _game);
     }
 
     

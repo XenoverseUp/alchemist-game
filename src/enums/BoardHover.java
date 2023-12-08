@@ -1,13 +1,9 @@
 package enums;
 
-public enum View {
-    Start,
-    Login,
-    Board,
-    End,
-    About,
-    Inventory,
+public enum BoardHover {
+    None,
     PotionBrewingArea,
+    Inventory,
     DeductionBoard,
     CardDeck,
     PublicationArea
