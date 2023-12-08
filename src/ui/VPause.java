@@ -14,33 +14,21 @@ import javax.swing.JPanel;
 import enums.View;
 import domain.TheAlchemistGame;
 
-public class VPotionBrewingArea extends VComponent {
+public class VPause extends VComponent {
     private Router router = Router.getInstance();
 
-    public VPotionBrewingArea(TheAlchemistGame game) {
+    public VPause(TheAlchemistGame game) {
         super(game);
     }
 
     @Override
     protected void render() {
         JPanel brewingPanel = createBrewingJPanel();
-        JLabel text = new JLabel("Potion Brewing Area");
+        JLabel text = new JLabel("Pause Screen");
         text.setBounds(500, 10, 200, 30);
 
-        BufferedImage bg = null;
-        try {
-            bg = ImageIO.read(new File("./src/resources/image/potion-brewing-area-bg.jpg"));
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(-200, -50, Window.frame.getWidth(), Window.frame.getHeight());
-
-        panel.setLayout(null); // Use absolute positioning
-        panel.add(brewingPanel);
         panel.add(text);
-        panel.add(bgPic);
+
     }
 
     private JPanel createBrewingJPanel() {

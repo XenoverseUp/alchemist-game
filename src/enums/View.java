@@ -10,5 +10,6 @@ public enum View {
     PotionBrewingArea,
     DeductionBoard,
     CardDeck,
-    PublicationArea
+    PublicationArea,
+    Pause
 }
