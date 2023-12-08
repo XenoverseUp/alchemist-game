@@ -20,7 +20,7 @@ public class Window {
             put(View.Start, new VStart());
             put(View.Login, new VLogin(game));
             put(View.Board, new VBoard(game));
-            put(View.About, new VHelp());
+            put(View.Help, new VHelp());
         }};
 
         router = new Router(View.Start, frame, views);
