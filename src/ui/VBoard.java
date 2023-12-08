@@ -23,7 +23,7 @@ public class VBoard extends VGameComponent {
         JButton button = new JButton("Click");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(event -> {
-           Window.router.setView(View.About); 
+           Window.router.setView(View.Help); 
         });
 
         panel.add(Box.createVerticalGlue());
