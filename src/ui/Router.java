@@ -3,27 +3,35 @@ package ui;
 import java.util.Map;
 import java.util.Stack;
 
-import javax.swing.JFrame;
-
 import enums.View;
-import interfaces.IRenderable;
 
 public class Router {
+    private static Router instance = null;
+
     private View currentView;
     private Stack<View> history = new Stack<>();
-    private Map<View, IRenderable> views;
+    private Map<View, VComponent> views;
 
-    public Router(View initialView, JFrame window, Map<View, IRenderable> views) {
-        this.views = views;
-        this.setView(initialView);
+
+    public static synchronized Router getInstance() {
+        if (instance == null)
+            instance = new Router();
+ 
+        return instance;
     }
 
-    public void setView(View view) {
-        history.push(currentView);
+    public void populate(Map<View, VComponent> views) {
+        this.views = views;
+    }
+
+    public void to(View nextView) {
+        if (currentView != null) {
+            history.push(currentView);
+            views.get(currentView).unmounted();
+        }
 
         Window.frame.getContentPane().removeAll();
-
-        IRenderable component = views.get(view);
+        VComponent component = views.get(nextView);
 
         component.getContentPanel().setPreferredSize(Window.frame.getSize());
         component.getContentPanel().setLocation(0, 0);
@@ -33,13 +41,15 @@ public class Router {
         Window.frame.revalidate();
         Window.frame.repaint();
 
-        this.currentView = view;
+        component.mounted();
+
+        this.currentView = nextView;
     }
 
     public void navigateBack() {
         View previous = history.pop();
         if (previous != null) 
-            setView(previous);
+            to(previous);
     }
 
     public View getCurrentView() { return this.currentView; }
