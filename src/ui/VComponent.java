@@ -30,14 +30,12 @@ public abstract class VComponent implements IRenderable {
     protected VComponent() {
         panel.setBackground(Color.WHITE);
         panel.setLayout(null);
-        this.render();
     }
 
     protected VComponent(TheAlchemistGame game) {
         panel.setBackground(Color.WHITE);
         panel.setLayout(null);
         this.game = game;
-        this.render();
     }
 
     protected abstract void render();
