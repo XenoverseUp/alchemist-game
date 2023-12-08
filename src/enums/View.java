@@ -5,7 +5,7 @@ public enum View {
     Login,
     Board,
     End,
-    About,
+    Help,
     Inventory,
     PotionBrewingArea,
     DeductionBoard,

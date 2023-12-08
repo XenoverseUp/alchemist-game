@@ -19,18 +19,12 @@ public class Window {
         frame.setSize(width, height);
 
         frame.addKeyListener(new KeyListener() {
-
             public void keyPressed(KeyEvent ke) {
-
                 if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
                     if (router.getCurrentView() == View.Pause) {
-                        if (router.hasPreviousView()) {
+                        if (router.hasPreviousView()) 
                             router.navigateBack();
-                        }
-
-                    } else {
-                        router.to(View.Pause);
-                    }
+                    } else router.to(View.Pause);
                 }
             }
 
@@ -57,13 +51,13 @@ public class Window {
                 put(View.Start, new VStart());
                 put(View.Login, new VLogin(game));
                 put(View.Board, new VBoard(game));
-                put(View.About, new VAbout());
                 put(View.Inventory, new VInventory(game));
                 put(View.CardDeck, new VCardDeck(game));
                 put(View.DeductionBoard, new VDeductionBoard(game));
                 put(View.PotionBrewingArea, new VPotionBrewingArea(game));
                 put(View.PublicationArea, new VPublicationArea(game));
                 put(View.Pause, new VPause(game));
+                put(View.Help, new VHelp());
             }
         };
 
