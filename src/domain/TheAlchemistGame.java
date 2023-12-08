@@ -1,26 +1,23 @@
 package domain;
 
 import enums.Avatar;
-import javax.swing.SwingUtilities;
+import interfaces.ICurrentUserListener;
 
 public class TheAlchemistGame {
     private Auth auth;
     private Board gameBoard;
-    
 
     public TheAlchemistGame() {
     	auth = new Auth();
-        gameBoard = new Board(auth);
-    	
+      gameBoard = new Board(auth);
     }
-    
-    public void createUser(String userName, Avatar a) {
-    	auth.createUser(userName, a);
+
+    public int createUser(String userName, Avatar a) {
+       return auth.createUser(userName, a);
     }
-    
+
     public void toggleCurrentUser() {
-    	System.out.println("Toggled");
-    	gameBoard.toggleCurrentUser();
+        gameBoard.toggleCurrentUser();
     }
 
     public Player getCurrentUser() {
@@ -28,30 +25,45 @@ public class TheAlchemistGame {
     }
 
     public void initializeGame() {
-    	
-    	gameBoard = new Board(this.auth);
-    	gameBoard.ingredientCardDeck.shuffle();
-    	gameBoard.dealCards();
-    	gameBoard.artifactCardDeck.shuffle();
-    	gameBoard.dealGolds();
-    	
-    } 
-    
+        gameBoard.ingredientCardDeck.shuffle();
+        gameBoard.dealCards();
+        gameBoard.artifactCardDeck.shuffle();
+        gameBoard.dealGolds();
+    }
+
     public void forageIngredient() {
-    	
-    	gameBoard.forageIngredient();
-    	
+        gameBoard.forageIngredient();
     }
 
     public void transmuteIngredient(int ingredientId) {
-    	gameBoard.transmuteIngredient(ingredientId);
-    	
+        gameBoard.transmuteIngredient(ingredientId);
     }
 
-    
     public void buyArtifact() {
-    	gameBoard.buyArtifact();
+        gameBoard.buyArtifact();
     }
-    
+
+    public IngredientCard drawIngredientCard() {
+        IngredientCard card = gameBoard.ingredientCardDeck.drawCard();
+        auth.players.get(auth.currentUser).inventory.addIngredientCard(card);
+
+        return card;
+    }
+
+    public ArtifactCard drawArtifactCard() {
+        ArtifactCard card = gameBoard.artifactCardDeck.drawCard();
+        auth.players.get(auth.currentUser).inventory.addArtifactCard(card);
+
+        return card;
+    }
+
+    public int getPriceOfNextArtifact(){
+        return gameBoard.artifactCardDeck.getPriceOfNextArtifact();
+    }
+
+    public void addCurrentUserListener(ICurrentUserListener currentUserListener){
+
+        gameBoard.getAuth().addCurrentUserListener(currentUserListener);
+    }
 
 }

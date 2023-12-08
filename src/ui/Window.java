@@ -44,7 +44,9 @@ public class Window {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
-        } catch (IOException | FontFormatException e) {
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Cubano.ttf")));
+        } catch (IOException|FontFormatException e) {
+
             System.err.println(e);
         }
 
@@ -67,7 +69,7 @@ public class Window {
 
         router = Router.getInstance();
         router.populate(views);
-        router.to(View.Board);
+        router.to(View.Start);
     }
 
     public void init() {
