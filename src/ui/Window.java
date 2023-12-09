@@ -46,7 +46,15 @@ public class Window {
 
         router = Router.getInstance();
         router.populate(views);
-        router.to(View.Start);
+        router.to(View.Board);
+    }
+
+    public void init() {
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         frame.setFocusable(true);
         frame.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent ke) {
@@ -67,20 +75,9 @@ public class Window {
 
             }
 
-            public void keyReleased(KeyEvent ke) {
-            }
-
-            public void keyTyped(KeyEvent ke) {
-            }
+            public void keyReleased(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {}
         });
-    }
-
-    public void init() {
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        frame.setResizable(false);
-        frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
     }
 
 }
