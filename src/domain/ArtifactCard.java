@@ -1,13 +1,12 @@
 package domain;
 
-
 public class ArtifactCard {
 
 	private final String effectType;
 	private final String ability;
 	private final String name;
 	private final int price;
-
+	private boolean activated = false;
 
 	public ArtifactCard(String effectType, String ability, String name, int price) {
 		this.effectType = effectType;
@@ -23,7 +22,7 @@ public class ArtifactCard {
 	public int getPrice() {
 		return price;
 	}
-	
+
 	public String getEffectType() {
 		return effectType;
 	}
@@ -32,5 +31,11 @@ public class ArtifactCard {
 		return ability;
 	}
 
-	
+	public void use() {
+		activated = true;
+	}
+
+	public boolean getActivated() {
+		return activated;
+	}
 }

@@ -8,12 +8,12 @@ public class TheAlchemistGame {
     private Board gameBoard;
 
     public TheAlchemistGame() {
-    	auth = new Auth();
-      gameBoard = new Board(auth);
+        auth = new Auth();
+        gameBoard = new Board(auth);
     }
 
     public int createUser(String userName, Avatar a) {
-       return auth.createUser(userName, a);
+        return auth.createUser(userName, a);
     }
 
     public void toggleCurrentUser() {
@@ -57,13 +57,17 @@ public class TheAlchemistGame {
         return card;
     }
 
-    public int getPriceOfNextArtifact(){
+    public int getPriceOfNextArtifact() {
         return gameBoard.artifactCardDeck.getPriceOfNextArtifact();
     }
 
-    public void addCurrentUserListener(ICurrentUserListener currentUserListener){
+    public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
 
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
+    }
+
+    public Board getBoard() {
+        return gameBoard;
     }
 
 }
