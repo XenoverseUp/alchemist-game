@@ -178,7 +178,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
 
     @Override
     public void onCurrentUserChange() {
-        this.mounted();
     }
 
 }
