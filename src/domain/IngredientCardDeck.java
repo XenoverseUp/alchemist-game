@@ -3,11 +3,9 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class IngredientCardDeck {
-	
-	private ArrayList<IngredientCard> ingredientCardDeck = new ArrayList<IngredientCard>();
 
+	private ArrayList<IngredientCard> ingredientCardDeck = new ArrayList<IngredientCard>();
 
 	public IngredientCardDeck() {
 		IngredientCard ingredientCard_1 = new Herb("ginger", 1, 3, "yellow");
@@ -26,7 +24,6 @@ public class IngredientCardDeck {
 		IngredientCard ingredientCard_12 = new Mushroom("porcini", 12, 10, "yellow");
 		IngredientCard ingredientCard_13 = new Mushroom("oyster", 13, 9, "white");
 		IngredientCard ingredientCard_14 = new Mushroom("hedgehog", 14, 2, "brown");
-		
 
 		ingredientCardDeck.add(ingredientCard_1);
 		ingredientCardDeck.add(ingredientCard_2);
@@ -45,43 +42,42 @@ public class IngredientCardDeck {
 
 	}
 
-
 	public void shuffle() {
-		Collections.shuffle(ingredientCardDeck);		
+		Collections.shuffle(ingredientCardDeck);
 	}
-	
+
 	public IngredientCard drawCard() {
 		IngredientCard iCard = ingredientCardDeck.remove(ingredientCardDeck.size() - 1);
-		return iCard;	
+		return iCard;
 	}
 
 	public IngredientCard getById(int id) {
 		for (IngredientCard i : ingredientCardDeck) {
-			if (i.getId() == id) return i;
+			if (i.getId() == id)
+				return i;
 		}
-		
+
 		return null;
 	}
 
-	
-	
 	public void removeIngredient(String ingredientName) {
 
-		for (int i=0; i<ingredientCardDeck.size(); i++) {
-			if (ingredientCardDeck.get(i).name.equals(ingredientName)){
+		for (int i = 0; i < ingredientCardDeck.size(); i++) {
+			if (ingredientCardDeck.get(i).name.equals(ingredientName)) {
 				ingredientCardDeck.remove(ingredientCardDeck.get(i));
 			}
 		}
-		
+
 	}
-	
+
 	public void addCard(IngredientCard card) {
-		
+
 		ingredientCardDeck.add(card);
 	}
-	
-	
-	
-	
+
+	// returns the cards on top of the deck
+	public IngredientCard returnCard(int rank) {
+		return ingredientCardDeck.get(ingredientCardDeck.size() - rank);
+	}
 
 }
