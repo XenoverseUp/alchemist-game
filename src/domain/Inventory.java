@@ -89,6 +89,30 @@ public class Inventory {
 		return aCard;
 	}
 
+	public ArtifactCard removeArtifactCard(String name) {
+		ArtifactCard aCard = null;
+
+		for (ArtifactCard a : artifactCards) {
+			if (a.getName().equals(name)) {
+				aCard = this.artifactCards.remove(artifactCards.indexOf(a));
+			}
+		}
+
+		return aCard;
+	}
+
+	public ArtifactCard getArtifactCard(String name) {
+		ArtifactCard aCard = null;
+
+		for (ArtifactCard a : artifactCards) {
+			if (a.getName().equals(name)) {
+				aCard = a;
+			}
+		}
+
+		return aCard;
+	}
+
 	public int getGold() {
 		return gold;
 	}
