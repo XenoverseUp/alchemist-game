@@ -1,25 +1,11 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.awt.Font;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
-import enums.View;
-import domain.TheAlchemistGame;
 
 public class VHelp extends VComponent {
-    private Router router = Router.getInstance();
-
     @Override
     protected void render() {
         

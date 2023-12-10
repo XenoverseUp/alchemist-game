@@ -162,7 +162,10 @@ public class VLogin extends VComponent {
                 info.setForeground(Color.red);
             }
 
-            if (isFirstPlayerReady && isSecondPlayerReady) router.to(View.Board);
+            if (isFirstPlayerReady && isSecondPlayerReady) { 
+                game.initializeGame();
+                router.to(View.Board);
+            }
 
         });
 

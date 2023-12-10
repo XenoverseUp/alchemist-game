@@ -44,9 +44,9 @@ public class Board {
 	
 	public void transmuteIngredient(int ingredientId) {
 		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(ingredientId);
-		this.auth.addGoldToCurrentUser(1);
+		this.auth.addGoldToCurrentUser(iCard.getValue());
 		this.ingredientCardDeck.addCard(iCard);
-			
+		this.ingredientCardDeck.shuffle();
 	}
 	
 	public void buyArtifact() {
