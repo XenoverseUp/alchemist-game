@@ -15,8 +15,6 @@ public class DeductionBoard {
     public ArrayList theories = new ArrayList<Theory>();
 
     public String generateTheoryName() {
-
-        // ??
         return "theoryName";
     }
 
