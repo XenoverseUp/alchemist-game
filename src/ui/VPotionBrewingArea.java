@@ -1,6 +1,5 @@
 package ui;
 
-import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

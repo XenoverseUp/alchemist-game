@@ -10,7 +10,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -19,13 +18,10 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
-import domain.Player;
 import domain.TheAlchemistGame;
 import enums.View;
 import interfaces.ICurrentUserListener;
@@ -103,7 +99,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     private void update() {
         scrollPane.setViewportView(null);
         int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
-        int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
 
         this.titleText.setText(String.format("%s's Inventory", game.getCurrentUser().name));
         

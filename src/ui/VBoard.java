@@ -3,7 +3,6 @@ package ui;
 import java.awt.Cursor;
 
 import domain.TheAlchemistGame;
-import enums.Avatar;
 
 public class VBoard extends VComponent {
     public VBoard(TheAlchemistGame game) { super(game); }

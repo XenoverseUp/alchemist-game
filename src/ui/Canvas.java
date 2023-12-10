@@ -53,8 +53,6 @@ public class Canvas extends JPanel {
         private BufferedImage buttonPressedSprite = null;
         private BufferedImage verticalStrip = null;
 
-
-
         private Rectangle deductionBoardArea = new Rectangle(258, 440, 200, 170);
         private Rectangle inventoryArea = new Rectangle(458, 340, 220, 190);
         private Rectangle cardArea = new Rectangle(0, 540, 220, 190);
