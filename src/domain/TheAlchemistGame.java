@@ -66,4 +66,13 @@ public class TheAlchemistGame {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
+    public void publishATheory(String bookName, int markerID) {
+        boolean success = gameBoard.publishATheory(bookName, markerID);
+        if (success) {
+            System.out.println("Success!");
+        } else {
+            System.out.println("Failed!");
+        }
+    }
+
 }
