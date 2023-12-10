@@ -42,7 +42,7 @@ public class Board {
 		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(ingredientId);
 		this.auth.addGoldToCurrentUser(1);
 		this.ingredientCardDeck.addCard(iCard);
-			
+		this.ingredientCardDeck.shuffle();
 	}
 	
 	public void buyArtifact() {

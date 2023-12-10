@@ -53,7 +53,7 @@ public class Auth {
     }
     
     public IngredientCard getIngredientCardFromCurrentPlayer(int ingredientId) {
-    	return players.get(currentUser).inventory.getIngredient(ingredientId);
+    	return getCurrentPlayer().inventory.getIngredient(ingredientId);
     }
 
     // Method for observer pattern

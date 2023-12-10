@@ -36,6 +36,8 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     private JLabel titleText;
     private JLabel background;
     private BufferedImage ingredientCard;
+    private BufferedImage hammer;
+    private JScrollPane scrollPane;
 
     public VInventory(TheAlchemistGame game) { 
         super(game); 
@@ -53,6 +55,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             title = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
             ingredientCard = ImageIO.read(new File("./src/resources/image/ingredientCard.png"));
+            hammer =  ImageIO.read(new File("./src/resources/image/HUD/hammer.png"));
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -72,13 +75,34 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         background = new JLabel(new ImageIcon(bg));
         background.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
 
+        int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
+        int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
+
+
+        scrollPane = new JScrollPane();
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBounds(0, 0, width, height);
+        scrollPane.setPreferredSize(new Dimension(width, height));
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        
         panel.add(titleText);
         panel.add(titlePic);
-        panel.add(closePic);        
+        panel.add(closePic);  
+        panel.add(scrollPane);
+        panel.add(background);
+
     }
     
     @Override
     protected void mounted() {
+        this.update();
+    }
+
+    private void update() {
+        scrollPane.setViewportView(null);
         int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
         int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
 
@@ -98,11 +122,20 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         ingredientsTitle.setForeground(Color.WHITE);
         cards.add(ingredientsTitle);
         
-        IntStream.rangeClosed(1, 23)
-            .mapToObj(String::valueOf)
-            .map(number -> generateCard("Ginger", "Yellow", Integer.parseInt(number)))
+        game.getCurrentUser()
+            .inventory
+            .getIngredientCards()
+            .stream()
+            .map(card -> this.generateCard(card.getName(), card.getColor(), card.getValue(), "ingredient", card.getId()))
             .forEach(cards::add);
 
+        if (game.getCurrentUser().inventory.getIngredientCards().size() == 0) {
+             JLabel emptyIngredientsText = new JLabel("You don't have any ingredient cards. Visit the card deck to forage.", SwingConstants.CENTER);
+            emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
+            emptyIngredientsText.setPreferredSize(new Dimension(width - 100, 100));
+            emptyIngredientsText.setForeground(Color.WHITE);
+            cards.add(emptyIngredientsText);
+        }
         
         JLabel artifactsTitle = new JLabel("Artifact Cards", SwingConstants.CENTER);
         artifactsTitle.setFont(new Font("Itim-Regular", Font.BOLD, 36));
@@ -110,33 +143,34 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         artifactsTitle.setPreferredSize(new Dimension(width - 100, 100));
         cards.add(artifactsTitle);
         
-        IntStream.rangeClosed(1, 3)
-            .mapToObj(String::valueOf)
-            .map(number -> generateCard("Insight", "Yellow", Integer.parseInt(number)))
+        game.getCurrentUser()
+            .inventory
+            .getArtifactCards()
+            .stream()
+            .map(card -> this.generateCard(card.getName(), card.getEffectType(), card.getPrice(), "artifact", 0))
             .forEach(cards::add);
 
 
+        if (game.getCurrentUser().inventory.getArtifactCards().size() == 0) {
+             JLabel emptyIngredientsText = new JLabel("You don't have any artifact cards. Visit the card deck to buy.", SwingConstants.CENTER);
+            emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
+            emptyIngredientsText.setPreferredSize(new Dimension(width - 100, 100));
+            emptyIngredientsText.setForeground(Color.WHITE);
+            cards.add(emptyIngredientsText);
+        }
 
         JPanel marginBottom = new JPanel();
         marginBottom.setPreferredSize(new Dimension(width - 100, 100));
         marginBottom.setOpaque(false);
         cards.add(marginBottom);
-        
-        JScrollPane scrollPane = new JScrollPane(cards);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(0, 0, width, height);
-        scrollPane.setPreferredSize(new Dimension(width, height));
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        panel.add(scrollPane);
-        panel.add(background);
+        scrollPane.setViewportView(cards);
+        scrollPane.revalidate();
+        scrollPane.repaint();
     }
 
 
-    private JPanel generateCard(String name, String colorValue, int value) {
+    private JPanel generateCard(String name, String colorValue, int value, String type, int id) {
         JPanel card = new JPanel(null);
         card.setOpaque(false);
         card.setPreferredSize(new Dimension(ingredientCard.getWidth(), ingredientCard.getHeight()));
@@ -167,7 +201,21 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         price.setBounds(0, ingredientCard.getHeight() - 80, ingredientCard.getWidth(), 50);
         price.setForeground(new Color(241, 179, 43));
         price.setFont(new Font("Cubano", Font.PLAIN, 32));
+
+
+
+        JButton transmuteButton = new JButton(new ImageIcon(hammer.getScaledInstance(hammer.getWidth() / 2, hammer.getHeight() / 2, Image.SCALE_SMOOTH)));
+        transmuteButton.setBounds(10, 10, hammer.getWidth() / 2, hammer.getHeight() / 2); 
+        transmuteButton.setOpaque(false);
+        transmuteButton.setContentAreaFilled(false);
+        transmuteButton.setBorderPainted(false);
+        transmuteButton.setFocusable(false);
+        transmuteButton.addActionListener(event -> {
+            game.transmuteIngredient(id);
+            this.update();            
+        });
         
+        card.add(transmuteButton);
         card.add(price);
         card.add(content);
         card.add(bg);
@@ -178,6 +226,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
 
     @Override
     public void onCurrentUserChange() {
+        this.update();
     }
 
 }

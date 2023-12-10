@@ -30,17 +30,16 @@ public class Inventory {
 		return ingredientCards;
 	}
 	
+	public ArrayList<ArtifactCard> getArtifactCards() {
+		return artifactCards;
+	}
 
 	public IngredientCard getIngredient(int ingredientId) {
-		IngredientCard iCard = null;
-
-		for (IngredientCard i: ingredientCards) {
-			if (i.getId() == ingredientId) {
-				iCard = this.ingredientCards.remove(ingredientCards.indexOf(i));
-			}
-		}
+		for (int i = 0; i < ingredientCards.size(); i++) 
+			if (ingredientCards.get(i).getId() == ingredientId) 
+				return ingredientCards.remove(i);
 		
-		return iCard;
+		return null;
 	}
 
 	public int getGold() {
