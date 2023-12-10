@@ -10,10 +10,13 @@ public class TheAlchemistGame {
     public TheAlchemistGame() {
         auth = new Auth();
         gameBoard = new Board(auth);
+        auth = new Auth();
+        gameBoard = new Board(auth);
     }
 
     public int createUser(String userName, Avatar a) {
         return auth.createUser(userName, a);
+
     }
 
     public void toggleCurrentUser() {
@@ -66,6 +69,10 @@ public class TheAlchemistGame {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
+    public Board getBoard() {
+        return gameBoard;
+    }
+
     public void publishATheory(String bookName, int markerID) {
         boolean success = gameBoard.publishATheory(bookName, markerID);
         if (success) {
@@ -73,10 +80,6 @@ public class TheAlchemistGame {
         } else {
             System.out.println("Failed!");
         }
-    }
-
-    public Board getBoard() {
-        return gameBoard;
     }
 
 }

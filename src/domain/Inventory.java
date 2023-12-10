@@ -17,6 +17,8 @@ public class Inventory {
 	}
 
 	public void addGold(int amount) {
+
+	public void addGold(int amount) {
 		this.gold += amount;
 	}
 
@@ -41,12 +43,38 @@ public class Inventory {
 		IngredientCard iCard = null;
 
 		for (IngredientCard i : ingredientCards) {
+		for (IngredientCard i : ingredientCards) {
 			if (i.getId() == ingredientId) {
 				iCard = this.ingredientCards.remove(ingredientCards.indexOf(i));
 			}
 		}
 
+
 		return iCard;
+	}
+
+	public ArtifactCard removeArtifactCard(String name) {
+		ArtifactCard aCard = null;
+
+		for (ArtifactCard a : artifactCards) {
+			if (a.getName().equals(name)) {
+				aCard = this.artifactCards.remove(artifactCards.indexOf(a));
+			}
+		}
+
+		return aCard;
+	}
+
+	public ArtifactCard getArtifactCard(String name) {
+		ArtifactCard aCard = null;
+
+		for (ArtifactCard a : artifactCards) {
+			if (a.getName().equals(name)) {
+				aCard = a;
+			}
+		}
+
+		return aCard;
 	}
 
 	public ArtifactCard removeArtifactCard(String name) {
