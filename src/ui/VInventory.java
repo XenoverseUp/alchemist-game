@@ -93,7 +93,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         panel.add(closePic);  
         panel.add(scrollPane);
         panel.add(background);
-
     }
     
     @Override
@@ -203,19 +202,21 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         price.setFont(new Font("Cubano", Font.PLAIN, 32));
 
 
+        if (type == "ingredient") {    
+            JButton transmuteButton = new JButton(new ImageIcon(hammer.getScaledInstance(hammer.getWidth() / 2, hammer.getHeight() / 2, Image.SCALE_SMOOTH)));
+            transmuteButton.setBounds(10, 10, hammer.getWidth() / 2, hammer.getHeight() / 2); 
+            transmuteButton.setOpaque(false);
+            transmuteButton.setContentAreaFilled(false);
+            transmuteButton.setBorderPainted(false);
+            transmuteButton.setFocusable(false);
+            transmuteButton.addActionListener(event -> {
+                game.transmuteIngredient(id);
+                this.update();            
+            });   
 
-        JButton transmuteButton = new JButton(new ImageIcon(hammer.getScaledInstance(hammer.getWidth() / 2, hammer.getHeight() / 2, Image.SCALE_SMOOTH)));
-        transmuteButton.setBounds(10, 10, hammer.getWidth() / 2, hammer.getHeight() / 2); 
-        transmuteButton.setOpaque(false);
-        transmuteButton.setContentAreaFilled(false);
-        transmuteButton.setBorderPainted(false);
-        transmuteButton.setFocusable(false);
-        transmuteButton.addActionListener(event -> {
-            game.transmuteIngredient(id);
-            this.update();            
-        });
-        
-        card.add(transmuteButton);
+            card.add(transmuteButton);
+        }
+
         card.add(price);
         card.add(content);
         card.add(bg);

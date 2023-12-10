@@ -121,7 +121,11 @@ public class Canvas extends JPanel {
 
             g.setPaint(Color.white);
             g.setFont(new Font("Itim-Regular", Font.BOLD, 18));
-            g.drawString("Beril", 1248, 35);
+            g.drawString(game.getCurrentUser().name, 1248, 35);
+            
+            g.setFont(new Font("Itim-Regular", Font.PLAIN, 14));
+            g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 65);
+            g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 85);
 
             
             // Draw title
