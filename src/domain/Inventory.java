@@ -22,7 +22,7 @@ public class Inventory {
 		this.gold += amount;
 	}
 	
-	public void removeGold(int amount) {
+	public void spendGold(int amount) {
 		this.gold -= amount;
 	}
 
@@ -34,9 +34,9 @@ public class Inventory {
 		return artifactCards;
 	}
 
-	public IngredientCard getIngredient(int ingredientId) {
+	public IngredientCard getIngredient(String name) {
 		for (int i = 0; i < ingredientCards.size(); i++) 
-			if (ingredientCards.get(i).getId() == ingredientId) 
+			if (ingredientCards.get(i).getName().equals(name)) 
 				return ingredientCards.remove(i);
 		
 		return null;

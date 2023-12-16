@@ -2,6 +2,8 @@ package domain;
 
 import java.util.HashSet;
 
+import enums.Potion;
+
 public class Board {
 	
 	private Auth auth;
@@ -24,7 +26,7 @@ public class Board {
 			}
 		}
 	}
-	
+
 	
 	public void dealGolds() {
 		for (Player p: auth.players) {
@@ -42,9 +44,9 @@ public class Board {
 		auth.addIngredientCardToCurrentPlayer(icard);
 	}
 	
-	public void transmuteIngredient(int ingredientId) {
-		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(ingredientId);
-		this.auth.addGoldToCurrentUser(iCard.getValue());
+	public void transmuteIngredient(String name) {
+		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(name);
+		this.auth.addGoldToCurrentUser(1);
 		this.ingredientCardDeck.addCard(iCard);
 		this.ingredientCardDeck.shuffle();
 	}
@@ -58,6 +60,21 @@ public class Board {
 	
 	public Auth getAuth() {
 		return auth;
+	}
+
+	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) {
+		IngredientCard ingredient1 = auth.getIngredientCardFromCurrentPlayer(ingredientName1);
+	    IngredientCard ingredient2 = auth.getIngredientCardFromCurrentPlayer(ingredientName2);
+
+		Potion potion = PotionBrewingArea.combine(ingredient1, ingredient2);
+		
+		try {
+			auth.getCurrentPlayer().use(potion, testOn);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return potion;
 	}
 
 	public boolean publishATheory(String bookNamei ,int markerID) {
@@ -74,7 +91,7 @@ public class Board {
 			return false;
 		}
 
-		currentPlayer.inventory.removeGold(1); //deduct 1 gold 
+		currentPlayer.inventory.spendGold(1); //deduct 1 gold 
 		publishedTheories.add(markerID); //publish the theory
 		currentPlayer.increaseReputation(1); //increase the reputation
 
@@ -84,6 +101,9 @@ public class Board {
 		return true;
 	}
 
+
+
+	
 
 	
 	

@@ -1,6 +1,7 @@
 package domain;
 
 import enums.Avatar;
+import enums.Potion;
 import interfaces.ICurrentUserListener;
 
 public class TheAlchemistGame {
@@ -9,7 +10,7 @@ public class TheAlchemistGame {
 
     public TheAlchemistGame() {
     	auth = new Auth();
-      gameBoard = new Board(auth);
+        gameBoard = new Board(auth);
     }
 
     public int createUser(String userName, Avatar a) {
@@ -18,10 +19,11 @@ public class TheAlchemistGame {
 
     public void toggleCurrentUser() {
         gameBoard.toggleCurrentUser();
+        getCurrentUser().leftActions = 2 + getCurrentUser().extraActions;
     }
 
     public Player getCurrentUser() {
-        return auth.players.get(auth.currentUser);
+        return auth.getCurrentPlayer();
     }
 
     public void initializeGame() {
@@ -35,8 +37,8 @@ public class TheAlchemistGame {
         gameBoard.forageIngredient();
     }
 
-    public void transmuteIngredient(int ingredientId) {
-        gameBoard.transmuteIngredient(ingredientId);
+    public void transmuteIngredient(String ingredientName) {
+        gameBoard.transmuteIngredient(ingredientName);
     }
 
     public void buyArtifact() {
@@ -45,14 +47,14 @@ public class TheAlchemistGame {
 
     public IngredientCard drawIngredientCard() {
         IngredientCard card = gameBoard.ingredientCardDeck.drawCard();
-        auth.players.get(auth.currentUser).inventory.addIngredientCard(card);
+        auth.getCurrentPlayer().inventory.addIngredientCard(card);
 
         return card;
     }
 
     public ArtifactCard drawArtifactCard() {
         ArtifactCard card = gameBoard.artifactCardDeck.drawCard();
-        auth.players.get(auth.currentUser).inventory.addArtifactCard(card);
+        auth.getCurrentPlayer().inventory.addArtifactCard(card);
 
         return card;
     }
@@ -62,7 +64,6 @@ public class TheAlchemistGame {
     }
 
     public void addCurrentUserListener(ICurrentUserListener currentUserListener){
-
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
@@ -73,6 +74,10 @@ public class TheAlchemistGame {
         } else {
             System.out.println("Failed!");
         }
+    }
+
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn){
+        return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
 
 }
