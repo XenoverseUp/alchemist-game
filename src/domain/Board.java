@@ -1,7 +1,4 @@
 package domain;
-
-import java.util.HashSet;
-
 import enums.Potion;
 
 public class Board {
@@ -9,13 +6,11 @@ public class Board {
 	private Auth auth;
 	public IngredientCardDeck ingredientCardDeck;
 	public ArtifactCardDeck artifactCardDeck;
-	private HashSet<Integer> publishedTheories;
 	
 	public Board(Auth auth) {
 		this.auth = auth;
 		this.ingredientCardDeck = new IngredientCardDeck();
 		this.artifactCardDeck = new ArtifactCardDeck();
-		this.publishedTheories = new HashSet<>();
 	}
 	
 	public void dealCards() {
@@ -29,9 +24,8 @@ public class Board {
 
 	
 	public void dealGolds() {
-		for (Player p: auth.players) {
+		for (Player p: auth.players) 
     		p.inventory.addGold(3);
-    	}
 	}
 	
 	public void toggleCurrentUser() {
@@ -76,42 +70,5 @@ public class Board {
 
 		return potion;
 	}
-
-	public boolean publishATheory(String bookNamei ,int markerID) {
-		Player currentPlayer = auth.getCurrentPlayer();
-
-		//if the theory is already published
-		if (publishedTheories.contains(markerID)) {
-			System.out.println("Theory for this marker is already published!");
-			return false;
-		}
-		//if the current player has enough gold
-		if (currentPlayer.inventory.getGold() < 1) {
-			System.out.println("Not enough gold to publish!");
-			return false;
-		}
-
-		currentPlayer.inventory.spendGold(1); //deduct 1 gold 
-		publishedTheories.add(markerID); //publish the theory
-		currentPlayer.increaseReputation(1); //increase the reputation
-
-		System.out.println("Theory succesfully published by " + currentPlayer.name + ".");
-
-
-		return true;
-	}
-
-
-
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

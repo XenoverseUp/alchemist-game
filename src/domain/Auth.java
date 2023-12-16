@@ -27,8 +27,7 @@ public class Auth {
         this.currentUser += 1;
         if (this.currentUser == players.size()) this.currentUser = 0;
         publishCurrentUserChange();
-        
-        System.out.println("It's " + players.get(currentUser).name + "'s turn.");
+        getCurrentPlayer().leftActions = 2 + getCurrentPlayer().extraActions;
     }
 
     public Player getCurrentPlayer() {
@@ -42,7 +41,6 @@ public class Auth {
     public void removeGoldFromCurrentUser(int amount) {
     	getCurrentPlayer().inventory.spendGold(amount);
     }
-    
     
     public void addIngredientCardToCurrentPlayer(IngredientCard ingredient) {
     	getCurrentPlayer().inventory.addIngredientCard(ingredient);

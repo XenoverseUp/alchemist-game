@@ -2,17 +2,14 @@ package domain;
 
 
 public class ArtifactCard {
-
-	private final String effectType;
-	private final String ability;
 	private final String name;
+	private final String description;
 	private final int price;
 
 
-	public ArtifactCard(String effectType, String ability, String name, int price) {
-		this.effectType = effectType;
-		this.ability = ability;
+	public ArtifactCard(String name, int price, String description) {
 		this.name = name;
+		this.description = description;
 		this.price = price;
 	}
 
@@ -24,13 +21,7 @@ public class ArtifactCard {
 		return price;
 	}
 	
-	public String getEffectType() {
-		return effectType;
+	public String getDescription() {
+		return description;
 	}
-
-	public String getAbility() {
-		return ability;
-	}
-
-	
 }
