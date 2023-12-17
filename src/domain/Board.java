@@ -25,7 +25,7 @@ public class Board {
 	
 	public void dealGolds() {
 		for (Player p: auth.players) 
-    		p.inventory.addGold(3);
+    		p.inventory.addGold(10);
 	}
 	
 	public void toggleCurrentUser() {
@@ -63,6 +63,7 @@ public class Board {
 		Potion potion = PotionBrewingArea.combine(ingredient1, ingredient2);
 		
 		try {
+			auth.getCurrentPlayer().deductionBoard.addExperimentResult(ingredientName1, ingredientName2, potion);
 			auth.getCurrentPlayer().use(potion, testOn);
 		} catch (Exception e) {
 			System.out.println(e);

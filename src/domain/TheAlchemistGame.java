@@ -55,5 +55,14 @@ public class TheAlchemistGame {
     public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn){
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
+    
+    public void markDeductionTable(String ingredient, int moleculeCoordinate){
+		gameBoard.getAuth().getCurrentPlayer().deductionBoard.markDeductionTable(ingredient, moleculeCoordinate);
+	}
+	
+	public void unmarkDeductionTable(String ingredient, int moleculeCoordinate){
+		gameBoard.getAuth().getCurrentPlayer().deductionBoard.unmarkDeductionTable(ingredient, moleculeCoordinate);
+	}
+	
 
 }

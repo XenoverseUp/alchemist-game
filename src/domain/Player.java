@@ -11,12 +11,14 @@ public class Player {
     private int reputation = 0;
     public int leftActions = 2;
     public int extraActions = 0;
+    protected DeductionBoard deductionBoard;
 
     public Player(int id, String name, Avatar avatar) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.inventory = new Inventory();
+        this.deductionBoard = new DeductionBoard();
     }
 
     public void increaseReputation(int amount) {
