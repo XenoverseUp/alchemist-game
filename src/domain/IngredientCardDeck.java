@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class IngredientCardDeck {
 	private ArrayList<IngredientCard> ingredientCardDeck = new ArrayList<IngredientCard>();
-	private ArrayList<String> ingredientNames = new ArrayList<>() {{
+	private ArrayList<String> ingredientNames = new ArrayList<String>() {{
 		add("scorpion tail");
 		add("bird claw");
 		add("warty toad");

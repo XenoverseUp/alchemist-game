@@ -141,7 +141,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             .inventory
             .getArtifactCards()
             .stream()
-            .map(card -> this.generateCard(card.getName(), card.getEffectType(), card.getPrice(), "artifact"))
+            .map(card -> this.generateCard(card.getName(), card.getDescription(), card.getPrice(), "artifact"))
             .forEach(cards::add);
 
 
