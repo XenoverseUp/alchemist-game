@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,13 +29,14 @@ public class VPublicationArea extends VComponent {
 
         BufferedImage bg = null;
         try {
-            bg = ImageIO.read(new File("./src/resources/image/fantastic-library-bg.jpg"));
+            bg = ImageIO.read(new File("./src/resources/image/table.jpeg"));
         } catch (IOException e) {
             System.out.println(e);
         }
 
-        JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(-200, -50, Window.frame.getWidth(), Window.frame.getHeight());
+        Image scaledBg = bg.getScaledInstance((int)(bg.getWidth() * 1.49), (int)(bg.getHeight() * 1.3), Image.SCALE_SMOOTH);
+        JLabel bgPic = new JLabel(new ImageIcon(scaledBg));
+        bgPic.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
 
         panel.setLayout(null); // Use absolute positioning
         panel.add(publicationPanel);

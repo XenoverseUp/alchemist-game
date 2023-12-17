@@ -24,4 +24,8 @@ public class AlchemyMarker {
         return id;
     }
 
+    public boolean checkAvailability() {
+        return associated;
+    }
+
 }

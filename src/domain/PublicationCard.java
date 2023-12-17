@@ -1,44 +1,52 @@
 package domain;
 
 public class PublicationCard {
-    private String name;
-    private String requirement;
-    private int value;
-
-
-    public PublicationCard(String name, String requirement, int value) {
-		this.name = name;
-		this.requirement = requirement;
-		this.value = value;
-		
-
+    private IngredientCard ingredient;
+	private AlchemyMarker marker = null;
+	private Player player;
+	private int id;
+	private Theory theory;
+    
+    public PublicationCard(IngredientCard ingredient, int id) {
+		this.ingredient = ingredient;
+		this.id = id;
 	}
 
-    public void setName(String name) {
-		this.name = name;
+	public IngredientCard getIngredient(){
+		return this.ingredient;
 	}
 
-	
-	public void setRequirement(String requirement) {
-		this.requirement = requirement;
-	}
-	
-	public void setValue(int value) {
-		this.value = value;
+	public void setID(int id){
+		this.id = id;
 	}
 
-	public String getRequirement(){
-		return this.requirement;
+	public Theory getTheory(){
+		return this.theory;
 	}
 
-	public String getName(){
-		return this.name;
+	public void setTheory(Theory theory){
+		this.theory = theory;
 	}
 
-	public int getValue(){
-		return this.value;
+	public int getID(){
+		return this.id;
 	}
 
+	public AlchemyMarker getAlchemyMarker(){
+		return this.marker;
+	}
+
+	public Player getPlayer(){
+		return this.player;
+	}
+
+	public void setPlayer(Player player){
+		this.player = player;
+	}
+
+	public void setAlchemyMarker(AlchemyMarker marker){
+		this.marker = marker;
+	}
 
 
 }

@@ -6,11 +6,13 @@ public class Board {
 	private Auth auth;
 	public IngredientCardDeck ingredientCardDeck;
 	public ArtifactCardDeck artifactCardDeck;
+	public PublicationCardDeck publicationCardDeck;
 	
 	public Board(Auth auth) {
 		this.auth = auth;
 		this.ingredientCardDeck = new IngredientCardDeck();
 		this.artifactCardDeck = new ArtifactCardDeck();
+		this.publicationCardDeck = new PublicationCardDeck(this.ingredientCardDeck.getDeck());
 	}
 	
 	public void dealCards() {
@@ -69,6 +71,19 @@ public class Board {
 		}
 
 		return potion;
+	}
+
+	public void publishTheory(int id, AlchemyMarker alchemyMarker, Theory theory){
+		if (!alchemyMarker.checkAvailability()){
+			if (this.publicationCardDeck.getCard(id).getAlchemyMarker() != null){
+				auth.getCurrentPlayer().increaseReputation(1);
+				auth.removeGoldFromCurrentUser(1);
+				publicationCardDeck.getCard(id).setAlchemyMarker(alchemyMarker);
+				alchemyMarker.associate();
+				publicationCardDeck.getCard(id).setPlayer(auth.getCurrentPlayer());
+				publicationCardDeck.getCard(id).setTheory(theory);
+			}
+		}
 	}
 
 }

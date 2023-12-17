@@ -41,6 +41,9 @@ public class IngredientCardDeck {
 		return null;
 	}
 
+	public ArrayList<IngredientCard> getDeck(){
+		return ingredientCardDeck;
+	}
 	
 	public void addCard(IngredientCard card) {
 		
