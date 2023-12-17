@@ -6,7 +6,7 @@ import interfaces.ICurrentUserListener;
 
 public class Auth {
     public ArrayList<Player> players = new ArrayList<>(2);
-    public int currentUser = 0;
+    private int currentUser = 0;
     private ArrayList<ICurrentUserListener> currentUserListeners = new ArrayList<>();
 
     public int createUser(String name, Avatar avatar) {
@@ -27,33 +27,31 @@ public class Auth {
         this.currentUser += 1;
         if (this.currentUser == players.size()) this.currentUser = 0;
         publishCurrentUserChange();
-        
-        System.out.println("It's " + players.get(currentUser).name + "'s turn.");
-    }
-
-    public void addGoldToCurrentUser(int amount) {
-    	players.get(currentUser).inventory.addGold(amount);
+        getCurrentPlayer().leftActions = 2 + getCurrentPlayer().extraActions;
     }
 
     public Player getCurrentPlayer() {
         return this.players.get(currentUser);
     }
-    
-    public void removeGoldFromCurrentUser(int amount) {
-    	players.get(currentUser).inventory.removeGold(amount);
+
+    public void addGoldToCurrentUser(int amount) {
+    	getCurrentPlayer().inventory.addGold(amount);
     }
     
+    public void removeGoldFromCurrentUser(int amount) {
+    	getCurrentPlayer().inventory.spendGold(amount);
+    }
     
-    public void addIngredientCardToCurrentPlayer(IngredientCard ingredient){
-    	players.get(currentUser).inventory.addIngredientCard(ingredient);
+    public void addIngredientCardToCurrentPlayer(IngredientCard ingredient) {
+    	getCurrentPlayer().inventory.addIngredientCard(ingredient);
     }
     
     public void addArtifactCardToCurrentPlayer(ArtifactCard artifact){
-    	players.get(currentUser).inventory.addArtifactCard(artifact);
+    	getCurrentPlayer().inventory.addArtifactCard(artifact);
     }
     
-    public IngredientCard getIngredientCardFromCurrentPlayer(int ingredientId) {
-    	return getCurrentPlayer().inventory.getIngredient(ingredientId);
+    public IngredientCard getIngredientCardFromCurrentPlayer(String name) {
+    	return getCurrentPlayer().inventory.getIngredient(name);
     }
 
     // Method for observer pattern

@@ -7,43 +7,33 @@ public class ArtifactCardDeck {
 	private ArrayList<ArtifactCard> artifactCardDeck = new ArrayList<>();
 
 	public ArtifactCardDeck() {
-		ArtifactCard artifactCard1 = new ArtifactCard(
-			"one-time",
-			"allows a player to view the top three cards of the ingredient deck and rearrange them in any order",
+		artifactCardDeck.add(new ArtifactCard(
 			"Elixir of Insight", 
-			10
-		);
-		ArtifactCard artifactCard2 = new ArtifactCard(
-			"one-time", 
-			"Once per round, the player can swap the position of two alchemy markers on the Deduction Board", 
-			"Philosopher’s Compass", 
-			5
-		);
-		ArtifactCard artifactCard3 = new ArtifactCard(
-			"one-time", 
-			"Player chooses getting one of the potions that another player has and adding their own inventory", 
+			10,
+			"allows a player to view the top three cards of the ingredient deck and rearrange them in any order"
+		));
+
+		artifactCardDeck.add(new ArtifactCard( 
+			"Philosopher's Compass", 
+			5,
+			"Once per round, the player can swap the position of two alchemy markers on the Deduction Board"
+		));
+
+		artifactCardDeck.add(new ArtifactCard( 
 			"Request Potion", 
-			3
-		);
-		ArtifactCard artifactCard4 = new ArtifactCard(
-			"one-time", 
-			"player skips that round and does nothing", 
+			3,
+			"Player chooses getting one of the potions that another player has and adding their own inventory"
+		));
+
+		artifactCardDeck.add(new ArtifactCard( 
 			"Terminate the Player", 
-			7
-		);
-
-		artifactCardDeck.add(artifactCard1);
-		artifactCardDeck.add(artifactCard2);
-		artifactCardDeck.add(artifactCard3);
-		artifactCardDeck.add(artifactCard4);
-
+			7,
+			"player skips that round and does nothing"
+		));
 	}
 
-
-	
 	public void shuffle() {
-		Collections.shuffle(artifactCardDeck);
-		
+		Collections.shuffle(artifactCardDeck);	
 	}
 	
 	public ArtifactCard drawCard() {
@@ -62,6 +52,14 @@ public class ArtifactCardDeck {
 		}
 
 		return artifactCardDeck.get(artifactCardDeck.size() - 1).getPrice();
+	}
+
+	public ArtifactCard getArtifactByName(String name) {
+		for (ArtifactCard card: artifactCardDeck) {
+			if (card.getName().equals(name)) return card;
+		}
+
+		return null;
 	}
 
 }

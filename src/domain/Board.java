@@ -1,19 +1,16 @@
 package domain;
-
-import java.util.HashSet;
+import enums.Potion;
 
 public class Board {
 	
 	private Auth auth;
 	public IngredientCardDeck ingredientCardDeck;
 	public ArtifactCardDeck artifactCardDeck;
-	private HashSet<Integer> publishedTheories;
 	
 	public Board(Auth auth) {
 		this.auth = auth;
 		this.ingredientCardDeck = new IngredientCardDeck();
 		this.artifactCardDeck = new ArtifactCardDeck();
-		this.publishedTheories = new HashSet<>();
 	}
 	
 	public void dealCards() {
@@ -24,12 +21,11 @@ public class Board {
 			}
 		}
 	}
-	
+
 	
 	public void dealGolds() {
-		for (Player p: auth.players) {
+		for (Player p: auth.players) 
     		p.inventory.addGold(3);
-    	}
 	}
 	
 	public void toggleCurrentUser() {
@@ -42,9 +38,9 @@ public class Board {
 		auth.addIngredientCardToCurrentPlayer(icard);
 	}
 	
-	public void transmuteIngredient(int ingredientId) {
-		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(ingredientId);
-		this.auth.addGoldToCurrentUser(iCard.getValue());
+	public void transmuteIngredient(String name) {
+		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(name);
+		this.auth.addGoldToCurrentUser(1);
 		this.ingredientCardDeck.addCard(iCard);
 		this.ingredientCardDeck.shuffle();
 	}
@@ -60,38 +56,19 @@ public class Board {
 		return auth;
 	}
 
-	public boolean publishATheory(String bookNamei ,int markerID) {
-		Player currentPlayer = auth.getCurrentPlayer();
+	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) {
+		IngredientCard ingredient1 = auth.getIngredientCardFromCurrentPlayer(ingredientName1);
+	    IngredientCard ingredient2 = auth.getIngredientCardFromCurrentPlayer(ingredientName2);
 
-		//if the theory is already published
-		if (publishedTheories.contains(markerID)) {
-			System.out.println("Theory for this marker is already published!");
-			return false;
-		}
-		//if the current player has enough gold
-		if (currentPlayer.inventory.getGold() < 1) {
-			System.out.println("Not enough gold to publish!");
-			return false;
+		Potion potion = PotionBrewingArea.combine(ingredient1, ingredient2);
+		
+		try {
+			auth.getCurrentPlayer().use(potion, testOn);
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 
-		currentPlayer.inventory.removeGold(1); //deduct 1 gold 
-		publishedTheories.add(markerID); //publish the theory
-		currentPlayer.increaseReputation(1); //increase the reputation
-
-		System.out.println("Theory succesfully published by " + currentPlayer.name + ".");
-
-
-		return true;
+		return potion;
 	}
-
-
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

@@ -120,7 +120,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             .inventory
             .getIngredientCards()
             .stream()
-            .map(card -> this.generateCard(card.getName(), card.getColor(), card.getValue(), "ingredient", card.getId()))
+            .map(card -> this.generateCard(card.getName(), "card.getColor()", 0, "ingredient"))
             .forEach(cards::add);
 
         if (game.getCurrentUser().inventory.getIngredientCards().size() == 0) {
@@ -141,7 +141,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             .inventory
             .getArtifactCards()
             .stream()
-            .map(card -> this.generateCard(card.getName(), card.getEffectType(), card.getPrice(), "artifact", 0))
+            .map(card -> this.generateCard(card.getName(), card.getDescription(), card.getPrice(), "artifact"))
             .forEach(cards::add);
 
 
@@ -164,7 +164,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     }
 
 
-    private JPanel generateCard(String name, String colorValue, int value, String type, int id) {
+    private JPanel generateCard(String name, String colorValue, int value, String type) {
         JPanel card = new JPanel(null);
         card.setOpaque(false);
         card.setPreferredSize(new Dimension(ingredientCard.getWidth(), ingredientCard.getHeight()));
@@ -205,7 +205,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             transmuteButton.setBorderPainted(false);
             transmuteButton.setFocusable(false);
             transmuteButton.addActionListener(event -> {
-                game.transmuteIngredient(id);
+                game.transmuteIngredient(name);
                 this.update();            
             });   
 
