@@ -1,5 +1,7 @@
 package ui;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,7 +27,9 @@ public class VPublicationArea extends VComponent {
     protected void render() {
         JPanel publicationPanel = createPublicationJPanel();
         JLabel text = new JLabel("Publication Area");
-        text.setBounds(500, 10, 200, 30);
+        text.setBounds(580, 20, 450, 50);
+        text.setForeground(Color.WHITE);
+        text.setFont(new Font("SANS_SERIF", Font.BOLD, 30));
 
         BufferedImage bg = null;
         try {
@@ -38,10 +42,25 @@ public class VPublicationArea extends VComponent {
         JLabel bgPic = new JLabel(new ImageIcon(scaledBg));
         bgPic.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
 
-        panel.setLayout(null); // Use absolute positioning
+        panel.setLayout(null); 
         panel.add(publicationPanel);
         panel.add(text);
         panel.add(bgPic);
+
+        int startX = 60; 
+        int startY = 90;
+        int imageWidth = 190; 
+        int imageHeight = 260; 
+        int gap = 30;
+        
+        for (int i = 0; i < 8; i++) {
+            int x = startX + (i % 4) * (imageWidth + gap);
+            int y = startY + (i / 4) * (imageHeight + gap);
+        
+            String imagePath = "./src/resources/image/pcard" + (i + 1) + ".png";
+            addImageToPanel(publicationPanel, imagePath, x, y, imageWidth, imageHeight);
+        }
+        
     }
 
     private JPanel createPublicationJPanel() {
@@ -51,19 +70,31 @@ public class VPublicationArea extends VComponent {
         publicationPanel.setOpaque(false);
 
         JButton back = new JButton("Back");
-        back.setBounds(480, 650, 150, 30);
+        back.setBounds(480, 690, 150, 30);
         back.addActionListener(event -> router.to(View.Board));
-
-        JButton debunkTheory = new JButton("Display Available Publication Cards");
-        debunkTheory.setBounds(400, 370, 300, 30);
-        debunkTheory.addActionListener(event -> {
-            router.to(View.DeductionBoard);
-        });
-
         publicationPanel.add(back);
-        publicationPanel.add(debunkTheory);
 
         return publicationPanel;
     }
+
+    private void addImageToPanel(JPanel panel, String imagePath, int x, int y, int width, int height) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(imagePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        if (img != null) {
+            ImageIcon icon = new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+            JLabel label = new JLabel(icon);
+            label.setBounds(x, y, width, height);
+            panel.add(label);
+        }
+    }
+
+
+
+
 
 }
