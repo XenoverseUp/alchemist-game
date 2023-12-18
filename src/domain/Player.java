@@ -12,6 +12,7 @@ public class Player {
     public int leftActions = 2;
     public int extraActions = 0;
     protected DeductionBoard deductionBoard;
+    protected PlayerBoard playerBoard;
 
     public Player(int id, String name, Avatar avatar) {
         this.id = id;
@@ -19,6 +20,7 @@ public class Player {
         this.avatar = avatar;
         this.inventory = new Inventory();
         this.deductionBoard = new DeductionBoard();
+        this.playerBoard = new PlayerBoard();
     }
 
     public void increaseReputation(int amount) {

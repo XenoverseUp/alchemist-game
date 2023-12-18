@@ -64,6 +64,7 @@ public class Board {
 		
 		try {
 			auth.getCurrentPlayer().deductionBoard.addExperimentResult(ingredientName1, ingredientName2, potion);
+			auth.getCurrentPlayer().playerBoard.addDiscoveredPotion(potion);
 			auth.getCurrentPlayer().use(potion, testOn);
 		} catch (Exception e) {
 			System.out.println(e);
