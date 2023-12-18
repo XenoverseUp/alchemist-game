@@ -1,12 +1,11 @@
 package domain;
 
 import java.util.HashSet;
-import java.util.Set;
 import enums.Potion;
 
 public class PlayerBoard {
 	
-	protected Set<Potion> discoveredPotions;
+	protected HashSet<Potion> discoveredPotions;
 
 	public PlayerBoard() {
 		this.discoveredPotions = new HashSet<>();
@@ -16,6 +15,10 @@ public class PlayerBoard {
 		discoveredPotions.add(po);
 	}
 	
+	protected HashSet<Potion> getDiscoveredPotions(){
+		
+		return (HashSet<Potion>) discoveredPotions.clone();
+	}
 	
 
 }
