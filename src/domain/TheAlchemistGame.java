@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import enums.Avatar;
+import enums.DeductionToken;
 import enums.Potion;
 import interfaces.ICurrentUserListener;
 
@@ -78,6 +79,11 @@ public class TheAlchemistGame {
 	public HashMap<HashSet<String>, Potion> getExperimentResults() {
 		return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getExperimentResults();
 	}
+
+    public HashMap<String[], DeductionToken> getDeductionTokens() {
+		return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
+	}
+
 
     
 
