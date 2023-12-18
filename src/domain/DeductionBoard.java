@@ -34,11 +34,9 @@ public class DeductionBoard {
 		
 	}
 	
-	public void toggleDeductionTable(String ingredient, int coordinate) {
-		if (this.deductionTable[coordinate][ingredientAddresses.get(ingredient)] == 0) 
-			this.deductionTable[coordinate][ingredientAddresses.get(ingredient)] = 1;
-		else	
-			this.deductionTable[coordinate][ingredientAddresses.get(ingredient)] = 0;
+	public void toggleDeductionTable(String ingredient, int moleculeCoordinate) {
+	
+		this.deductionTable[moleculeCoordinate][ingredientAddresses.get(ingredient)] ^= 1;
 	}
 
 	public int[][] getDeductionTable() {
