@@ -3,26 +3,27 @@ package ui;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import domain.TheAlchemistGame;
 import enums.DeductionToken;
-import enums.Potion;
+import enums.View;
 
 public class VDeductionBoard extends VComponent {
     private Router router = Router.getInstance();
     
-    private BufferedImage background;
-    private BufferedImage layoutImg;
     private BufferedImage deductionMarker;
 
     private BufferedImage redPlusMarker;
@@ -43,6 +44,12 @@ public class VDeductionBoard extends VComponent {
 
     @Override
     protected void render() {
+        BufferedImage background = null;
+        BufferedImage layoutImg = null;
+        BufferedImage close = null;
+        BufferedImage titlePanel = null;
+        
+
         try {
             background = ImageIO.read(new File("./src/resources/image/DeductionBoardBackground.png"));
             layoutImg = ImageIO.read(new File("./src/resources/image/DeductionBoardLayout.png"));
@@ -54,6 +61,8 @@ public class VDeductionBoard extends VComponent {
             blueMinusMarker = ImageIO.read(new File("./src/resources/image/HUD/BlueMinusMarker.png"));
             greenMinusMarker = ImageIO.read(new File("./src/resources/image/HUD/GreenMinusMarker.png"));
             neutralMarker = ImageIO.read(new File("./src/resources/image/HUD/NeutralMarker.png"));
+            close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
+            titlePanel = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -72,6 +81,19 @@ public class VDeductionBoard extends VComponent {
             layoutImg.getHeight()
         );
 
+        JLabel titlePic = new JLabel(new ImageIcon(titlePanel.getScaledInstance((int)(titlePanel.getWidth() * 0.75), (int)(titlePanel.getHeight() * 0.75), Image.SCALE_SMOOTH)));
+        titlePic.setBounds(172, -16, (int)(titlePanel.getWidth() * 0.75), (int)(titlePanel.getHeight() * 0.75));
+        
+        JLabel titleText = new JLabel("Deduction Board",  SwingConstants.CENTER);
+        titleText.setForeground(Color.white);
+        titleText.setFont(new Font("Itim-Regular", Font.BOLD, 20));
+        titleText.setBounds(titlePic.getBounds());
+
+        JButton closePic = new JButton(new ImageIcon(close.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+        closePic.setBounds(10, 10, 60, 60);
+        closePic.addActionListener(e -> router.to(View.Board));
+
+
         markerButtons.setBounds(808, 12, 648, 720);
         markerButtons.setOpaque(false);
 
@@ -80,8 +102,12 @@ public class VDeductionBoard extends VComponent {
       
         alchemyMarkers.setBounds(0, 0, 700, Window.frame.getHeight());
         alchemyMarkers.setOpaque(false);
+        
 
     
+        this.panel.add(closePic);
+        this.panel.add(titleText);
+        this.panel.add(titlePic);
         this.panel.add(alchemyMarkers);
         this.panel.add(markers);
         this.panel.add(markerButtons);

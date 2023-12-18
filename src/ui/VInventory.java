@@ -62,7 +62,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         titleText = new JLabel("",  SwingConstants.CENTER);
         titleText.setForeground(Color.white);
         titleText.setFont(new Font("Itim-Regular", Font.BOLD, 20));
-        titleText.setBounds((int)(Window.frame.getWidth() / 2 - 498 / 2 * 0.75), -16, (int)(498 * 0.75), (int)(109 * 0.75));
+        titleText.setBounds(titlePic.getBounds());
 
         JButton closePic = new JButton(new ImageIcon(close.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         closePic.setBounds(10, 10, 60, 60);
