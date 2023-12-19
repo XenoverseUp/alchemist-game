@@ -43,7 +43,6 @@ public class IngredientCardDeck {
 
 	
 	public void addCard(IngredientCard card) {
-		
 		ingredientCardDeck.add(card);
 	}
 	
