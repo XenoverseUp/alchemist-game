@@ -1,5 +1,8 @@
 package domain;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import enums.Avatar;
 import enums.Potion;
 import interfaces.ICurrentUserListener;
@@ -55,5 +58,17 @@ public class TheAlchemistGame {
     public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn){
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
+    
+    public void toggleDeductionTable(String ingredient, int moleculeCoordinate) {
+		gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, moleculeCoordinate);
+	}
+
+	public int[][] getDeductionTable() {
+		return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
+	}
+
+	public HashMap<HashSet<String>, Potion> getExperimentResults() {
+		return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getExperimentResults();
+	}
 
 }
