@@ -59,32 +59,21 @@ public class TheAlchemistGame {
     public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn){
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
-    
-    public void markDeductionTable(String ingredient, int coordinate){
-		gameBoard.getAuth().getCurrentPlayer().deductionBoard.markDeductionTable(ingredient, coordinate);
-	}
-	
-	public void unmarkDeductionTable(String ingredient, int coordinate){
-		gameBoard.getAuth().getCurrentPlayer().deductionBoard.unmarkDeductionTable(ingredient, coordinate);
-	}
-	
-	public void toggleDeductionTable(String ingredient, int coordinate){
-		gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, coordinate);
-	}
+
+    public void toggleDeductionTable(String ingredient, int coordinate){
+        gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, coordinate);
+    }
 
     public int[][] getDeductionTable() {
-		return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
-	}
+        return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
+    }
 
-	public HashMap<HashSet<String>, Potion> getExperimentResults() {
-		return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getExperimentResults();
-	}
+    public HashMap<HashSet<String>, Potion> getExperimentResults() {
+        return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getExperimentResults();
+    }
 
     public HashMap<String[], DeductionToken> getDeductionTokens() {
-		return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
-	}
-
-
-    
+        return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
+    }
 
 }

@@ -19,6 +19,7 @@ public class DeductionBoard {
 		this.deductionTable = new int[8][8];
 		this.experimentResults = new HashMap<>();
 		this.deductionTokens = new HashMap<>();
+
 		this.ingredientAddresses = new HashMap<String, Integer>() {{
 			put("mushroom", 0);
 			put("fern", 1);
@@ -36,19 +37,16 @@ public class DeductionBoard {
 		this.deductionTokens.put(new String[]{ingredient1, ingredient2}, findDeductionToken(po));
 	}
 	
-	public void markDeductionTable(String ingredient, int moleculeCoordinate){
-		this.deductionTable[moleculeCoordinate][ingredientAddresses.get(ingredient)] = 1;
-	}
-	
-	public void unmarkDeductionTable(String ingredient, int moleculeCoordinate){
-		this.deductionTable[moleculeCoordinate][ingredientAddresses.get(ingredient)] = 0;
+	public void toggleDeductionTable(String ingredient, int coordinate) {
+		this.deductionTable[coordinate][ingredientAddresses.get(ingredient)] ^= 1;
 	}
 
-	public void toggleDeductionTable(String ingredient, int coordinate) {
-		if (this.deductionTable[coordinate][ingredientAddresses.get(ingredient)] == 0) 
-			this.deductionTable[coordinate][ingredientAddresses.get(ingredient)] = 1;
-		else	
-			this.deductionTable[coordinate][ingredientAddresses.get(ingredient)] = 0;
+	public int[][] getDeductionTable() {
+		return deductionTable.clone();
+	}
+
+	public HashMap<HashSet<String>, Potion> getExperimentResults() {
+		return (HashMap<HashSet<String>, Potion>) experimentResults.clone();
 	}
 
 	public int[][] getDeductionTable() {
