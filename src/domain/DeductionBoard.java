@@ -15,7 +15,6 @@ public class DeductionBoard {
 	private int[][] deductionTable;
 	
 	public DeductionBoard() {
-		
 		this.deductionTable = new int[8][8];
 		this.experimentResults = new HashMap<>();
 		this.deductionTokens = new HashMap<>();
@@ -49,16 +48,9 @@ public class DeductionBoard {
 		return (HashMap<HashSet<String>, Potion>) experimentResults.clone();
 	}
 
-	public int[][] getDeductionTable() {
-		return deductionTable;
-	}
-
-	public HashMap<HashSet<String>, Potion> getExperimentResults() {
-		return experimentResults;
-	}
 
 	public HashMap<String[], DeductionToken> getDeductionTokens() {
-		return deductionTokens;
+		return (HashMap<String[], DeductionToken>) deductionTokens.clone();
 	}
 
 	private DeductionToken findDeductionToken(Potion p) {
