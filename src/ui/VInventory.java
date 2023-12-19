@@ -59,6 +59,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
         titlePic.setBounds((int)(Window.frame.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
         
+        
         titleText = new JLabel("",  SwingConstants.CENTER);
         titleText.setForeground(Color.white);
         titleText.setFont(new Font("Itim-Regular", Font.BOLD, 20));
