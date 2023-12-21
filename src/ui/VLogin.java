@@ -146,20 +146,32 @@ public class VLogin extends VComponent {
 
             int result = game.createUser(playerName, playerAvatar);
 
-            if (result == 0) {
-                if (userIndex == 0) this.isFirstPlayerReady = true;
-                else if (userIndex == 1) this.isSecondPlayerReady = true;
+            switch (result) {
+                case 0: {
+                    if (userIndex == 0) this.isFirstPlayerReady = true;
+                    else if (userIndex == 1) this.isSecondPlayerReady = true;
 
-                nextButton.setText("Ready");
-                userNameTextField.setEditable(false);
-                info.setText("Waiting for other alchemist.");
-                info.setForeground(Color.black);
-            } else if (result == 1) {
-                info.setText(String.format("There is already a player named %s.", playerName));
-                info.setForeground(Color.red);
-            } else if (result == 2) {
-                info.setText("Name cannot be empty.");
-                info.setForeground(Color.red);
+                    nextButton.setText("Ready");
+                    userNameTextField.setEditable(false);
+                    info.setText("Waiting for other alchemist.");
+                    info.setForeground(Color.black);
+                    break;
+                }
+                case 1: {
+                    info.setText(String.format("There is already a player named %s.", playerName));
+                    info.setForeground(Color.red);
+                    break;
+                }
+                case 2: {
+                    info.setText("Name cannot be empty.");
+                    info.setForeground(Color.red);
+                    break;
+                }
+                case 3: {
+                    info.setText(String.format("%s is already taken. Pick another avatar.", avatarName));
+                    info.setForeground(Color.red);
+                    break;
+                }
             }
 
             if (isFirstPlayerReady && isSecondPlayerReady) { 

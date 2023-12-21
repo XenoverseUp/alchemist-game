@@ -9,15 +9,28 @@ public class Auth {
     private int currentUser = 0;
     private ArrayList<ICurrentUserListener> currentUserListeners = new ArrayList<>();
 
+    /**
+     * @param name - Name of the alchemist.
+     * @param avatar - Avatar of the alchemist.
+     * @returns {int} Error code.
+     * 
+     * Error Codes:
+     *  0 - Everything worked as expected.
+     *  1 - Name is already taken.
+     *  2 - Name is empty.
+     *  3 - Avatar is already taken.
+     */
     public int createUser(String name, Avatar avatar) {
         if (name.equals("") || name == null) return 2;
 
         for (Player p : this.players) {
-            if (p.name.equals(name))
-                return 1;
+            if (p.name.equals(name)) return 1;
+            if (p.avatar == avatar) return 3;
         }
 
-        Player player = new Player(this.players.size(), name, avatar);
+        int id = this.players.size();
+        Player player = new Player(id, name, avatar);
+
         this.players.add(player);
 
         return 0;
