@@ -67,10 +67,15 @@ public class VLogin extends VComponent {
         JTextField userNameTextField = new JTextField("Name");
         userNameTextField.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
         userNameTextField.setForeground(Color.gray);
-        userNameTextField.setMaximumSize(new Dimension(200, 20));
+        userNameTextField.setMaximumSize(new Dimension(200, 30));
         userNameTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
         userNameTextField.setHorizontalAlignment(JTextField.CENTER);
-        userNameTextField.setBorder(new CompoundBorder(new LineBorder(new Color(200,200,200)),new EmptyBorder(6, 4, 6, 4)));
+        userNameTextField.setBorder(
+            new CompoundBorder(
+                new LineBorder(new Color(200,200,200)), 
+                new EmptyBorder(6, 4, 6, 4)
+            )
+        );
 
         userNameTextField.addFocusListener(new FocusListener() {
             @Override
