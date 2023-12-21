@@ -2,7 +2,10 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,18 +27,27 @@ public class VPublicationArea extends VComponent {
     }
 
     @Override
+    protected void mounted() {
+        this.update();
+    }
+
+    @Override
     protected void render() {
+
+    }
+
+    private void update() {
         JPanel publicationPanel = createPublicationJPanel();
         JLabel text = new JLabel("Publication Area");
         text.setBounds(580, 20, 450, 50);
         text.setForeground(Color.WHITE);
-        Font f3  = new Font(Font.DIALOG_INPUT, Font.BOLD, 30);
+        Font f3 = new Font(Font.DIALOG_INPUT, Font.BOLD, 30);
         text.setFont(f3);
 
         JLabel text1 = new JLabel("Alchemy Markers");
         text1.setBounds(1130, 320, 450, 50);
         text1.setForeground(Color.WHITE);
-        Font f4  = new Font(Font.DIALOG_INPUT, Font.BOLD, 17);
+        Font f4 = new Font(Font.DIALOG_INPUT, Font.BOLD, 17);
         text1.setFont(f4);
 
         BufferedImage bg = null;
@@ -43,47 +55,69 @@ public class VPublicationArea extends VComponent {
             bg = ImageIO.read(new File("./src/resources/image/table.png"));
         } catch (IOException e) {
             System.out.println(e);
-}
-        int desiredWidth = 1450; 
-        int desiredHeight = 750; 
+        }
+        int desiredWidth = 1450;
+        int desiredHeight = 750;
 
         Image scaledBg = bg.getScaledInstance(desiredWidth, desiredHeight, Image.SCALE_SMOOTH);
         JLabel bgPic = new JLabel(new ImageIcon(scaledBg));
         bgPic.setBounds(0, 0, desiredWidth, desiredHeight);
 
-        panel.setLayout(null); 
+        panel.setLayout(null);
         panel.add(publicationPanel);
         panel.add(text);
         panel.add(text1);
         panel.add(bgPic);
 
-
-        int startX = 60; 
+        int startX = 60;
         int startY = 90;
-        int imageWidth = 190; 
-        int imageHeight = 260; 
+        int imageWidth = 190;
+        int imageHeight = 260;
         int gap = 30;
-        
+
         for (int i = 0; i < 8; i++) {
             int x = startX + (i % 4) * (imageWidth + gap);
             int y = startY + (i / 4) * (imageHeight + gap);
-        
+
             String imagePath = "./src/resources/image/pcard" + (i + 1) + ".png";
-            addImageToPanel(publicationPanel, imagePath, x, y, imageWidth, imageHeight);
+            int a = i; // OK
+            addImageToPanel(i, publicationPanel, imagePath, x, y, imageWidth, imageHeight, (e -> {
+                game.setCard(a);
+                System.out.println("clicked!");
+            }));
         }
-    
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker1.png", 1070, 370, 70, 70 /* action for button 1 */);
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker2.png", 1170, 370, 70, 70 /* action for button 2 */);
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker3.png", 1270, 370, 70, 70 /* action for button 3 */);
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker4.png", 1070, 480, 70, 70 /* action for button 4 */);
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker5.png", 1170, 480, 70, 70 /* action for button 5 */);
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker6.png", 1270, 480, 70, 70 /* action for button 6 */);
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker7.png", 1120, 590, 70, 70 /* action for button 7 */);
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker8.png", 1220, 590, 70, 70 /* action for button 8 */);
-        
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker1.png", 1070, 370, 70, 70,
+                (e -> {
+                    game.setMarker(1);
+                    System.out.println("clicked marker!");
+                }));// molecule id:1
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker5.png", 1170, 370, 70, 70,
+                (e -> game.setMarker(5)));// molecule id:5
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker0.png", 1270, 370, 70, 70,
+                (e -> game.setMarker(0)));// molecule id: 0
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker3.png", 1070, 480, 70, 70,
+                (e -> game.setMarker(3)));// molecule id:3
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker6.png", 1170, 480, 70, 70,
+                (e -> game.setMarker(6)));// molecule id:6
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker7.png", 1270, 480, 70, 70,
+                (e -> game.setMarker(7)));// molecule id:7
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker4.png", 1120, 590, 70, 70,
+                (e -> game.setMarker(4)));// molecule id:4
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker2.png", 1220, 590, 70, 70,
+                (e -> game.setMarker(2)));// molecule id :2
+
+        JButton publishTheory = new JButton("Publish Theory");
+        publishTheory.addActionListener(e -> game.publishTheory());
+        publishTheory.setBounds(1130, 200, 150, 30);
+        panel.add(publishTheory);
+
+        panel.revalidate();
+        panel.repaint();
     }
+
     private JPanel createPublicationJPanel() {
-        
+
         JPanel publicationPanel = new JPanel();
         publicationPanel.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
         publicationPanel.setLayout(null); // Use absolute positioning
@@ -97,41 +131,57 @@ public class VPublicationArea extends VComponent {
         return publicationPanel;
     }
 
-    private void addImageToPanel(JPanel panel, String imagePath, int x, int y, int width, int height) {
+    private void addImageToPanel(int id, JPanel panel, String imagePath, int x, int y, int width, int height,
+            ActionListener action) {
         BufferedImage img = null;
+        BufferedImage img2 = null;
         try {
             img = ImageIO.read(new File(imagePath));
+            img2 = ImageIO.read(new File(game.getMarkerImagePath(id)));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
         if (img != null) {
-            ImageIcon icon = new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_SMOOTH));
-            
+            BufferedImage combined;
+
+            if (img2 != null) {
+                System.out.println("img2 not null");
+                // Both img and img2 are available, overlay img2 on top of img
+                combined = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+                Graphics2D g = combined.createGraphics();
+                g.drawImage(img, 0, 0, null);
+                g.drawImage(img2, 0, 0, null);
+                g.dispose();
+            } else {
+                // Only img is available, use it directly
+                combined = img;
+            }
+
+            ImageIcon icon = new ImageIcon(combined.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+
             JButton button = new JButton(icon);
             button.setBounds(x, y, width, height);
-            button.setBorderPainted(false); 
-            button.setContentAreaFilled(false); 
-            button.setFocusPainted(false); 
-    
-            
-            button.addActionListener(event -> {
-                
-                System.out.println("Button clicked: " + imagePath);
-            });
-    
+            button.setBorderPainted(false);
+            button.setContentAreaFilled(false);
+            button.setFocusPainted(false);
+
+            button.addActionListener(action);
+
             panel.add(button);
         }
     }
 
-    private void createButtonWithImage(JPanel panel, String imagePath, int x, int y, int width, int height /* ,ActionListener action */) {
+    private void createButtonWithImage(JPanel panel, String imagePath, int x, int y, int width, int height,
+            ActionListener action) {
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
         if (img != null) {
             ImageIcon icon = new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_SMOOTH));
             JButton button = new JButton(icon);
@@ -139,17 +189,10 @@ public class VPublicationArea extends VComponent {
             button.setBorderPainted(false);
             button.setContentAreaFilled(false);
             button.setFocusPainted(false);
-    
-            
-            //button.addActionListener(action);
-    
+
+            button.addActionListener(action);
+
             panel.add(button);
         }
     }
-    }
-
-
-
-
-
-
+}

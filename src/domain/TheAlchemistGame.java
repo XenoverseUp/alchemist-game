@@ -9,12 +9,12 @@ public class TheAlchemistGame {
     private Board gameBoard;
 
     public TheAlchemistGame() {
-    	auth = new Auth();
+        auth = new Auth();
         gameBoard = new Board(auth);
     }
 
     public int createUser(String userName, Avatar a) {
-       return auth.createUser(userName, a);
+        return auth.createUser(userName, a);
     }
 
     public void toggleCurrentUser() {
@@ -44,16 +44,41 @@ public class TheAlchemistGame {
         gameBoard.buyArtifact();
     }
 
-    public int getPriceOfNextArtifact(){
+    public int getPriceOfNextArtifact() {
         return gameBoard.artifactCardDeck.getPriceOfNextArtifact();
     }
 
-    public void addCurrentUserListener(ICurrentUserListener currentUserListener){
+    public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn){
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) {
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
 
+    public void publishTheory() {
+        gameBoard.publishTheory();
+    }
+
+    public void debunkTheory(int cardID, int markerID) {
+        gameBoard.debunkTheory(cardID, markerID);
+    }
+
+    public void setMarker(int id) {
+        gameBoard.alchemyMarkerDeck.setChosen(id);
+    }
+
+    public void setCard(int id) {
+        gameBoard.publicationCardDeck.setChosen(id);
+    }
+
+    public String getMarkerImagePath(int id) {
+        AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
+        if (marker != null) {
+            return marker.getImagePath();
+        } else {
+            return "";
+        }
+
+    }
 }
