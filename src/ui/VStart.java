@@ -31,6 +31,11 @@ public class VStart extends VComponent {
 
         JButton startButton = new JButton("Start");
         startButton.setBounds(new Rectangle(629, 632, 183, 60));
+        startButton.setOpaque(false);
+        startButton.setContentAreaFilled(false);
+        startButton.setBorderPainted(false);
+        startButton.setFocusable(false);
+        
         panel.add(startButton);
 
 

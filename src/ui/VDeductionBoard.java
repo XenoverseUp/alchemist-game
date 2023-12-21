@@ -37,7 +37,7 @@ public class VDeductionBoard extends VComponent {
 
     private JPanel markerButtons = new JPanel();
     private JPanel markers = new JPanel();
-    private JPanel alchemyMarkers = new JPanel();
+    private JPanel deductionTokens = new JPanel();
 
     
     public VDeductionBoard(TheAlchemistGame game) { super(game); }
@@ -100,15 +100,15 @@ public class VDeductionBoard extends VComponent {
         markers.setBounds(808, 12, 648, 720);
         markers.setOpaque(false);
       
-        alchemyMarkers.setBounds(0, 0, 700, Window.frame.getHeight());
-        alchemyMarkers.setOpaque(false);
+        deductionTokens.setBounds(0, 0, 700, Window.frame.getHeight());
+        deductionTokens.setOpaque(false);
         
 
     
         this.panel.add(closePic);
         this.panel.add(titleText);
         this.panel.add(titlePic);
-        this.panel.add(alchemyMarkers);
+        this.panel.add(deductionTokens);
         this.panel.add(markers);
         this.panel.add(markerButtons);
         this.panel.add(layout);
@@ -161,39 +161,39 @@ public class VDeductionBoard extends VComponent {
         markers.removeAll();
         markers.setLayout(null);
 
-        alchemyMarkers.removeAll();
-        alchemyMarkers.setLayout(null);
+        deductionTokens.removeAll();
+        deductionTokens.setLayout(null);
 
-        HashMap<String[], DeductionToken> deductionTokens = new HashMap<>() {{
-            put(new String[]{"mushroom", "fern"}, DeductionToken.BluePlus);
-            put(new String[]{"mandrake root", "fern"}, DeductionToken.GreenMinus);
-            put(new String[]{"scorpion tail", "bird claw"}, DeductionToken.RedPlus);
-            // put(new String[]{"mushroom", "raven's feather"}, DeductionToken.RedMinus);
-            // put(new String[]{"fern", "warty toad"}, DeductionToken.RedPlus);
-            put(new String[]{"bird claw", "warty toad"}, DeductionToken.Neutral);
-            put(new String[]{"bird claw", "moonshade"}, DeductionToken.BluePlus);
-            put(new String[]{"mandrake root", "moonshade"}, DeductionToken.Neutral);
-            put(new String[]{"mandrake root", "scorpion tail"}, DeductionToken.GreenMinus);
-            put(new String[]{"raven's feather", "scorpion tail"}, DeductionToken.RedPlus);
-            put(new String[]{"mushroom", "moonshade"}, DeductionToken.RedPlus);
-            // put(new String[]{"warty toad", "scorpion tail"}, DeductionToken.BluePlus);
-            // put(new String[]{"raven's feather", "bird claw"}, DeductionToken.GreenPlus);
-            // put(new String[]{"raven's feather", "moonshade"}, DeductionToken.BlueMinus);
-            // put(new String[]{"warty toad", "mandrake root"}, DeductionToken.GreenPlus);
-            // put(new String[]{"moonshade", "fern"}, DeductionToken.BluePlus);
-            // put(new String[]{"mushroom", "bird claw"}, DeductionToken.GreenPlus);
-            put(new String[]{"mushroom", "warty toad"}, DeductionToken.BluePlus);
-            put(new String[]{"fern", "bird claw"}, DeductionToken.GreenPlus);
-            put(new String[]{"moonshade", "warty toad"}, DeductionToken.Neutral);
-            put(new String[]{"bird claw", "mandrake root"}, DeductionToken.RedPlus);
-            put(new String[]{"moonshade", "scorpion tail"}, DeductionToken.BluePlus);
-            // put(new String[]{"raven's feather", "mandrake root"}, DeductionToken.RedPlus);
-            // put(new String[]{"mushroom", "mandrake root"}, DeductionToken.RedMinus);
-            // put(new String[]{"fern", "scorpion tail"}, DeductionToken.GreenPlus);
-            put(new String[]{"raven's feather", "warty toad"}, DeductionToken.Neutral);
-            put(new String[]{"mushroom", "scorpion tail"}, DeductionToken.GreenPlus);
-            put(new String[]{"raven's feather", "fern"}, DeductionToken.RedPlus);
-        }};
+        // HashMap<String[], DeductionToken> deductionTokens = new HashMap<>() {{
+        //     put(new String[]{"mushroom", "fern"}, DeductionToken.BluePlus);
+        //     put(new String[]{"mandrake root", "fern"}, DeductionToken.GreenMinus);
+        //     put(new String[]{"scorpion tail", "bird claw"}, DeductionToken.RedPlus);
+        //     // put(new String[]{"mushroom", "raven's feather"}, DeductionToken.RedMinus);
+        //     // put(new String[]{"fern", "warty toad"}, DeductionToken.RedPlus);
+        //     put(new String[]{"bird claw", "warty toad"}, DeductionToken.Neutral);
+        //     put(new String[]{"bird claw", "moonshade"}, DeductionToken.BluePlus);
+        //     put(new String[]{"mandrake root", "moonshade"}, DeductionToken.Neutral);
+        //     put(new String[]{"mandrake root", "scorpion tail"}, DeductionToken.GreenMinus);
+        //     put(new String[]{"raven's feather", "scorpion tail"}, DeductionToken.RedPlus);
+        //     put(new String[]{"mushroom", "moonshade"}, DeductionToken.RedPlus);
+        //     // put(new String[]{"warty toad", "scorpion tail"}, DeductionToken.BluePlus);
+        //     // put(new String[]{"raven's feather", "bird claw"}, DeductionToken.GreenPlus);
+        //     // put(new String[]{"raven's feather", "moonshade"}, DeductionToken.BlueMinus);
+        //     // put(new String[]{"warty toad", "mandrake root"}, DeductionToken.GreenPlus);
+        //     // put(new String[]{"moonshade", "fern"}, DeductionToken.BluePlus);
+        //     // put(new String[]{"mushroom", "bird claw"}, DeductionToken.GreenPlus);
+        //     put(new String[]{"mushroom", "warty toad"}, DeductionToken.BluePlus);
+        //     put(new String[]{"fern", "bird claw"}, DeductionToken.GreenPlus);
+        //     put(new String[]{"moonshade", "warty toad"}, DeductionToken.Neutral);
+        //     put(new String[]{"bird claw", "mandrake root"}, DeductionToken.RedPlus);
+        //     put(new String[]{"moonshade", "scorpion tail"}, DeductionToken.BluePlus);
+        //     // put(new String[]{"raven's feather", "mandrake root"}, DeductionToken.RedPlus);
+        //     // put(new String[]{"mushroom", "mandrake root"}, DeductionToken.RedMinus);
+        //     // put(new String[]{"fern", "scorpion tail"}, DeductionToken.GreenPlus);
+        //     put(new String[]{"raven's feather", "warty toad"}, DeductionToken.Neutral);
+        //     put(new String[]{"mushroom", "scorpion tail"}, DeductionToken.GreenPlus);
+        //     put(new String[]{"raven's feather", "fern"}, DeductionToken.RedPlus);
+        // }};
 
         for (int i = 0; i < game.getDeductionTable().length; i++)
             for (int j = 0; j < game.getDeductionTable()[0].length; j++) {
@@ -206,53 +206,53 @@ public class VDeductionBoard extends VComponent {
             }
 
 
-        deductionTokens.forEach((k, v) -> {
-            Point markerPosition = getAlchemyMarkerLocation(k[0], k[1]);
-            JLabel alchemyMarker = null;
+        game.getDeductionTokens().forEach((k, v) -> {
+            Point tokenLocation = getDeductionTokenLocation(k[0], k[1]);
+            JLabel token = null;
 
             switch (v) {
                 case RedPlus:
-                    alchemyMarker = new JLabel(new ImageIcon(redPlusMarker));
+                    token = new JLabel(new ImageIcon(redPlusMarker));
                     break;
                 case BluePlus:
-                    alchemyMarker = new JLabel(new ImageIcon(bluePlusMarker));
+                    token = new JLabel(new ImageIcon(bluePlusMarker));
                     break;
                 case GreenPlus:
-                    alchemyMarker = new JLabel(new ImageIcon(greenPlusMarker));
+                    token = new JLabel(new ImageIcon(greenPlusMarker));
                     break;
                 case RedMinus:
-                    alchemyMarker = new JLabel(new ImageIcon(redMinusMarker));
+                    token = new JLabel(new ImageIcon(redMinusMarker));
                     break;
                 case BlueMinus:
-                    alchemyMarker = new JLabel(new ImageIcon(blueMinusMarker));
+                    token = new JLabel(new ImageIcon(blueMinusMarker));
                     break;
                 case GreenMinus:
-                    alchemyMarker = new JLabel(new ImageIcon(greenMinusMarker));
+                    token = new JLabel(new ImageIcon(greenMinusMarker));
                     break;
                 case Neutral:
-                    alchemyMarker = new JLabel(new ImageIcon(neutralMarker));
+                    token = new JLabel(new ImageIcon(neutralMarker));
                     break;
             }
 
 
-            alchemyMarker.setBounds(
-                markerPosition.x, 
-                markerPosition.y, 
+            token.setBounds(
+                tokenLocation.x, 
+                tokenLocation.y, 
                 redPlusMarker.getWidth(), 
                 redPlusMarker.getHeight()
             );
-            alchemyMarkers.add(alchemyMarker);
+            deductionTokens.add(token);
         });
 
         markers.revalidate();
         markers.repaint();
 
-        alchemyMarkers.revalidate();
-        alchemyMarkers.repaint();
+        deductionTokens.revalidate();
+        deductionTokens.repaint();
     }
 
-    private Point getAlchemyMarkerLocation(String first, String second) {
-        HashMap<String, Point> data = new HashMap<>() {{
+    private Point getDeductionTokenLocation(String first, String second) {
+        HashMap<String, Point> tokens = new HashMap<>() {{
             put("mushroom-fern", new Point(616, 67));
             put("mushroom-warty toad", new Point(524, 116));
             put("mushroom-bird claw", new Point(430, 160));
@@ -283,8 +283,8 @@ public class VDeductionBoard extends VComponent {
             put("scorpion tail-raven's feather", new Point(618, 620));
         }};
         
-        return data.containsKey(first + "-" + second) 
-                ? data.get(first + "-" + second) 
-                : data.get(second + "-" + first);
+        return tokens.containsKey(first + "-" + second) 
+                ? tokens.get(first + "-" + second) 
+                : tokens.get(second + "-" + first);
     }
 }
