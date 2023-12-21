@@ -24,7 +24,7 @@ public class Window {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Cubano.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/CrimsonPro.ttf")));
         } catch (IOException | FontFormatException e) {
 
             System.err.println(e);

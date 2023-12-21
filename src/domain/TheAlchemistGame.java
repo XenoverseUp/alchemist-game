@@ -47,6 +47,10 @@ public class TheAlchemistGame {
         gameBoard.buyArtifact();
     }
 
+    public void discardArtifact(String name) {
+        gameBoard.getAuth().getCurrentPlayer().inventory.discardArtifactCard(name);
+    }
+
     public int getPriceOfNextArtifact(){
         return gameBoard.artifactCardDeck.getPriceOfNextArtifact();
     }
