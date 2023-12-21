@@ -1,7 +1,6 @@
 package domain;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import enums.Avatar;
 import enums.DeductionToken;
@@ -66,10 +65,6 @@ public class TheAlchemistGame {
 
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
-    }
-
-    public HashMap<HashSet<String>, Potion> getExperimentResults() {
-        return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getExperimentResults();
     }
 
     public HashMap<String[], DeductionToken> getDeductionTokens() {

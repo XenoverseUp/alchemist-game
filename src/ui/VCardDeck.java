@@ -114,6 +114,7 @@ public class VCardDeck extends VComponent {
             router.to(View.Inventory);
         });
 
+
         cardPanel.add(Box.createVerticalGlue());
         cardPanel.add(pile);
         cardPanel.add(Box.createVerticalStrut(24));
