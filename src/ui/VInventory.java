@@ -31,9 +31,20 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     private Router router = Router.getInstance();
     private JLabel titleText;
     private JLabel background;
-    private BufferedImage ingredientCard;
-    private BufferedImage hammer;
+    
     private JScrollPane scrollPane;
+
+    private BufferedImage BHammer;
+    private BufferedImage BBirdClaw;
+    private BufferedImage BFern;
+    private BufferedImage BMandrakeRoot;
+    private BufferedImage BMoonshade;
+    private BufferedImage BMushroom;
+    private BufferedImage BRavensFeather;
+    private BufferedImage BScorpionTail;
+    private BufferedImage BWartyToad;
+
+
 
     public VInventory(TheAlchemistGame game) { 
         super(game); 
@@ -50,8 +61,15 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             bg = ImageIO.read(new File("./src/resources/image/inventoryBg.png"));
             close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             title = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
-            ingredientCard = ImageIO.read(new File("./src/resources/image/ingredientCard.png"));
-            hammer =  ImageIO.read(new File("./src/resources/image/HUD/hammer.png"));
+            BHammer =  ImageIO.read(new File("./src/resources/image/HUD/hammer.png"));
+            BBirdClaw = ImageIO.read(new File("./src/resources/image/ingredientCards/birdClaw.png"));
+            BFern = ImageIO.read(new File("./src/resources/image/ingredientCards/fern.png"));
+            BMandrakeRoot = ImageIO.read(new File("./src/resources/image/ingredientCards/mandrakeRoot.png"));
+            BMoonshade = ImageIO.read(new File("./src/resources/image/ingredientCards/moonshade.png"));
+            BMushroom = ImageIO.read(new File("./src/resources/image/ingredientCards/mushroom.png"));
+            BRavensFeather = ImageIO.read(new File("./src/resources/image/ingredientCards/ravensFeather.png"));
+            BScorpionTail = ImageIO.read(new File("./src/resources/image/ingredientCards/scorpionTail.png"));
+            BWartyToad = ImageIO.read(new File("./src/resources/image/ingredientCards/wartyToad.png"));
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -120,7 +138,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             .inventory
             .getIngredientCards()
             .stream()
-            .map(card -> this.generateCard(card.getName(), "card.getColor()", 0, "ingredient"))
+            .map(card -> this.generateCard("ingredient", card.getName()))
             .forEach(cards::add);
 
         if (game.getCurrentUser().inventory.getIngredientCards().size() == 0) {
@@ -137,12 +155,12 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         artifactsTitle.setPreferredSize(new Dimension(width - 100, 100));
         cards.add(artifactsTitle);
         
-        game.getCurrentUser()
-            .inventory
-            .getArtifactCards()
-            .stream()
-            .map(card -> this.generateCard(card.getName(), card.getDescription(), card.getPrice(), "artifact"))
-            .forEach(cards::add);
+        // game.getCurrentUser()
+        //     .inventory
+        //     .getArtifactCards()
+        //     .stream()
+        //     .map(card -> this.generateCard(card.getName(), card.getDescription(), card.getPrice(), "artifact"))
+        //     .forEach(cards::add);
 
 
         if (game.getCurrentUser().inventory.getArtifactCards().size() == 0) {
@@ -164,42 +182,31 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     }
 
 
-    private JPanel generateCard(String name, String colorValue, int value, String type) {
+    private JPanel generateCard(String type, String name) {
+
+        BufferedImage cardBuffer = null;
+
+        if (type.equals("ingredient")) {
+            if (name.equals("bird claw")) cardBuffer = BBirdClaw;
+            else if (name.equals("fern")) cardBuffer = BFern;
+            else if (name.equals("mandrake root")) cardBuffer = BMandrakeRoot;
+            else if (name.equals("moonshade")) cardBuffer = BMoonshade;
+            else if (name.equals("mushroom")) cardBuffer = BMushroom;
+            else if (name.equals("raven's feather")) cardBuffer = BRavensFeather;
+            else if (name.equals("scorpion tail")) cardBuffer = BScorpionTail;
+            else if (name.equals("warty toad")) cardBuffer = BWartyToad;
+        }
+            
         JPanel card = new JPanel(null);
         card.setOpaque(false);
-        card.setPreferredSize(new Dimension(ingredientCard.getWidth(), ingredientCard.getHeight()));
+        card.setPreferredSize(new Dimension(cardBuffer.getWidth(), cardBuffer.getHeight()));
 
-        JLabel bg = new JLabel(new ImageIcon(ingredientCard));
-        bg.setBounds(0, 0, ingredientCard.getWidth(), ingredientCard.getHeight());
-        
-        JPanel content = new JPanel();
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        content.setBounds(new Rectangle(0, 126, ingredientCard.getWidth(), 100));
-        content.setOpaque(false);
+        JLabel bg = new JLabel(new ImageIcon(cardBuffer));
+        bg.setBounds(0, 0, cardBuffer.getWidth(), cardBuffer.getHeight());
 
-        JLabel title = new JLabel(name, SwingConstants.CENTER);
-        title.setFont(new Font("Cubano", Font.PLAIN, 34));
-        title.setForeground(new Color(62, 214, 42));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-       
-        JLabel color = new JLabel(colorValue, SwingConstants.CENTER);
-        color.setFont(new Font("Cubano", Font.PLAIN, 20));
-        color.setForeground(Color.WHITE);
-        color.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        content.add(title);
-        content.add(Box.createVerticalStrut(12));
-        content.add(color);
-
-        JLabel price = new JLabel(Integer.toString(value), SwingConstants.CENTER);
-        price.setBounds(0, ingredientCard.getHeight() - 80, ingredientCard.getWidth(), 50);
-        price.setForeground(new Color(241, 179, 43));
-        price.setFont(new Font("Cubano", Font.PLAIN, 32));
-
-
-        if (type == "ingredient") {    
-            JButton transmuteButton = new JButton(new ImageIcon(hammer.getScaledInstance(hammer.getWidth() / 2, hammer.getHeight() / 2, Image.SCALE_SMOOTH)));
-            transmuteButton.setBounds(10, 10, hammer.getWidth() / 2, hammer.getHeight() / 2); 
+        if (type.equals("ingredient")) {            
+            JButton transmuteButton = new JButton(new ImageIcon(BHammer.getScaledInstance(BHammer.getWidth() / 2, BHammer.getHeight() / 2, Image.SCALE_SMOOTH)));
+            transmuteButton.setBounds(cardBuffer.getWidth() / 2 - BHammer.getWidth() / 4 , cardBuffer.getHeight() - BHammer.getHeight() / 2 - 36, BHammer.getWidth() / 2, BHammer.getHeight() / 2); 
             transmuteButton.setOpaque(false);
             transmuteButton.setContentAreaFilled(false);
             transmuteButton.setBorderPainted(false);
@@ -208,12 +215,10 @@ public class VInventory extends VComponent implements ICurrentUserListener {
                 game.transmuteIngredient(name);
                 this.update();            
             });   
-
+            
             card.add(transmuteButton);
         }
-
-        card.add(price);
-        card.add(content);
+        
         card.add(bg);
 
         return card;
