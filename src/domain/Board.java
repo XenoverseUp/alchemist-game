@@ -2,6 +2,7 @@ package domain;
 
 import enums.Potion;
 
+
 public class Board {
 
 	private Auth auth;
@@ -9,6 +10,7 @@ public class Board {
 	public ArtifactCardDeck artifactCardDeck;
 	public PublicationCardDeck publicationCardDeck;
 	public AlchemyMarkerDeck alchemyMarkerDeck;
+	
 
 	public Board(Auth auth) {
 		this.auth = auth;
@@ -81,7 +83,11 @@ public class Board {
 				this.publicationCardDeck.getChosen().setAlchemyMarker(alchemyMarkerDeck.getChosen());
 				alchemyMarkerDeck.getChosen().associate();
 				publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
-				System.out.println("Published theory successfully :)");
+				SwingUtilities.invokeLater(() -> {
+					JOptionPane.showMessageDialog(null, "Published Theory Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+				});
+
+
 			}
 		}
 	}

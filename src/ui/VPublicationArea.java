@@ -107,13 +107,7 @@ public class VPublicationArea extends VComponent {
         createButtonWithImage(publicationPanel, "./src/resources/image/marker2.png", 1220, 590, 70, 70,
                 (e -> game.setMarker(2)));// molecule id :2
 
-        JButton publishTheory = new JButton("Publish Theory");
-        publishTheory.addActionListener(e -> game.publishTheory());
-        publishTheory.setBounds(1130, 200, 150, 30);
-        panel.add(publishTheory);
-
-        panel.revalidate();
-        panel.repaint();
+        
     }
 
     private JPanel createPublicationJPanel() {
@@ -127,6 +121,14 @@ public class VPublicationArea extends VComponent {
         back.setBounds(480, 690, 150, 30);
         back.addActionListener(event -> router.to(View.Board));
         publicationPanel.add(back);
+
+        JButton publishTheory = new JButton("Publish Theory");
+        publishTheory.addActionListener(e -> game.publishTheory());
+        publishTheory.setBounds(1130, 200, 150, 30);
+        panel.add(publishTheory);
+
+        panel.revalidate();
+        panel.repaint();
 
         return publicationPanel;
     }
