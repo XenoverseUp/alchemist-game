@@ -62,12 +62,17 @@ public class VArtifactShop extends VComponent {
 
         JPanel mysteryCardPanel = createMysteryCardPanel();
         mysteryCardPanel.setBounds(0, 0, 664, Window.frame.getHeight());
+
+
+        JPanel artifactContainer = createArtifactScrollContainer();
+        artifactContainer.setBounds(664, 0, Window.frame.getWidth() - 664, Window.frame.getHeight());
         
 
         panel.add(titleText);
         panel.add(titlePic);
         panel.add(closePic);
         panel.add(mysteryCardPanel);
+        panel.add(artifactContainer);
         panel.add(bgPic);
         
     }
@@ -94,7 +99,7 @@ public class VArtifactShop extends VComponent {
         description.setForeground(Color.white);
         description.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JButton drawMysteryButton = new JButton("Draw Mystery Card (4 Gold)");
+        JButton drawMysteryButton = new JButton("Draw Mystery Card (5 Gold)");
         drawMysteryButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         drawMysteryButton.addActionListener(e -> {
             int result = game.drawMysteryCard();
@@ -111,6 +116,13 @@ public class VArtifactShop extends VComponent {
         container.add(drawMysteryButton);
         container.add(Box.createVerticalGlue());
         
+        return container;
+    }
+
+    private JPanel createArtifactScrollContainer() {
+        JPanel container = new JPanel(new WrapLayout());
+        container.setOpaque(false);
+
         return container;
     }
     
