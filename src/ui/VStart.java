@@ -11,9 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import enums.View;
+import ui.framework.VComponent;
 
 public class VStart extends VComponent {
-    private Router router = Router.getInstance();
 
     @Override
     protected void render() {
@@ -26,7 +26,7 @@ public class VStart extends VComponent {
         }
 
         JLabel background = new JLabel(new ImageIcon(img));
-        background.setBounds(new Rectangle(0,0,Window.frame.getWidth(), Window.frame.getHeight()));
+        background.setBounds(new Rectangle(0, 0, windowDimension.getWidth(), windowDimension.getHeight()));
         panel.add(background);
 
         JButton startButton = new JButton("Start");
@@ -38,9 +38,8 @@ public class VStart extends VComponent {
         
         panel.add(startButton);
 
-
-        startButton.addActionListener(event -> {
-            router.to(View.Login);
-        });
+        startButton.addActionListener(event -> 
+            router.to(View.Login)
+        );
     }
 }

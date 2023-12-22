@@ -20,10 +20,9 @@ import java.awt.image.BufferedImage;
 import domain.TheAlchemistGame;
 import enums.DeductionToken;
 import enums.View;
+import ui.framework.VComponent;
 
 public class VDeductionBoard extends VComponent {
-    private Router router = Router.getInstance();
-    
     private BufferedImage deductionMarker;
 
     private BufferedImage redPlusMarker;
@@ -67,16 +66,13 @@ public class VDeductionBoard extends VComponent {
             System.out.println(e);
         }
 
-        int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
-        int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
-
         JLabel bg = new JLabel(new ImageIcon(background));
-        bg.setBounds(0, 0, width, height);
+        bg.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
 
         JLabel layout = new JLabel(new ImageIcon(layoutImg));
         layout.setBounds(
-            84, 
-            12,
+            windowDimension.getWidth() / 2 - layoutImg.getWidth() / 2, 
+            windowDimension.getHeight() / 2 - layoutImg.getHeight() / 2, 
             layoutImg.getWidth(), 
             layoutImg.getHeight()
         );
@@ -94,16 +90,14 @@ public class VDeductionBoard extends VComponent {
         closePic.addActionListener(e -> router.to(View.Board));
 
 
-        markerButtons.setBounds(808, 12, 648, 720);
+        markerButtons.setBounds(783, 26, 648, 720);
         markerButtons.setOpaque(false);
 
-        markers.setBounds(808, 12, 648, 720);
+        markers.setBounds(784, 26, 648, 720);
         markers.setOpaque(false);
       
-        deductionTokens.setBounds(0, 0, 700, Window.frame.getHeight());
+        deductionTokens.setBounds(-26, 12, 700, windowDimension.getHeight());
         deductionTokens.setOpaque(false);
-        
-
     
         this.panel.add(closePic);
         this.panel.add(titleText);
@@ -136,7 +130,7 @@ public class VDeductionBoard extends VComponent {
         for (int i = 0; i < game.getDeductionTable().length; i++)
             for (int j = 0; j < game.getDeductionTable()[0].length; j++) {
                 JButton toggleButton = new JButton("");
-                toggleButton.setBounds(i * 75, j * 92, 70, 70);
+                toggleButton.setBounds(i * 75, j * 92, 72, 72);
                 toggleButton.setOpaque(false);
                 toggleButton.setContentAreaFilled(false);
                 toggleButton.setBorderPainted(false);
@@ -164,36 +158,36 @@ public class VDeductionBoard extends VComponent {
         deductionTokens.removeAll();
         deductionTokens.setLayout(null);
 
-        // HashMap<String[], DeductionToken> deductionTokens = new HashMap<>() {{
-        //     put(new String[]{"mushroom", "fern"}, DeductionToken.BluePlus);
-        //     put(new String[]{"mandrake root", "fern"}, DeductionToken.GreenMinus);
-        //     put(new String[]{"scorpion tail", "bird claw"}, DeductionToken.RedPlus);
-        //     // put(new String[]{"mushroom", "raven's feather"}, DeductionToken.RedMinus);
-        //     // put(new String[]{"fern", "warty toad"}, DeductionToken.RedPlus);
-        //     put(new String[]{"bird claw", "warty toad"}, DeductionToken.Neutral);
-        //     put(new String[]{"bird claw", "moonshade"}, DeductionToken.BluePlus);
-        //     put(new String[]{"mandrake root", "moonshade"}, DeductionToken.Neutral);
-        //     put(new String[]{"mandrake root", "scorpion tail"}, DeductionToken.GreenMinus);
-        //     put(new String[]{"raven's feather", "scorpion tail"}, DeductionToken.RedPlus);
-        //     put(new String[]{"mushroom", "moonshade"}, DeductionToken.RedPlus);
-        //     // put(new String[]{"warty toad", "scorpion tail"}, DeductionToken.BluePlus);
-        //     // put(new String[]{"raven's feather", "bird claw"}, DeductionToken.GreenPlus);
-        //     // put(new String[]{"raven's feather", "moonshade"}, DeductionToken.BlueMinus);
-        //     // put(new String[]{"warty toad", "mandrake root"}, DeductionToken.GreenPlus);
-        //     // put(new String[]{"moonshade", "fern"}, DeductionToken.BluePlus);
-        //     // put(new String[]{"mushroom", "bird claw"}, DeductionToken.GreenPlus);
-        //     put(new String[]{"mushroom", "warty toad"}, DeductionToken.BluePlus);
-        //     put(new String[]{"fern", "bird claw"}, DeductionToken.GreenPlus);
-        //     put(new String[]{"moonshade", "warty toad"}, DeductionToken.Neutral);
-        //     put(new String[]{"bird claw", "mandrake root"}, DeductionToken.RedPlus);
-        //     put(new String[]{"moonshade", "scorpion tail"}, DeductionToken.BluePlus);
-        //     // put(new String[]{"raven's feather", "mandrake root"}, DeductionToken.RedPlus);
-        //     // put(new String[]{"mushroom", "mandrake root"}, DeductionToken.RedMinus);
-        //     // put(new String[]{"fern", "scorpion tail"}, DeductionToken.GreenPlus);
-        //     put(new String[]{"raven's feather", "warty toad"}, DeductionToken.Neutral);
-        //     put(new String[]{"mushroom", "scorpion tail"}, DeductionToken.GreenPlus);
-        //     put(new String[]{"raven's feather", "fern"}, DeductionToken.RedPlus);
-        // }};
+        HashMap<String[], DeductionToken> deductionTokens1 = new HashMap<>() {{
+            put(new String[]{"mushroom", "fern"}, DeductionToken.BluePlus);
+            put(new String[]{"mandrake root", "fern"}, DeductionToken.GreenMinus);
+            put(new String[]{"scorpion tail", "bird claw"}, DeductionToken.RedPlus);
+            // put(new String[]{"mushroom", "raven's feather"}, DeductionToken.RedMinus);
+            // put(new String[]{"fern", "warty toad"}, DeductionToken.RedPlus);
+            put(new String[]{"bird claw", "warty toad"}, DeductionToken.Neutral);
+            put(new String[]{"bird claw", "moonshade"}, DeductionToken.BluePlus);
+            put(new String[]{"mandrake root", "moonshade"}, DeductionToken.Neutral);
+            put(new String[]{"mandrake root", "scorpion tail"}, DeductionToken.GreenMinus);
+            put(new String[]{"raven's feather", "scorpion tail"}, DeductionToken.RedPlus);
+            put(new String[]{"mushroom", "moonshade"}, DeductionToken.RedPlus);
+            // put(new String[]{"warty toad", "scorpion tail"}, DeductionToken.BluePlus);
+            // put(new String[]{"raven's feather", "bird claw"}, DeductionToken.GreenPlus);
+            // put(new String[]{"raven's feather", "moonshade"}, DeductionToken.BlueMinus);
+            // put(new String[]{"warty toad", "mandrake root"}, DeductionToken.GreenPlus);
+            // put(new String[]{"moonshade", "fern"}, DeductionToken.BluePlus);
+            // put(new String[]{"mushroom", "bird claw"}, DeductionToken.GreenPlus);
+            put(new String[]{"mushroom", "warty toad"}, DeductionToken.BluePlus);
+            put(new String[]{"fern", "bird claw"}, DeductionToken.GreenPlus);
+            put(new String[]{"moonshade", "warty toad"}, DeductionToken.Neutral);
+            put(new String[]{"bird claw", "mandrake root"}, DeductionToken.RedPlus);
+            put(new String[]{"moonshade", "scorpion tail"}, DeductionToken.BluePlus);
+            // put(new String[]{"raven's feather", "mandrake root"}, DeductionToken.RedPlus);
+            // put(new String[]{"mushroom", "mandrake root"}, DeductionToken.RedMinus);
+            // put(new String[]{"fern", "scorpion tail"}, DeductionToken.GreenPlus);
+            put(new String[]{"raven's feather", "warty toad"}, DeductionToken.Neutral);
+            put(new String[]{"mushroom", "scorpion tail"}, DeductionToken.GreenPlus);
+            put(new String[]{"raven's feather", "fern"}, DeductionToken.RedPlus);
+        }};
 
         for (int i = 0; i < game.getDeductionTable().length; i++)
             for (int j = 0; j < game.getDeductionTable()[0].length; j++) {
@@ -206,7 +200,7 @@ public class VDeductionBoard extends VComponent {
             }
 
 
-        game.getDeductionTokens().forEach((k, v) -> {
+        deductionTokens1.forEach((k, v) -> {
             Point tokenLocation = getDeductionTokenLocation(k[0], k[1]);
             JLabel token = null;
 

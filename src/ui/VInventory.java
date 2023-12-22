@@ -22,10 +22,11 @@ import javax.swing.SwingConstants;
 import domain.TheAlchemistGame;
 import enums.View;
 import interfaces.ICurrentUserListener;
+import ui.framework.VComponent;
+import ui.util.WrapLayout;
 
 
 public class VInventory extends VComponent implements ICurrentUserListener {
-    private Router router = Router.getInstance();
     private JLabel titleText;
     private JLabel background;
 
@@ -77,7 +78,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         }
 
         JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
-        titlePic.setBounds((int)(Window.frame.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
+        titlePic.setBounds((int)(windowDimension.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
 
         titleText = new JLabel("",  SwingConstants.CENTER);
         titleText.setForeground(Color.white);
@@ -89,16 +90,13 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         closePic.addActionListener(e -> router.to(View.Board));
 
         background = new JLabel(new ImageIcon(bg));
-        background.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
-
-        int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
-        int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
+        background.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
 
         scrollPane = new JScrollPane();
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(0, 0, width, height);
-        scrollPane.setPreferredSize(new Dimension(width, height));
+        scrollPane.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
+        scrollPane.setPreferredSize(new Dimension(windowDimension.getWidth(), windowDimension.getHeight()));
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -125,22 +123,20 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         this.scrollPosition = scrollPane.getVerticalScrollBar().getValue();
         scrollPane.setViewportView(null);
 
-        int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
-
         this.titleText.setText(String.format("%s's Inventory", game.getCurrentUser().name));
 
         JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER, 24, 24));
         cards.setOpaque(false);
 
         JPanel marginTop = new JPanel();
-        marginTop.setPreferredSize(new Dimension(width - 100, 20));
+        marginTop.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 20));
         marginTop.setOpaque(false);
         cards.add(marginTop);
 
         JLabel artifactsTitle = new JLabel("Artifact Cards", SwingConstants.CENTER);
         artifactsTitle.setFont(new Font("Crimson Pro", Font.BOLD, 36));
         artifactsTitle.setForeground(Color.WHITE);
-        artifactsTitle.setPreferredSize(new Dimension(width - 100, 100));
+        artifactsTitle.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
         cards.add(artifactsTitle);
 
         game.getCurrentUser()
@@ -154,7 +150,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         if (game.getCurrentUser().inventory.getArtifactCards().size() == 0) {
             JLabel emptyIngredientsText = new JLabel("You don't have any artifact cards. Visit the card deck to buy.", SwingConstants.CENTER);
             emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
-            emptyIngredientsText.setPreferredSize(new Dimension(width - 100, 100));
+            emptyIngredientsText.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
             emptyIngredientsText.setForeground(Color.WHITE);
             cards.add(emptyIngredientsText);
         }
@@ -162,7 +158,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
 
         JLabel ingredientsTitle = new JLabel("Ingredient Cards", SwingConstants.CENTER);
         ingredientsTitle.setFont(new Font("Crimson Pro", Font.BOLD, 36));
-        ingredientsTitle.setPreferredSize(new Dimension(width - 100, 100));
+        ingredientsTitle.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
         ingredientsTitle.setForeground(Color.WHITE);
         cards.add(ingredientsTitle);
 
@@ -176,13 +172,13 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         if (game.getCurrentUser().inventory.getIngredientCards().size() == 0) {
              JLabel emptyIngredientsText = new JLabel("You don't have any ingredient cards. Visit the card deck to forage.", SwingConstants.CENTER);
             emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
-            emptyIngredientsText.setPreferredSize(new Dimension(width - 100, 100));
+            emptyIngredientsText.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
             emptyIngredientsText.setForeground(Color.WHITE);
             cards.add(emptyIngredientsText);
         }
 
         JPanel marginBottom = new JPanel();
-        marginBottom.setPreferredSize(new Dimension(width - 100, 100));
+        marginBottom.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
         marginBottom.setOpaque(false);
         cards.add(marginBottom);
 

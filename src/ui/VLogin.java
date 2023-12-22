@@ -24,9 +24,9 @@ import javax.swing.border.LineBorder;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
+import ui.framework.VComponent;
 
 public class VLogin extends VComponent {
-    private Router router = Router.getInstance();
     private boolean isFirstPlayerReady = false;
     private boolean isSecondPlayerReady = false;
 
@@ -37,8 +37,8 @@ public class VLogin extends VComponent {
         JPanel firstUserForm = createUserForm("First Alchemist", 0);
         JPanel secondUserForm = createUserForm("Second Alchemist", 1);
 
-        firstUserForm.setBounds(0, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
-        secondUserForm.setBounds(Window.frame.getWidth() / 2 - 1, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
+        firstUserForm.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        secondUserForm.setBounds(windowDimension.getWidth() / 2 - 1, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
 
         this.panel.add(secondUserForm);
         this.panel.add(firstUserForm);

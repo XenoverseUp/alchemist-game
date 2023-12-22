@@ -20,9 +20,10 @@ import javax.swing.SwingConstants;
 
 import domain.TheAlchemistGame;
 import enums.View;
+import ui.framework.VComponent;
+import ui.util.WrapLayout;
 
 public class VArtifactShop extends VComponent {
-    private Router router = Router.getInstance();
     private BufferedImage BMysteryCard = null;
 
     public VArtifactShop(TheAlchemistGame game) { super(game); }
@@ -46,10 +47,10 @@ public class VArtifactShop extends VComponent {
 
 
         JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(0,0,Window.frame.getWidth(), Window.frame.getHeight());
+        bgPic.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
 
         JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
-        titlePic.setBounds((int)(Window.frame.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
+        titlePic.setBounds((int)(windowDimension.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
         
         JLabel titleText = new JLabel("Artifact Shop", SwingConstants.CENTER);
         titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
@@ -61,11 +62,11 @@ public class VArtifactShop extends VComponent {
         closePic.addActionListener(e -> router.navigateBack());
 
         JPanel mysteryCardPanel = createMysteryCardPanel();
-        mysteryCardPanel.setBounds(0, 0, 664, Window.frame.getHeight());
+        mysteryCardPanel.setBounds(0, 0, 664, windowDimension.getHeight());
 
 
         JPanel artifactContainer = createArtifactScrollContainer();
-        artifactContainer.setBounds(664, 0, Window.frame.getWidth() - 664, Window.frame.getHeight());
+        artifactContainer.setBounds(664, 0, windowDimension.getWidth() - 664, windowDimension.getHeight());
         
 
         panel.add(titleText);

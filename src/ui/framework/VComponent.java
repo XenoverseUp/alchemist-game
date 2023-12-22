@@ -1,4 +1,4 @@
-package ui;
+package ui.framework;
 
 import java.awt.Color;
 import javax.swing.JPanel;
@@ -26,6 +26,8 @@ import interfaces.IRenderable;
 public abstract class VComponent implements IRenderable {
     protected JPanel panel = new JPanel();
     protected TheAlchemistGame game = null;
+    protected Router router = Router.getInstance();
+    protected WindowDimension windowDimension = WindowDimension.getInstance();
 
     protected VComponent() {
         panel.setBackground(Color.WHITE);
@@ -54,7 +56,7 @@ public abstract class VComponent implements IRenderable {
     protected void unmounted() {}
 
     @Override
-    public JPanel getContentPanel() {
+    public JPanel getContentPane() {
         return this.panel;
     }
 }

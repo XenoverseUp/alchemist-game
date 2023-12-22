@@ -19,11 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import enums.View;
-
+import ui.framework.VComponent;
 import domain.TheAlchemistGame;
 
 public class VCardDeck extends VComponent {
-    private Router router = Router.getInstance();
 
     public VCardDeck(TheAlchemistGame game) {
         super(game);
@@ -34,12 +33,12 @@ public class VCardDeck extends VComponent {
         JPanel ingredientCardDeck = createCardDeck("ingredient", "Forage Ingredient");
         JPanel artifactCardDeck = createCardDeck("artifact", "Visit Artifact Shop");
         
-        ingredientCardDeck.setBounds(0, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
+        ingredientCardDeck.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
         artifactCardDeck.setBounds(
-            Window.frame.getWidth() / 2, 
+            windowDimension.getWidth() / 2, 
             0, 
-            Window.frame.getWidth() / 2,
-            Window.frame.getHeight()
+            windowDimension.getWidth() / 2,
+            windowDimension.getHeight()
         );
         
         BufferedImage bg = null;
@@ -56,10 +55,10 @@ public class VCardDeck extends VComponent {
 
 
         JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(0,0,Window.frame.getWidth(), Window.frame.getHeight());
+        bgPic.setBounds(0,0,windowDimension.getWidth(), windowDimension.getHeight());
 
         JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
-        titlePic.setBounds((int)(Window.frame.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
+        titlePic.setBounds((int)(windowDimension.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
         
         JLabel titleText = new JLabel("Card Deck", SwingConstants.CENTER);
         titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));

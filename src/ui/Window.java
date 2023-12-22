@@ -1,6 +1,8 @@
 package ui;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -9,28 +11,39 @@ import java.util.LinkedHashMap;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
+import ui.framework.Router;
+import ui.framework.VComponent;
+
 import java.awt.event.*;
 
 public class Window {
     static JFrame frame;
+    public static JPanel mainPanel;
     private Router router;
     private TheAlchemistGame game;
 
     public Window(String title, int width, int height, TheAlchemistGame game) {
         this.game = game;
         frame = new JFrame(title);
-        frame.setSize(width, height);
+        
+        mainPanel = new JPanel();
+        mainPanel.setSize(width, height);
+        mainPanel.setPreferredSize(new Dimension(width, height));
+        mainPanel.setBackground(Color.red);
+        mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+        frame.add(mainPanel);
+        frame.pack();
 
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/CrimsonPro.ttf")));
         } catch (IOException | FontFormatException e) {
-
             System.err.println(e);
         }
 
-        frame.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
+        mainPanel.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
 
         LinkedHashMap<View, VComponent> views = new LinkedHashMap<>() {{
             put(View.Start, new VStart());
@@ -90,5 +103,4 @@ public class Window {
             public void keyTyped(KeyEvent e) {}
         });
     }
-
 }

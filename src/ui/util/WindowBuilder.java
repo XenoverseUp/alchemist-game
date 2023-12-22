@@ -1,6 +1,7 @@
-package ui;
+package ui.util;
 
 import domain.TheAlchemistGame;
+import ui.Window;
 
 public class WindowBuilder {
     private String _title = "The Alchemist Game";

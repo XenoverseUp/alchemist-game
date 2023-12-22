@@ -11,10 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import enums.View;
+import ui.framework.VComponent;
 import domain.TheAlchemistGame;
 
 public class VPublicationArea extends VComponent {
-    private Router router = Router.getInstance();
 
     public VPublicationArea(TheAlchemistGame game) {
         super(game);
@@ -34,7 +34,7 @@ public class VPublicationArea extends VComponent {
         }
 
         JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(-200, -50, Window.frame.getWidth(), Window.frame.getHeight());
+        bgPic.setBounds(-200, -50, windowDimension.getWidth(), windowDimension.getHeight());
 
         panel.setLayout(null); // Use absolute positioning
         panel.add(publicationPanel);
@@ -44,7 +44,7 @@ public class VPublicationArea extends VComponent {
 
     private JPanel createPublicationJPanel() {
         JPanel publicationPanel = new JPanel();
-        publicationPanel.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
+        publicationPanel.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
         publicationPanel.setLayout(null); // Use absolute positioning
         publicationPanel.setOpaque(false);
 

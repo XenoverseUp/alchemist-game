@@ -11,10 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import enums.View;
+import ui.framework.VComponent;
 import domain.TheAlchemistGame;
 
 public class VPotionBrewingArea extends VComponent {
-    private Router router = Router.getInstance();
 
     public VPotionBrewingArea(TheAlchemistGame game) {
         super(game);
@@ -34,7 +34,7 @@ public class VPotionBrewingArea extends VComponent {
         }
 
         JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(-200, -50, Window.frame.getWidth(), Window.frame.getHeight());
+        bgPic.setBounds(-200, -50, windowDimension.getWidth(), windowDimension.getHeight());
 
         panel.setLayout(null); // Use absolute positioning
         panel.add(brewingPanel);
@@ -44,7 +44,7 @@ public class VPotionBrewingArea extends VComponent {
 
     private JPanel createBrewingJPanel() {
         JPanel brewingPanel = new JPanel();
-        brewingPanel.setBounds(-200, -50, Window.frame.getWidth(), Window.frame.getHeight());
+        brewingPanel.setBounds(-200, -50, windowDimension.getWidth(), windowDimension.getHeight());
         brewingPanel.setLayout(null); // Use absolute positioning
         brewingPanel.setOpaque(false);
 
