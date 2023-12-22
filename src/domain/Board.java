@@ -89,7 +89,7 @@ public class Board {
 				alchemyMarkerDeck.getChosen().associate();
 				publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
 				SwingUtilities.invokeLater(() -> {
-					JOptionPane.showMessageDialog(null, "Published Theory Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Published Theory Successfully!\n Reputation: +1\n Gold: -1", "Success!", JOptionPane.INFORMATION_MESSAGE);
 				});
 
 
