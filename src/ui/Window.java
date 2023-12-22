@@ -32,20 +32,19 @@ public class Window {
 
         frame.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
 
-        LinkedHashMap<View, VComponent> views = new LinkedHashMap<>() {
-            {
-                put(View.Start, new VStart());
-                put(View.Login, new VLogin(game));
-                put(View.Board, new VBoard(game));
-                put(View.Inventory, new VInventory(game));
-                put(View.CardDeck, new VCardDeck(game));
-                put(View.DeductionBoard, new VDeductionBoard(game));
-                put(View.PotionBrewingArea, new VPotionBrewingArea(game));
-                put(View.PublicationArea, new VPublicationArea(game));
-                put(View.Pause, new VPause(game));
-                put(View.Help, new VHelp());
-            }
-        };
+        LinkedHashMap<View, VComponent> views = new LinkedHashMap<>() {{
+            put(View.Start, new VStart());
+            put(View.Login, new VLogin(game));
+            put(View.Board, new VBoard(game));
+            put(View.Inventory, new VInventory(game));
+            put(View.CardDeck, new VCardDeck(game));
+            put(View.DeductionBoard, new VDeductionBoard(game));
+            put(View.PotionBrewingArea, new VPotionBrewingArea(game));
+            put(View.PublicationArea, new VPublicationArea(game));
+            put(View.Pause, new VPause(game));
+            put(View.Help, new VHelp());
+            put(View.ArtifactShop, new VArtifactShop(game));
+        }};
 
         router = Router.getInstance();
         router.populate(views);

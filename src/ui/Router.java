@@ -27,7 +27,8 @@ public class Router {
 
     public void to(View nextView) {
         if (currentView != null) {
-            history.push(currentView);
+            if (currentView != View.Help && currentView != View.Pause) 
+                history.push(currentView);
             views.get(currentView).unmounted();
         }
 

@@ -2,12 +2,15 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class ArtifactCardDeck {
 	private ArrayList<ArtifactCard> artifactCardDeck = new ArrayList<>();
-	private int drawingIndex = 0;
+	private Random random = new Random();
 
 	public ArtifactCardDeck() {
+		// NOTICE: Max price of an artifact should be 9 gold.
+
 		artifactCardDeck.add(new ArtifactCard(
 			"Elixir of Insight", 
 			9,
@@ -58,40 +61,30 @@ public class ArtifactCardDeck {
 		// ));
 	}
 
+	public ArtifactCard get(String name) {
+		return this.artifactCardDeck
+						.stream()
+						.filter(card -> card.getName().equals(name))
+						.findFirst()
+						.get();
+	}
+
 	public void shuffle() {
 		Collections.shuffle(artifactCardDeck);	
 	}
 	
-	public ArtifactCard drawCard() {
-		ArtifactCard card = this.artifactCardDeck.get(drawingIndex);
-		this.drawingIndex = this.getNextIndex();
-		return card;
+	public ArtifactCard drawMysteryCard() {
+		ArrayList<ArtifactCard> weighted = new ArrayList<>();
+		this.artifactCardDeck.forEach(card -> {
+			for (int i = 0; i < 12 - card.getPrice(); i++) weighted.add(card);
+		});
+
+		return weighted.get(random.nextInt(weighted.size()));
 	}
 
 	public ArrayList<ArtifactCard> getArtifactCardDeck(){
 		return this.artifactCardDeck;
 	}
 
-	public int getPriceOfNextArtifact(){
-
-		if (artifactCardDeck.size() == 0){
-			return -1;
-		}
-
-		return artifactCardDeck.get(artifactCardDeck.size() - 1).getPrice();
-	}
-
-	public ArtifactCard getArtifactByName(String name) {
-		for (ArtifactCard card: artifactCardDeck) {
-			if (card.getName().equals(name)) return card;
-		}
-
-		return null;
-	}
-
-	private int getNextIndex() {
-		if (this.drawingIndex == this.artifactCardDeck.size() - 1) return 0;
-		return this.drawingIndex + 1; 
-	}
 
 }

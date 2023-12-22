@@ -177,14 +177,6 @@ public class Canvas extends JPanel {
             g.setPaint(Color.ORANGE);
             g.fillOval(x, y, 100, 100);
 
-            
-            // g.drawRect(258, 540, 200, 70);
-            // g.drawRect(458, 340, 220, 190);
-            // g.drawRect(0, 540, 220, 190);
-            // g.drawRect(780, 280, 290, 300);
-            // g.drawRect(620, 180, 200, 190);
-
-
             g.dispose();
 
         }

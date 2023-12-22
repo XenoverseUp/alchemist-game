@@ -6,15 +6,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -97,7 +94,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
         int height = Window.frame.getHeight() - (Window.frame.getInsets().top + Window.frame.getInsets().bottom);
 
-
         scrollPane = new JScrollPane();
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -128,6 +124,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     private void update() {
         this.scrollPosition = scrollPane.getVerticalScrollBar().getValue();
         scrollPane.setViewportView(null);
+
         int width = Window.frame.getWidth() - (Window.frame.getInsets().left + Window.frame.getInsets().right);
 
         this.titleText.setText(String.format("%s's Inventory", game.getCurrentUser().name));
@@ -139,27 +136,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         marginTop.setPreferredSize(new Dimension(width - 100, 20));
         marginTop.setOpaque(false);
         cards.add(marginTop);
-
-        JLabel ingredientsTitle = new JLabel("Ingredient Cards", SwingConstants.CENTER);
-        ingredientsTitle.setFont(new Font("Crimson Pro", Font.BOLD, 36));
-        ingredientsTitle.setPreferredSize(new Dimension(width - 100, 100));
-        ingredientsTitle.setForeground(Color.WHITE);
-        cards.add(ingredientsTitle);
-
-        game.getCurrentUser()
-            .inventory
-            .getIngredientCards()
-            .stream()
-            .map(card -> this.generateIngredientCard(card.getName()))
-            .forEach(cards::add);
-
-        if (game.getCurrentUser().inventory.getIngredientCards().size() == 0) {
-             JLabel emptyIngredientsText = new JLabel("You don't have any ingredient cards. Visit the card deck to forage.", SwingConstants.CENTER);
-            emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
-            emptyIngredientsText.setPreferredSize(new Dimension(width - 100, 100));
-            emptyIngredientsText.setForeground(Color.WHITE);
-            cards.add(emptyIngredientsText);
-        }
 
         JLabel artifactsTitle = new JLabel("Artifact Cards", SwingConstants.CENTER);
         artifactsTitle.setFont(new Font("Crimson Pro", Font.BOLD, 36));
@@ -177,6 +153,28 @@ public class VInventory extends VComponent implements ICurrentUserListener {
 
         if (game.getCurrentUser().inventory.getArtifactCards().size() == 0) {
             JLabel emptyIngredientsText = new JLabel("You don't have any artifact cards. Visit the card deck to buy.", SwingConstants.CENTER);
+            emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
+            emptyIngredientsText.setPreferredSize(new Dimension(width - 100, 100));
+            emptyIngredientsText.setForeground(Color.WHITE);
+            cards.add(emptyIngredientsText);
+        }
+        
+
+        JLabel ingredientsTitle = new JLabel("Ingredient Cards", SwingConstants.CENTER);
+        ingredientsTitle.setFont(new Font("Crimson Pro", Font.BOLD, 36));
+        ingredientsTitle.setPreferredSize(new Dimension(width - 100, 100));
+        ingredientsTitle.setForeground(Color.WHITE);
+        cards.add(ingredientsTitle);
+
+        game.getCurrentUser()
+            .inventory
+            .getIngredientCards()
+            .stream()
+            .map(card -> this.generateIngredientCard(card.getName()))
+            .forEach(cards::add);
+
+        if (game.getCurrentUser().inventory.getIngredientCards().size() == 0) {
+             JLabel emptyIngredientsText = new JLabel("You don't have any ingredient cards. Visit the card deck to forage.", SwingConstants.CENTER);
             emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
             emptyIngredientsText.setPreferredSize(new Dimension(width - 100, 100));
             emptyIngredientsText.setForeground(Color.WHITE);
@@ -226,8 +224,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         });
 
         card.add(transmuteButton);
-
-
         card.add(bg);
 
         return card;
@@ -314,8 +310,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             this.update();
         });
 
-
-
         card.add(activateButton);
         card.add(bg);
 
@@ -327,5 +321,4 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     public void onCurrentUserChange() {
         this.update();
     }
-
 }

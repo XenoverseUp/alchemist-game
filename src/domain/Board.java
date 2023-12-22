@@ -31,7 +31,6 @@ public class Board {
 	public void toggleCurrentUser() {
 		auth.toggleCurrentUser();
 	}
-
 	
 	public void forageIngredient() {
 		IngredientCard icard = this.ingredientCardDeck.drawCard();
@@ -45,12 +44,24 @@ public class Board {
 		this.ingredientCardDeck.shuffle();
 	}
 	
-	public void buyArtifact() {
-		ArtifactCard aCard = this.artifactCardDeck.drawCard();
-		this.auth.addArtifactCardToCurrentPlayer(aCard);
-		this.auth.removeGoldFromCurrentUser(aCard.getPrice());
+	public int buyArtifact(String name) {
+		ArtifactCard card = this.artifactCardDeck.get(name);
+		if (this.auth.getCurrentPlayer().inventory.getGold() >= card.getPrice()) {
+			this.auth.addArtifactCardToCurrentPlayer(card);
+			this.auth.removeGoldFromCurrentUser(card.getPrice());
+			return 0;
+		} else return 1;
 	}
 
+	public int drawMysteryCard() {
+		if (this.auth.getCurrentPlayer().inventory.getGold() < 4) return 1; 
+
+		ArtifactCard card = this.artifactCardDeck.drawMysteryCard();
+		this.auth.getCurrentPlayer().inventory.spendGold(5);
+		this.auth.getCurrentPlayer().inventory.addArtifactCard(card);
+		
+		return 0;
+	}
 	
 	public Auth getAuth() {
 		return auth;

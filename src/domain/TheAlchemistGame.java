@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import enums.Avatar;
@@ -43,16 +44,20 @@ public class TheAlchemistGame {
         gameBoard.transmuteIngredient(ingredientName);
     }
 
-    public void buyArtifact() {
-        gameBoard.buyArtifact();
+    public int buyArtifact(String name) {
+        return gameBoard.buyArtifact(name);
     }
 
     public void discardArtifact(String name) {
         gameBoard.getAuth().getCurrentPlayer().inventory.discardArtifactCard(name);
     }
 
-    public int getPriceOfNextArtifact(){
-        return gameBoard.artifactCardDeck.getPriceOfNextArtifact();
+    public ArrayList<ArtifactCard> getArtifactCardDeck(){
+		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
+	}
+
+    public int drawMysteryCard() {
+        return this.gameBoard.drawMysteryCard();
     }
 
     public void addCurrentUserListener(ICurrentUserListener currentUserListener){
