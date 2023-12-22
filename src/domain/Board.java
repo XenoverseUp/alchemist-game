@@ -2,6 +2,11 @@ package domain;
 
 import enums.Potion;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class Board {
 
