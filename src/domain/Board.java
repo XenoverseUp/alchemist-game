@@ -54,7 +54,7 @@ public class Board {
 	}
 
 	public int drawMysteryCard() {
-		if (this.auth.getCurrentPlayer().inventory.getGold() < 4) return 1; 
+		if (this.auth.getCurrentPlayer().inventory.getGold() < 5) return 1; 
 
 		ArtifactCard card = this.artifactCardDeck.drawMysteryCard();
 		this.auth.getCurrentPlayer().inventory.spendGold(5);

@@ -96,7 +96,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
-        scrollPane.setPreferredSize(new Dimension(windowDimension.getWidth(), windowDimension.getHeight()));
+        scrollPane.setPreferredSize(windowDimension.getSize());
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());

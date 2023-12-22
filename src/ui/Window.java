@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
+import ui.framework.ModalController;
 import ui.framework.Router;
 import ui.framework.VComponent;
 
@@ -18,23 +19,12 @@ import java.awt.event.*;
 
 public class Window {
     static JFrame frame;
+    private JPanel modalLayer;
     public static JPanel mainPanel;
     private Router router;
     private TheAlchemistGame game;
 
     public Window(String title, int width, int height, TheAlchemistGame game) {
-        this.game = game;
-        frame = new JFrame(title);
-        
-        mainPanel = new JPanel();
-        mainPanel.setSize(width, height);
-        mainPanel.setPreferredSize(new Dimension(width, height));
-        mainPanel.setBackground(Color.red);
-        mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-
-        frame.add(mainPanel);
-        frame.pack();
-
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
@@ -42,6 +32,29 @@ public class Window {
         } catch (IOException | FontFormatException e) {
             System.err.println(e);
         }
+        
+        this.game = game;
+        frame = new JFrame(title);
+
+        modalLayer = new JPanel(null);
+        modalLayer.setSize(width, height);
+        modalLayer.setPreferredSize(new Dimension(width, height));
+        modalLayer.add(ModalController.generateInfoPopover(width, height));
+        modalLayer.add(ModalController.generateOverlay(width, height));
+
+        
+        mainPanel = new JPanel();
+        mainPanel.setSize(width, height);
+        mainPanel.setPreferredSize(new Dimension(width, height));
+        mainPanel.setBackground(Color.red);
+        mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        mainPanel.setBounds(0, 0, width, height);
+
+        modalLayer.add(mainPanel);
+        frame.add(modalLayer);
+        frame.pack();
+
+    
 
         mainPanel.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
 
