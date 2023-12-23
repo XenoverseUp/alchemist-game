@@ -39,26 +39,28 @@ public class ArtifactCardDeck {
 			"Every other player is paralyses 1 round except you. Use it wisely, though."
 		));
 
-		// artifactCardDeck.add(new ArtifactCard( 
-		// 	"Philosopher's Compass", 
-		// 	5,
-		// 	2,
-		// 	"Once per round, the player can swap the position of two alchemy markers on the Deduction Board"
-		// ));
+		artifactCardDeck.add(new ArtifactCard(
+			"Magic Mortar", 
+			8, 
+			3, 
+			"You get to keep one of the ingredients after making experiments on them. Useful for making more research or money."
+		));
 
-		// artifactCardDeck.add(new ArtifactCard( 
-		// 	"Request Potion", 
-		// 	3,
-		// 	1,
-		// 	"Player chooses getting one of the potions that another player has and adding their own inventory"
-		// ));
+		artifactCardDeck.add(new ArtifactCard(
+			"Printing Press", 
+			5, 
+			1, 
+			"Publish a theory free of charge. So, you don't need to pay 1 gold to the bank." 
+		));
 
-		// artifactCardDeck.add(new ArtifactCard( 
-		// 	"Terminate the Player", 
-		// 	7,
-		// 	10,
-		// 	"player skips that round and does nothing"
-		// ));
+		artifactCardDeck.add(new ArtifactCard(
+			"Wisdom Idol", 
+			3, 
+			7, 
+			"When your theory is debunked, you don't lose reputation points. However, keeping it till the end would be pretty cool, I guess." 
+		));
+
+		Collections.shuffle(artifactCardDeck);
 	}
 
 	public ArtifactCard get(String name) {
