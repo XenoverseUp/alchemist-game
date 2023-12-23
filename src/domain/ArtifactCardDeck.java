@@ -60,7 +60,7 @@ public class ArtifactCardDeck {
 			"When your theory is debunked, you don't lose reputation points. However, keeping it till the end would be pretty cool, I guess." 
 		));
 
-		Collections.shuffle(artifactCardDeck);
+		shuffle();
 	}
 
 	public ArtifactCard get(String name) {
