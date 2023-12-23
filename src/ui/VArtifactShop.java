@@ -23,7 +23,6 @@ import javax.swing.SwingConstants;
 
 import domain.TheAlchemistGame;
 import enums.View;
-import ui.framework.ModalController;
 import ui.framework.VComponent;
 import ui.util.WrapLayout;
 
@@ -112,7 +111,7 @@ public class VArtifactShop extends VComponent {
         drawMysteryButton.addActionListener(e -> {
             int result = game.drawMysteryCard();
             if (result == 0) router.to(View.Inventory);
-            else ModalController.info("Not enough money!", "Fuck you bitch.");
+            else modal.info("Not enough money!", "Fuck you bitch.");
         });
 
         container.add(Box.createVerticalGlue());
@@ -226,7 +225,7 @@ public class VArtifactShop extends VComponent {
             int result = game.buyArtifact(name);
 
             if (result == 0) router.to(View.Inventory);
-            else ModalController.info("Not enough money!", "Fuck you bitch.");
+            else modal.info("Not enough money!", "Fuck you bitch.");
         });
 
         card.add(activateButton);

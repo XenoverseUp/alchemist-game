@@ -111,17 +111,34 @@ public class ModalController {
         return infoPopover;
     }
 
-    public static void info(String title, String description) {
-        infoPopoverTitle.setText(title);
-        infoPopoverDescription.setText(description);
-        infoPopover.setVisible(true);
-        overlay.setVisible(true);
-    }
-
-    // TODO: dismissable, withAction
-
     public static void close() {
         infoPopover.setVisible(false);
         overlay.setVisible(false);
+    }
+
+
+    /**
+     * Client instance for controlling the modal.
+     */
+    private static Modal modalInstance = null;
+
+    public static synchronized Modal getModalInstance() {
+        if (modalInstance == null) 
+            modalInstance = new Modal();
+
+        return modalInstance;
+    }
+
+    public static class Modal {
+        public void info(String title, String description) {
+            infoPopoverTitle.setText(title);
+            infoPopoverDescription.setText(description);
+            infoPopover.setVisible(true);
+            overlay.setVisible(true);
+        }
+
+        public void dismiss() {
+            close();
+        }
     }
 }
