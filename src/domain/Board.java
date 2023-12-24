@@ -15,7 +15,6 @@ public class Board {
 	public ArtifactCardDeck artifactCardDeck;
 	public PublicationCardDeck publicationCardDeck;
 	public AlchemyMarkerDeck alchemyMarkerDeck;
-	
 
 	public Board(Auth auth) {
 		this.auth = auth;
@@ -89,31 +88,40 @@ public class Board {
 				alchemyMarkerDeck.getChosen().associate();
 				publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
 				SwingUtilities.invokeLater(() -> {
-					JOptionPane.showMessageDialog(null, "Published Theory Successfully!\n Reputation: +1\n Gold: -1", "Success!", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Published Theory Successfully!\n Reputation: +1\n Gold: -1",
+							"Success!", JOptionPane.INFORMATION_MESSAGE);
 				});
-
-
 			}
 		}
 	}
 
-	public void debunkTheory(int cardID, int markerID) {
-		if (alchemyMarkerDeck.getMarker(markerID).checkAvailability()) {
-			if (this.publicationCardDeck.getCard(cardID).getAlchemyMarker() != null) {
-				if (alchemyMarkerDeck.getMarker(markerID).getMolecule()
-						.equals(this.publicationCardDeck.getCard(cardID).getAlchemyMarker().getMolecule())) {
-
-				} else {
-
+	// chooses a publication card, states the published theory is wrong, doesn't
+	// need to state the correct theory
+	public void debunkTheory() {
+		if (this.publicationCardDeck.getChosen().getAlchemyMarker() != null) {
+			Molecule m = this.publicationCardDeck.getChosen().getIngredient().getMolecule();
+			if (this.publicationCardDeck.getChosen().getAlchemyMarker().getMolecule().equals(m)) {
+				auth.getCurrentPlayer().decreaseReputation(1);
+				SwingUtilities.invokeLater(() -> {
+					JOptionPane.showMessageDialog(null, "Published Theory Was Correct.\n Reputation: -1",
+							"Failed!", JOptionPane.INFORMATION_MESSAGE);
+				});
+			} else {
+				AlchemyMarker marker = null;
+				auth.getCurrentPlayer().increaseReputation(2);
+				this.publicationCardDeck.getChosen().getPlayer().decreaseReputation(2);
+				for (int i = 0; i < this.ingredientCardDeck.getDeck().size(); i++) {
+					if (this.ingredientCardDeck.getDeck().get(i).getMolecule()
+							.equals(this.alchemyMarkerDeck.getMarker(i).getMolecule())) {
+						marker = this.alchemyMarkerDeck.getMarker(i);
+					}
 				}
-				auth.getCurrentPlayer().increaseReputation(1);
-				auth.removeGoldFromCurrentUser(1);
-				publicationCardDeck.getCard(cardID).setAlchemyMarker(alchemyMarkerDeck.getMarker(markerID));
-				alchemyMarkerDeck.getMarker(markerID).associate();
-				publicationCardDeck.getCard(cardID).setPlayer(auth.getCurrentPlayer());
-
+				this.publicationCardDeck.getChosen().setAlchemyMarker(marker);
+				SwingUtilities.invokeLater(() -> {
+					JOptionPane.showMessageDialog(null, "Debunked Theory Successfully!\n Reputation: +2",
+							"Success!", JOptionPane.INFORMATION_MESSAGE);
+				});
 			}
 		}
 	}
-
 }

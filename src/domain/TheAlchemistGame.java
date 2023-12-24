@@ -60,8 +60,8 @@ public class TheAlchemistGame {
         gameBoard.publishTheory();
     }
 
-    public void debunkTheory(int cardID, int markerID) {
-        gameBoard.debunkTheory(cardID, markerID);
+    public void debunkTheory() {
+        gameBoard.debunkTheory();
     }
 
     public void setMarker(int id) {
