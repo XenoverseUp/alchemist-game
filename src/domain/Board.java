@@ -107,6 +107,7 @@ public class Board {
 							"Failed!", JOptionPane.INFORMATION_MESSAGE);
 				});
 			} else {
+				this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
 				AlchemyMarker marker = null;
 				auth.getCurrentPlayer().increaseReputation(2);
 				this.publicationCardDeck.getChosen().getPlayer().decreaseReputation(2);

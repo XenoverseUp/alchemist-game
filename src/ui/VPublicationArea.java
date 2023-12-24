@@ -2,9 +2,9 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,10 +33,10 @@ public class VPublicationArea extends VComponent {
 
     @Override
     protected void render() {
-
     }
-
+    
     private void update() {
+        
         JPanel publicationPanel = createPublicationJPanel();
         JLabel text = new JLabel("Publication Area");
         text.setBounds(580, 20, 450, 50);
@@ -87,55 +87,66 @@ public class VPublicationArea extends VComponent {
             addImageToPanel(i, publicationPanel, imagePath, x, y, imageWidth, imageHeight, (e -> {
                 game.setCard(a);
                 System.out.println(ingredientCardName + " is clicked!");
+                
             }));
         }
 
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker1.png", 1070, 370, 70, 70,
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker1.png", 1070, 370, 75, 70,
                 (e -> {
                     game.setMarker(1);
                     System.out.println("Clicked marker1!");
+                    
                 }));// molecule id:1
 
         createButtonWithImage(publicationPanel, "./src/resources/image/marker5.png", 1170, 370, 70, 70,
                 (e -> {
                     game.setMarker(5);
                     System.out.println("Clicked marker5!");
+                    
                 }));// molecule id:5
 
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker0.png", 1270, 370, 70, 70,
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker0.png", 1270, 370, 75, 70,
                 (e -> {
                     game.setMarker(0);
                     System.out.println("Clicked marker0!");
+                    
                 }));// molecule id: 0
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker3.png", 1070, 480, 70, 70,
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker3.png", 1070, 480, 75, 70,
                 (e -> {
                     game.setMarker(3);
                     System.out.println("Clicked marker3!");
+                    
                 }));// molecule id:3
 
         createButtonWithImage(publicationPanel, "./src/resources/image/marker6.png", 1170, 480, 70, 70,
                 (e -> {
                     game.setMarker(6);
                     System.out.println("Clicked marker6!");
+                   
                 }));// molecule id:6
 
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker7.png", 1270, 480, 70, 70,
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker7.png", 1270, 480, 75, 70,
                 (e -> {
                     game.setMarker(7);
                     System.out.println("CLicked marker7!");
+                    
                 }));// molecule id:7
 
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker4.png", 1120, 590, 70, 70,
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker4.png", 1120, 590, 75, 70,
                 (e -> {
                     game.setMarker(4);
                     System.out.println("Clicked marker4!");
+                    
                 }));// molecule id:4
 
-        createButtonWithImage(publicationPanel, "./src/resources/image/marker2.png", 1220, 590, 70, 70,
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker2.png", 1220, 590, 75, 70,
                 (e -> {
                     game.setMarker(2);
                     System.out.println("CLicked marker2!");
+                   
                 }));// molecule id :2
+        
+        
     }
 
     private JPanel createPublicationJPanel() {
@@ -155,6 +166,11 @@ public class VPublicationArea extends VComponent {
         publishTheory.setBounds(1130, 200, 150, 30);
         panel.add(publishTheory);
 
+        JButton debunkTheory = new JButton("Debunk Theory");
+        debunkTheory.addActionListener(e -> game.debunkTheory());
+        debunkTheory.setBounds(1130, 100, 150, 30);
+        panel.add(debunkTheory);
+
         panel.revalidate();
         panel.repaint();
 
@@ -171,16 +187,15 @@ public class VPublicationArea extends VComponent {
 
         if (img != null) {
             ImageIcon icon = new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_SMOOTH));
-
             JButton button = new JButton(icon);
             button.setBounds(x, y, width, height);
             button.setBorderPainted(false);
             button.setContentAreaFilled(false);
             button.setFocusPainted(false);
-
             button.addActionListener(action);
             panel.add(button);
         }
+        
     }
 
 
@@ -205,5 +220,7 @@ public class VPublicationArea extends VComponent {
 
             panel.add(button);
         }
-    }
+
+    }    
+    
 }
