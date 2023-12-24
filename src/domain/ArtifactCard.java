@@ -5,12 +5,14 @@ public class ArtifactCard {
 	private final String name;
 	private final String description;
 	private final int price;
+	private final int victoryPoints;
 
 
-	public ArtifactCard(String name, int price, String description) {
+	public ArtifactCard(String name, int price, int victoryPoints, String description) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
+		this.victoryPoints = victoryPoints;
 	}
 
 	public String getName() {
@@ -23,5 +25,9 @@ public class ArtifactCard {
 	
 	public String getDescription() {
 		return description;
+	}
+
+	public int getVictoryPoints() {
+		return victoryPoints;
 	}
 }

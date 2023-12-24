@@ -24,9 +24,9 @@ import javax.swing.border.LineBorder;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
+import ui.framework.VComponent;
 
 public class VLogin extends VComponent {
-    private Router router = Router.getInstance();
     private boolean isFirstPlayerReady = false;
     private boolean isSecondPlayerReady = false;
 
@@ -37,8 +37,8 @@ public class VLogin extends VComponent {
         JPanel firstUserForm = createUserForm("First Alchemist", 0);
         JPanel secondUserForm = createUserForm("Second Alchemist", 1);
 
-        firstUserForm.setBounds(0, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
-        secondUserForm.setBounds(Window.frame.getWidth() / 2 - 1, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
+        firstUserForm.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        secondUserForm.setBounds(windowDimension.getWidth() / 2 - 1, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
 
         this.panel.add(secondUserForm);
         this.panel.add(firstUserForm);
@@ -67,10 +67,15 @@ public class VLogin extends VComponent {
         JTextField userNameTextField = new JTextField("Name");
         userNameTextField.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
         userNameTextField.setForeground(Color.gray);
-        userNameTextField.setMaximumSize(new Dimension(200, 20));
+        userNameTextField.setMaximumSize(new Dimension(200, 30));
         userNameTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
         userNameTextField.setHorizontalAlignment(JTextField.CENTER);
-        userNameTextField.setBorder(new CompoundBorder(new LineBorder(new Color(200,200,200)),new EmptyBorder(6, 4, 6, 4)));
+        userNameTextField.setBorder(
+            new CompoundBorder(
+                new LineBorder(new Color(200,200,200)), 
+                new EmptyBorder(6, 4, 6, 4)
+            )
+        );
 
         userNameTextField.addFocusListener(new FocusListener() {
             @Override
@@ -146,20 +151,32 @@ public class VLogin extends VComponent {
 
             int result = game.createUser(playerName, playerAvatar);
 
-            if (result == 0) {
-                if (userIndex == 0) this.isFirstPlayerReady = true;
-                else if (userIndex == 1) this.isSecondPlayerReady = true;
+            switch (result) {
+                case 0: {
+                    if (userIndex == 0) this.isFirstPlayerReady = true;
+                    else if (userIndex == 1) this.isSecondPlayerReady = true;
 
-                nextButton.setText("Ready");
-                userNameTextField.setEditable(false);
-                info.setText("Waiting for other alchemist.");
-                info.setForeground(Color.black);
-            } else if (result == 1) {
-                info.setText(String.format("There is already a player named %s.", playerName));
-                info.setForeground(Color.red);
-            } else if (result == 2) {
-                info.setText("Name cannot be empty.");
-                info.setForeground(Color.red);
+                    nextButton.setText("Ready");
+                    userNameTextField.setEditable(false);
+                    info.setText("Waiting for other alchemist.");
+                    info.setForeground(Color.black);
+                    break;
+                }
+                case 1: {
+                    info.setText(String.format("There is already a player named %s.", playerName));
+                    info.setForeground(Color.red);
+                    break;
+                }
+                case 2: {
+                    info.setText("Name cannot be empty.");
+                    info.setForeground(Color.red);
+                    break;
+                }
+                case 3: {
+                    info.setText(String.format("%s is already taken. Pick another avatar.", avatarName));
+                    info.setForeground(Color.red);
+                    break;
+                }
             }
 
             if (isFirstPlayerReady && isSecondPlayerReady) { 

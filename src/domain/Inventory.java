@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 
 public class Inventory {
-	
 	private int gold = 0;
 	private ArrayList<ArtifactCard> artifactCards = new ArrayList<>();
 	private ArrayList<IngredientCard> ingredientCards = new ArrayList<>();
@@ -16,6 +15,23 @@ public class Inventory {
 	
 	public void addArtifactCard(ArtifactCard artifact) {
 		this.artifactCards.add(artifact);
+	}
+
+	/**
+	 * Discards any artifact card in return of the half of the price of card.
+	 * Useful when player buys same persistent card more than once.
+	 * 
+	 * @param name - Name of the artifact card.
+	 */
+	public void discardArtifactCard(String name) {
+		ArtifactCard card = this.artifactCards
+								.stream()
+								.filter(c -> c.getName().equals(name))
+								.findFirst()
+								.get();
+
+		this.gold += (int)(card.getPrice() / 2);
+		this.artifactCards.remove(card);
 	}
 	
 	public void addGold (int amount) {
@@ -45,7 +61,4 @@ public class Inventory {
 	public int getGold() {
 		return gold;
 	}
-
-	
-	
 }

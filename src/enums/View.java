@@ -11,5 +11,6 @@ public enum View {
     DeductionBoard,
     CardDeck,
     PublicationArea,
-    Pause
+    Pause,
+    ArtifactShop
 }

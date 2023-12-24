@@ -2,6 +2,7 @@ package ui;
 
 import javax.swing.JLabel;
 import domain.TheAlchemistGame;
+import ui.framework.VComponent;
 
 public class VPause extends VComponent {
     public VPause(TheAlchemistGame game) {

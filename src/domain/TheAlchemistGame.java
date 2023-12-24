@@ -1,7 +1,7 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import enums.Avatar;
 import enums.DeductionToken;
@@ -44,12 +44,20 @@ public class TheAlchemistGame {
         gameBoard.transmuteIngredient(ingredientName);
     }
 
-    public void buyArtifact() {
-        gameBoard.buyArtifact();
+    public int buyArtifact(String name) {
+        return gameBoard.buyArtifact(name);
     }
 
-    public int getPriceOfNextArtifact(){
-        return gameBoard.artifactCardDeck.getPriceOfNextArtifact();
+    public void discardArtifact(String name) {
+        gameBoard.getAuth().getCurrentPlayer().inventory.discardArtifactCard(name);
+    }
+
+    public ArrayList<ArtifactCard> getArtifactCardDeck(){
+		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
+	}
+
+    public int drawMysteryCard() {
+        return this.gameBoard.drawMysteryCard();
     }
 
     public void addCurrentUserListener(ICurrentUserListener currentUserListener){
@@ -66,10 +74,6 @@ public class TheAlchemistGame {
 
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
-    }
-
-    public HashMap<HashSet<String>, Potion> getExperimentResults() {
-        return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getExperimentResults();
     }
 
     public HashMap<String[], DeductionToken> getDeductionTokens() {

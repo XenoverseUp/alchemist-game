@@ -1,22 +1,27 @@
-package ui;
+package ui.framework;
 
 import java.awt.Color;
 import javax.swing.JPanel;
 
 import domain.TheAlchemistGame;
 import interfaces.IRenderable;
+import ui.framework.ModalController.Modal;
 
 /**
  * @abstract
  * 
  * This class initializes the JPanel for rendering in the router and implements
- * `getContentPanel` method. It also has an abstract `render` method that is responsible 
- * for filling in the panel.
+ * `getContentPane` method. It also has an abstract `render` method that is responsible 
+ * for filling in the panel on initialization (prerendering).
  * 
- * This abstract class is suitable for views that don't have to access `TheAlchemistGame` 
- * game instance.
- * 
+ * If you don't need game instance in the view, simply don't create any constructor. 
  * @see VStart.java
+ * 
+ * If you need the game instance, create a constructor that passes tha game instance to VComponent.
+ * @see Login.java
+ * 
+ * This class has Router, WindowDimension and Modal initialized so that anything that extends it has access
+ * to these shared resources.
  * 
  * 
  * NOTICE: `render` method is called right after the initialization of the VComponent. Which is 
@@ -26,6 +31,9 @@ import interfaces.IRenderable;
 public abstract class VComponent implements IRenderable {
     protected JPanel panel = new JPanel();
     protected TheAlchemistGame game = null;
+    protected Router router = Router.getInstance();
+    protected WindowDimension windowDimension = WindowDimension.getInstance();
+    protected Modal modal = ModalController.getModalInstance();
 
     protected VComponent() {
         panel.setBackground(Color.WHITE);
@@ -54,7 +62,7 @@ public abstract class VComponent implements IRenderable {
     protected void unmounted() {}
 
     @Override
-    public JPanel getContentPanel() {
+    public JPanel getContentPane() {
         return this.panel;
     }
 }

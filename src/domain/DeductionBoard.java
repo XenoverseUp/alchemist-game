@@ -1,8 +1,6 @@
 package domain;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import enums.DeductionToken;
 import enums.Potion;
@@ -10,13 +8,11 @@ import enums.Potion;
 
 public class DeductionBoard {
 	private HashMap<String, Integer> ingredientAddresses;
-	private HashMap<HashSet<String>, Potion> experimentResults;
 	private HashMap<String[], DeductionToken> deductionTokens;
 	private int[][] deductionTable;
 	
 	public DeductionBoard() {
 		this.deductionTable = new int[8][8];
-		this.experimentResults = new HashMap<>();
 		this.deductionTokens = new HashMap<>();
 
 		this.ingredientAddresses = new HashMap<String, Integer>() {{
@@ -32,7 +28,6 @@ public class DeductionBoard {
 	}
 	
 	public void addExperimentResult(String ingredient1, String ingredient2, Potion po) {
-		this.experimentResults.put(new HashSet<>(Arrays.asList(ingredient1, ingredient2)), po);
 		this.deductionTokens.put(new String[]{ingredient1, ingredient2}, findDeductionToken(po));
 	}
 	
@@ -43,11 +38,6 @@ public class DeductionBoard {
 	public int[][] getDeductionTable() {
 		return deductionTable.clone();
 	}
-
-	public HashMap<HashSet<String>, Potion> getExperimentResults() {
-		return (HashMap<HashSet<String>, Potion>) experimentResults.clone();
-	}
-
 
 	public HashMap<String[], DeductionToken> getDeductionTokens() {
 		return (HashMap<String[], DeductionToken>) deductionTokens.clone();
