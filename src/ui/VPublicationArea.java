@@ -1,10 +1,12 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -29,6 +32,7 @@ public class VPublicationArea extends VComponent {
     @Override
     protected void mounted() {
         this.update();
+        showPublishedTheories();
     }
 
     @Override
@@ -171,10 +175,36 @@ public class VPublicationArea extends VComponent {
         debunkTheory.setBounds(1130, 100, 150, 30);
         panel.add(debunkTheory);
 
+        showPublishedTheories();
+
         panel.revalidate();
         panel.repaint();
 
         return publicationPanel;
+    }
+
+    private void showPublishedTheories() {
+        JButton showPublisedTheoriesButton = new JButton("Show Theories");
+        showPublisedTheoriesButton.setBounds(1130, 250, 150, 30);
+        showPublisedTheoriesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showPublishedTheoriesWindow(); 
+            }
+        });
+        panel.add(showPublisedTheoriesButton); 
+    }
+
+    private void showPublishedTheoriesWindow() {
+        JDialog theoriesDialog = new JDialog();
+        theoriesDialog.setTitle("Guessed Theories");
+        theoriesDialog.setMinimumSize(new Dimension(500, 500));
+        
+        // add components to dialog...
+        theoriesDialog.pack();
+        theoriesDialog.setLocationRelativeTo(panel);
+        theoriesDialog.setVisible(true);
+
     }
 
     private void addImageToPanel(int id, JPanel panel, String imagePath, int x, int y, int width, int height, ActionListener action) {
