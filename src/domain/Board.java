@@ -89,7 +89,7 @@ public class Board {
 				publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
 				SwingUtilities.invokeLater(() -> {
 					JOptionPane.showMessageDialog(null, "Published Theory Successfully!\n Reputation: +1\n Gold: -1",
-							"Success!", JOptionPane.INFORMATION_MESSAGE);
+							"Success!", JOptionPane.PLAIN_MESSAGE);
 				});
 			}
 		}
@@ -104,7 +104,7 @@ public class Board {
 				auth.getCurrentPlayer().decreaseReputation(1);
 				SwingUtilities.invokeLater(() -> {
 					JOptionPane.showMessageDialog(null, "Published Theory Was Correct.\n Reputation: -1",
-							"Failed!", JOptionPane.INFORMATION_MESSAGE);
+							"Failed!", JOptionPane.PLAIN_MESSAGE);
 				});
 			} else {
 				this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
@@ -120,7 +120,7 @@ public class Board {
 				this.publicationCardDeck.getChosen().setAlchemyMarker(marker);
 				SwingUtilities.invokeLater(() -> {
 					JOptionPane.showMessageDialog(null, "Debunked Theory Successfully!\n Reputation: +2",
-							"Success!", JOptionPane.INFORMATION_MESSAGE);
+							"Success!", JOptionPane.PLAIN_MESSAGE);
 				});
 			}
 		}
