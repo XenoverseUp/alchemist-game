@@ -203,7 +203,7 @@ public class VPublicationArea extends VComponent {
         theoriesDialog.setMinimumSize(new Dimension(500, 500));
         theoriesDialog.setLayout(null); //absolute positioning 
     
-        //ingredientCards
+        //ingredientCards: adding and positioning 
         ImageIcon originalIngredientCardIcon = new ImageIcon("./src/resources/image/birdClaw.png");
         Image originalIngredientCardImage = originalIngredientCardIcon.getImage();
         Image scaledIngredientCardImage = originalIngredientCardImage.getScaledInstance(80, 120, Image.SCALE_SMOOTH); 
@@ -212,7 +212,7 @@ public class VPublicationArea extends VComponent {
         imageIngredientCardLabel.setBounds(75, 85, 80, 120); 
         theoriesDialog.add(imageIngredientCardLabel);
 
-        //markers
+        //markers: adding and positioning 
         ImageIcon originalMarkerIcon = new ImageIcon("./src/resources/image/marker1.png");
         Image originalMarkerImage = originalMarkerIcon.getImage();
         Image scaledMarkerImage = originalMarkerImage.getScaledInstance(80, 80, Image.SCALE_SMOOTH); 
@@ -221,7 +221,7 @@ public class VPublicationArea extends VComponent {
         imageMarkerLabel.setBounds(330, 110, 80, 80); 
         theoriesDialog.add(imageMarkerLabel);
 
-        //arrow
+        //arrow: adding and positioning 
         ImageIcon originalArrowIcon = new ImageIcon("./src/resources/image/arrow.png");
         Image originalArrowImage = originalArrowIcon.getImage();
         Image scaledArrowImage = originalArrowImage.getScaledInstance(130, 60, Image.SCALE_SMOOTH); 
@@ -230,7 +230,7 @@ public class VPublicationArea extends VComponent {
         imageArrowLabel.setBounds(180, 120, 130, 60); 
         theoriesDialog.add(imageArrowLabel);
     
-        //texts
+        //texts: adding and positioning 
         JLabel TextLabel = new JLabel("This window will show the published theories.");
         JPanel TextlabelPanel = new JPanel(); 
         TextlabelPanel.setLayout(new FlowLayout()); 
