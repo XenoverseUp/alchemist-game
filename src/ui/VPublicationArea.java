@@ -1,7 +1,9 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -199,13 +201,50 @@ public class VPublicationArea extends VComponent {
         JDialog theoriesDialog = new JDialog();
         theoriesDialog.setTitle("Guessed Theories");
         theoriesDialog.setMinimumSize(new Dimension(500, 500));
-        
-        // add components to dialog...
+        theoriesDialog.setLayout(null); //absolute positioning 
+    
+        //ingredientCards
+        ImageIcon originalIngredientCardIcon = new ImageIcon("./src/resources/image/birdClaw.png");
+        Image originalIngredientCardImage = originalIngredientCardIcon.getImage();
+        Image scaledIngredientCardImage = originalIngredientCardImage.getScaledInstance(80, 120, Image.SCALE_SMOOTH); 
+        ImageIcon scaledIngredientCardIcon = new ImageIcon(scaledIngredientCardImage);
+        JLabel imageIngredientCardLabel = new JLabel(scaledIngredientCardIcon);
+        imageIngredientCardLabel.setBounds(75, 85, 80, 120); 
+        theoriesDialog.add(imageIngredientCardLabel);
+
+        //markers
+        ImageIcon originalMarkerIcon = new ImageIcon("./src/resources/image/marker1.png");
+        Image originalMarkerImage = originalMarkerIcon.getImage();
+        Image scaledMarkerImage = originalMarkerImage.getScaledInstance(80, 80, Image.SCALE_SMOOTH); 
+        ImageIcon scaledMarkerIcon = new ImageIcon(scaledMarkerImage);
+        JLabel imageMarkerLabel = new JLabel(scaledMarkerIcon);
+        imageMarkerLabel.setBounds(330, 110, 80, 80); 
+        theoriesDialog.add(imageMarkerLabel);
+
+        //arrow
+        ImageIcon originalArrowIcon = new ImageIcon("./src/resources/image/arrow.png");
+        Image originalArrowImage = originalArrowIcon.getImage();
+        Image scaledArrowImage = originalArrowImage.getScaledInstance(130, 60, Image.SCALE_SMOOTH); 
+        ImageIcon scaledArrowIcon = new ImageIcon(scaledArrowImage);
+        JLabel imageArrowLabel = new JLabel(scaledArrowIcon);
+        imageArrowLabel.setBounds(180, 120, 130, 60); 
+        theoriesDialog.add(imageArrowLabel);
+    
+        //texts
+        JLabel TextLabel = new JLabel("This window will show the published theories.");
+        JPanel TextlabelPanel = new JPanel(); 
+        TextlabelPanel.setLayout(new FlowLayout()); 
+        TextlabelPanel.add(TextLabel);
+        TextlabelPanel.setBounds(10, 10, 480, 20);
+        theoriesDialog.add(TextlabelPanel);
+    
+
+
         theoriesDialog.pack();
         theoriesDialog.setLocationRelativeTo(panel);
         theoriesDialog.setVisible(true);
-
     }
+    
 
     private void addImageToPanel(int id, JPanel panel, String imagePath, int x, int y, int width, int height, ActionListener action) {
         BufferedImage img = null;
