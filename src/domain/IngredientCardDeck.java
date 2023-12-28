@@ -42,17 +42,13 @@ public class IngredientCardDeck {
 
 
 	public IngredientCard drawCard() {
-		Integer indx = incrIndex();
-		//IngredientCard iCard = ingredientCardDeck.remove(ingredientCardDeck.size() - 1);
-		if (indx == ingredientCardDeck.size()){
-			indx = -1;
-			shuffle();
+		if (index == ingredientCardDeck.size()){
 			IngredientCard iCard = ingredientCardDeck.get(ingredientCardDeck.size() - 1);
 			return iCard;
 		}
 		else {
 			incrIndex();
-			IngredientCard iCard = ingredientCardDeck.get(indx);
+			IngredientCard iCard = ingredientCardDeck.get(index);
 			return iCard;	
 		}
 	}
@@ -70,8 +66,14 @@ public class IngredientCardDeck {
 		ingredientCardDeck.add(card);
 	}
 	
-	public Integer incrIndex(){
-		return index++;
+	public void incrIndex(){
+		if (index == ingredientCardDeck.size()){
+			shuffle();
+			index=-1;
+		}
+		else {
+			index++;	
+		}
 	}
 	
 
