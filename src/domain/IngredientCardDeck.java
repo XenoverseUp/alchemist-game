@@ -42,15 +42,10 @@ public class IngredientCardDeck {
 
 
 	public IngredientCard drawCard() {
-		if (index == ingredientCardDeck.size()){
-			IngredientCard iCard = ingredientCardDeck.get(ingredientCardDeck.size() - 1);
-			return iCard;
-		}
-		else {
 			incrIndex();
 			IngredientCard iCard = ingredientCardDeck.get(index);
 			return iCard;	
-		}
+		
 	}
 
 	public IngredientCard getByName(String name) {
