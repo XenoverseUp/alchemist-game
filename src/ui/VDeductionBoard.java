@@ -245,7 +245,7 @@ public class VDeductionBoard extends VComponent {
     }
 
     private Point getDeductionTokenLocation(String first, String second) {
-        HashMap<String, Point> tokens = new HashMap<>() {{
+        HashMap<String, Point> tokens = new HashMap<String, Point>() {{
             put("mushroom-fern", new Point(616, 67));
             put("mushroom-warty toad", new Point(524, 116));
             put("mushroom-bird claw", new Point(430, 160));

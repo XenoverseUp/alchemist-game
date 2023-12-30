@@ -58,7 +58,7 @@ public class Window {
 
         mainPanel.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
 
-        LinkedHashMap<View, VComponent> views = new LinkedHashMap<>() {{
+        LinkedHashMap<View, VComponent> views = new LinkedHashMap<View, VComponent>() {{
             put(View.Start, new VStart());
             put(View.Login, new VLogin(game));
             put(View.Board, new VBoard(game));
