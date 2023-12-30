@@ -101,5 +101,15 @@ public class Player {
         }
     }
 
+    public int[] calculateFinalScore(){ 
+        int finalPoints = (this.reputation * 10);
+        finalPoints += (this.inventory.getGold() / 3);
+        int leftoverGold = this.inventory.getGold() % 3;
+        int[] score =  {finalPoints, leftoverGold};
+        return score;
+    }
+
+
+
 
 }
