@@ -1,7 +1,6 @@
 package ui;
 
 import ui.framework.VComponent;
-import ui.util.AlphaLayer;
 import ui.util.WrapLayout;
 
 import java.awt.Color;
@@ -16,9 +15,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JLayer;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
