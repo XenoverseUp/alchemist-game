@@ -33,6 +33,7 @@ public class AssetLoader {
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
+    private BufferedImage BCheckMark;
 
     public ArrayList<String> ingredientNames = new ArrayList<>() {{
         add("mushroom");
@@ -79,6 +80,8 @@ public class AssetLoader {
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             BTitle = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
+            BCheckMark = ImageIO.read(new File("./src/resources/image/HUD/checkMark.png"));
+
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -134,12 +137,16 @@ public class AssetLoader {
         }
     }
 
-    public Image getCloseIcon() {
+    public Image getClose() {
         return this.scale(BClose, 60, 60);
     }
 
-    public Image getPageTitle() {
+    public Image getPageBanner() {
         return this.scale(BTitle, 0.75);
+    }
+
+    public BufferedImage getCheckMark() {
+        return BCheckMark;
     }
 
     private Image scale(BufferedImage i, double scale) {

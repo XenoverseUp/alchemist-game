@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class ModalController {
     private static JPanel overlay = null;
@@ -78,6 +79,7 @@ public class ModalController {
             infoPopoverDescription = new JLabel();
             infoPopoverDescription.setAlignmentX(Component.CENTER_ALIGNMENT);
             infoPopoverDescription.setFont(new Font("Crimson Pro", Font.PLAIN, 18));
+            infoPopoverDescription.setMaximumSize(new Dimension(360, 9999));
 
 
             JButton defaultActionButton = new JButton("Ok!");
@@ -132,7 +134,7 @@ public class ModalController {
     public static class Modal {
         public void info(String title, String description) {
             infoPopoverTitle.setText(title);
-            infoPopoverDescription.setText(description);
+            infoPopoverDescription.setText(String.format("<html><div style='text-align: center;'>%s</div></html>", description));
             infoPopover.setVisible(true);
             overlay.setVisible(true);
         }

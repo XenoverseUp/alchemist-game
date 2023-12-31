@@ -1,6 +1,7 @@
 package ui;
 
 import ui.framework.VComponent;
+import ui.util.AlphaLayer;
 import ui.util.WrapLayout;
 
 import java.awt.Color;
@@ -9,14 +10,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JLayer;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -24,7 +26,7 @@ import domain.TheAlchemistGame;
 import enums.View;
 
 public class VPotionBrewingArea extends VComponent {
-    private ArrayList<String> selected = new ArrayList<>() {{
+    private ArrayList<String> selectedIngredients = new ArrayList<>() {{
         add(null);
         add(null);
     }};
@@ -34,22 +36,19 @@ public class VPotionBrewingArea extends VComponent {
         add(new JButton());
     }};
 
+    private JLabel checkMark = new JLabel(new ImageIcon(assetLoader.getCheckMark()));
+    private JPanel selectionPanel = new JPanel();
+
+    private int testingMethod = -1;
+
     public VPotionBrewingArea(TheAlchemistGame game) {
         super(game);
     }
 
-    @Override
-    protected void mounted() {
-        selected = new ArrayList<>() {{
-            add(null);
-            add(null);
-        }};
-        this.updatePreviews();
-    }
 
     @Override
     protected void render() {
-        Image BClose = assetLoader.getCloseIcon();
+        Image BClose = assetLoader.getClose();
         JButton close = new JButton(new ImageIcon(BClose));
         close.setBounds(
             windowDimension.getWidth() - BClose.getWidth(null) - 10, 
@@ -59,7 +58,7 @@ public class VPotionBrewingArea extends VComponent {
         );
         close.addActionListener(e -> router.to(View.Board));
 
-        Image BTitle = assetLoader.getPageTitle();
+        Image BTitle = assetLoader.getPageBanner();
         JLabel title = new JLabel(new ImageIcon(BTitle));
         title.setBounds(windowDimension.getWidth() / 2 - BTitle.getWidth(null) / 2 + 473 / 2, -16, BTitle.getWidth(null), BTitle.getHeight(null));
 
@@ -68,12 +67,10 @@ public class VPotionBrewingArea extends VComponent {
         titleText.setFont(new Font("Itim-Regular", Font.BOLD, 20));
         titleText.setBounds(title.getBounds());
 
-        JPanel selectionPanel = createSelectionPanel();
         selectionPanel.setBounds(0,0, 473, windowDimension.getHeight());
 
         JLabel background = new JLabel(new ImageIcon(assetLoader.getBackground(View.PotionBrewingArea)));
         background.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
-
 
         
         for (int i = 0; i < 2; i++) {
@@ -91,6 +88,30 @@ public class VPotionBrewingArea extends VComponent {
             panel.add(previewButtons.get(i));
         }
 
+        for (int i = 0; i < 3; i++) {
+            final int index = i;
+            
+            JButton radioButton = new JButton();
+            radioButton.setBounds(627 + i * 228, 400, 188, 250);
+            radioButton.setOpaque(false);
+            radioButton.setContentAreaFilled(false);
+            radioButton.setBorderPainted(false);
+            radioButton.setFocusable(false);
+            radioButton.addActionListener(e -> {
+                if (index == testingMethod) return;
+
+                testingMethod = index;
+                updatePreviews();
+            });
+            panel.add(radioButton);
+        }
+
+        JButton submitButton = new JButton("Brew Potion");
+        submitButton.setBounds(864, 700, 180, 36);
+        submitButton.addActionListener(e -> this.submit());
+
+        panel.add(submitButton);
+        panel.add(checkMark);
         panel.add(titleText);
         panel.add(title);
         panel.add(close);
@@ -98,41 +119,58 @@ public class VPotionBrewingArea extends VComponent {
         panel.add(background);
     }
 
+    @Override
+    protected void mounted() {
+        selectionPanel.removeAll();
+        createSelectionPanel();
+        selectedIngredients = new ArrayList<>() {{
+            add(null);
+            add(null);
+        }};
+        testingMethod = -1;
+        this.updatePreviews();
+    }
 
-    private JPanel createSelectionPanel() {
-        JPanel selectionPanel = new JPanel();
+    private void createSelectionPanel() {
         selectionPanel.setLayout(new BoxLayout(selectionPanel, BoxLayout.Y_AXIS));
         selectionPanel.setOpaque(false);
 
-        JLabel info = new JLabel("<html>Pick 2 ingredients to make an experiment.<html>", SwingConstants.CENTER);
+        JLabel info = new JLabel(
+            String.format("<html><div style='text-align: center'>%s</div><html>", game.getCurrentUser().inventory.isEmpty() 
+                ? "Forage some ingredients to make experiments on and improve your insights." 
+                : "Pick 2 ingredients to make an experiment."), 
+            SwingConstants.CENTER
+        );
+
         info.setForeground(Color.white);
         info.setFont(new Font("Crimson Pro", Font.PLAIN, 18));
         info.setAlignmentX(Component.CENTER_ALIGNMENT);
+        info.setMaximumSize(new Dimension(360, 999));
 
         JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER));
         cards.setMaximumSize(new Dimension(9999, 600));
         cards.setOpaque(false);
 
         assetLoader.ingredientNames.forEach(name -> {
+            if (!game.getCurrentUser().inventory.hasIngredient(name)) return;
+
             Image cardImage = assetLoader.getIngredientCard(name, 0.45);
+           
             JButton card = new JButton(new ImageIcon(cardImage));
             card.setOpaque(false);
             card.setContentAreaFilled(false);
             card.setBorderPainted(false);
-            card.setFocusable(false);
-            cards.add(card);
-
-
+            card.setFocusable(false);  
             card.addActionListener(e -> {
-                if (selected.contains(name)) {
+                if (selectedIngredients.contains(name)) {
                     for (int i = 0; i < 2; i++)
-                        if (selected.get(i) != null && selected.get(i).equals(name)) 
+                        if (selectedIngredients.get(i) != null && selectedIngredients.get(i).equals(name)) 
                             setIngredient(i, null);  
                 } else {
-                    if (selected.get(0) != null && selected.get(1) != null) return;
+                    if (selectedIngredients.get(0) != null && selectedIngredients.get(1) != null) return;
                     
                     for (int i = 0; i < 2; i++) {
-                        if (selected.get(i) == null) {
+                        if (selectedIngredients.get(i) == null) {
                             setIngredient(i, name);
                             break;
                         }
@@ -140,29 +178,58 @@ public class VPotionBrewingArea extends VComponent {
                 }
             });
 
+            cards.add(card);
+
+
+
         });
         
         selectionPanel.add(Box.createVerticalGlue());
         selectionPanel.add(info);
-        selectionPanel.add(Box.createVerticalStrut(24));
+        if (!game.getCurrentUser().inventory.isEmpty()) selectionPanel.add(Box.createVerticalStrut(24));
         selectionPanel.add(cards);
         selectionPanel.add(Box.createVerticalGlue());
-
-        return selectionPanel;
-
     }
 
     private void setIngredient(int index, String name) {
-        selected.set(index, name);
+        selectedIngredients.set(index, name);
         this.updatePreviews();
     }
 
     private void updatePreviews() {
-         for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             previewButtons.get(i).setIcon(null);
-            if (selected.get(i) != null) 
-                previewButtons.get(i).setIcon(new ImageIcon(assetLoader.getIngredientIcon(selected.get(i))));
+            if (selectedIngredients.get(i) != null) 
+                previewButtons.get(i).setIcon(new ImageIcon(assetLoader.getIngredientIcon(selectedIngredients.get(i))));
         }
+
+        checkMark.setBounds(712 + testingMethod * 227, 590, 35, 35);
+        if (testingMethod == -1) checkMark.setVisible(false);
+        else checkMark.setVisible(true);
+    }
+
+    private int validate() {
+        for (String s : selectedIngredients) {
+            if (s == null) {
+                modal.info("Pony up and give!", "Pick 2 ingredients from your inventory to make experiment and create mystical potions.");
+                return 1;
+            }
+        }
+
+        if (testingMethod == -1) {
+            modal.info("Who will be the victim? Decide.", "Picking a test method would be really useful to see the inner structure of the potion.");
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private void submit() {
+        if (validate() == 1) return;
+
+        String testOn = testingMethod == 0 ? "student" : testingMethod == 1 ? "self" : "sell";
+        game.makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
+        router.to(View.DeductionBoard);
     }
 
 }

@@ -33,6 +33,10 @@ public class Inventory {
 		this.gold += (int)(card.getPrice() / 2);
 		this.artifactCards.remove(card);
 	}
+
+	public boolean isEmpty() {
+		return this.ingredientCards.size() == 0;
+    }
 	
 	public void addGold (int amount) {
 		this.gold += amount;
@@ -57,6 +61,16 @@ public class Inventory {
 		
 		return null;
 	}
+
+	public Boolean hasIngredient(String name) {
+		for (int i = 0; i < ingredientCards.size(); i++) 
+			if (ingredientCards.get(i).getName().equals(name)) 
+				return true;
+		
+		return false;
+	}
+
+
 
 	public int getGold() {
 		return gold;
