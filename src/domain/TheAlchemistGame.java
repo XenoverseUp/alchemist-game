@@ -80,4 +80,8 @@ public class TheAlchemistGame {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
     }
 
+    public ArrayList<Player> calculateWinner(){
+        return this.gameBoard.getAuth().calculateWinner();
+    }
+
 }

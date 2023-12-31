@@ -76,4 +76,32 @@ public class Auth {
 	public void publishCurrentUserChange(){
 		for(ICurrentUserListener listener : currentUserListeners) listener.onCurrentUserChange();
 	}
+
+    public ArrayList<Player> calculateWinner(){
+        ArrayList<Player> winners = new ArrayList<>();
+        Player candidateWinner = null;
+        int[] candidateScore = null;
+        for (Player player: this.players){
+            if(candidateWinner == null || candidateScore == null){
+                candidateWinner = player;
+                candidateScore = player.calculateFinalScore();
+            } 
+            else{
+                int [] score = player.calculateFinalScore();
+                if ((score[0] > candidateScore[0]) || (score[0] == candidateScore[0] && score[1] > score[1] )){
+                    candidateWinner = player;
+                    candidateScore = score;
+                    if (winners.size() > 0){
+                        winners.clear();
+                    }
+                }
+                else if (score[0] == candidateScore[0] && score[1] == candidateScore[1]){
+                    winners.add(player);
+                }
+                
+            }
+        }
+        winners.add(candidateWinner);
+        return winners;
+    }
 }
