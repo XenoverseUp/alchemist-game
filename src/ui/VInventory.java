@@ -34,17 +34,8 @@ public class VInventory extends VComponent implements ICurrentUserListener {
     private int scrollPosition = 0;
 
     private BufferedImage BHammer;
-    private BufferedImage BBirdClaw;
-    private BufferedImage BFern;
-    private BufferedImage BMandrakeRoot;
-    private BufferedImage BMoonshade;
-    private BufferedImage BMushroom;
-    private BufferedImage BRavensFeather;
-    private BufferedImage BScorpionTail;
-    private BufferedImage BWartyToad;
     private BufferedImage BArtifactCardTemplate;
     private BufferedImage BDiscardArtifactCard;
-
 
 
     public VInventory(TheAlchemistGame game) {
@@ -63,14 +54,6 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             title = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
             BHammer =  ImageIO.read(new File("./src/resources/image/HUD/hammer.png"));
-            BBirdClaw = ImageIO.read(new File("./src/resources/image/ingredientCards/birdClaw.png"));
-            BFern = ImageIO.read(new File("./src/resources/image/ingredientCards/fern.png"));
-            BMandrakeRoot = ImageIO.read(new File("./src/resources/image/ingredientCards/mandrakeRoot.png"));
-            BMoonshade = ImageIO.read(new File("./src/resources/image/ingredientCards/moonshade.png"));
-            BMushroom = ImageIO.read(new File("./src/resources/image/ingredientCards/mushroom.png"));
-            BRavensFeather = ImageIO.read(new File("./src/resources/image/ingredientCards/ravensFeather.png"));
-            BScorpionTail = ImageIO.read(new File("./src/resources/image/ingredientCards/scorpionTail.png"));
-            BWartyToad = ImageIO.read(new File("./src/resources/image/ingredientCards/wartyToad.png"));
             BArtifactCardTemplate = ImageIO.read(new File("./src/resources/image/artifactCard.png"));
             BDiscardArtifactCard = ImageIO.read(new File("./src/resources/image/HUD/discardArtifact.png"));
         } catch (IOException e) {
@@ -190,16 +173,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
 
 
     private JPanel generateIngredientCard(String name) {
-        BufferedImage cardBuffer = null;
-
-        if (name.equals("bird claw")) cardBuffer = BBirdClaw;
-        else if (name.equals("fern")) cardBuffer = BFern;
-        else if (name.equals("mandrake root")) cardBuffer = BMandrakeRoot;
-        else if (name.equals("moonshade")) cardBuffer = BMoonshade;
-        else if (name.equals("mushroom")) cardBuffer = BMushroom;
-        else if (name.equals("raven's feather")) cardBuffer = BRavensFeather;
-        else if (name.equals("scorpion tail")) cardBuffer = BScorpionTail;
-        else if (name.equals("warty toad")) cardBuffer = BWartyToad;
+        BufferedImage cardBuffer = assetLoader.getIngredientCard(name);
 
         JPanel card = new JPanel(null);
         card.setOpaque(false);

@@ -115,17 +115,6 @@ public class VDeductionBoard extends VComponent {
         markerButtons.removeAll();
         markerButtons.setLayout(null);
 
-        String[] names = {
-            "mushroom",
-            "fern",
-            "warty toad",
-            "bird claw",
-            "moonshade",
-            "mandrake root",
-            "scorpion tail",
-            "raven's feather"
-        };
-
         for (int i = 0; i < game.getDeductionTable().length; i++)
             for (int j = 0; j < game.getDeductionTable()[0].length; j++) {
                 JButton toggleButton = new JButton("");
@@ -135,11 +124,12 @@ public class VDeductionBoard extends VComponent {
                 toggleButton.setBorderPainted(false);
                 toggleButton.setFocusable(false);
 
-                final int finalI = i;
-                final int finalJ = j;
+                final int nameIndex = i;
+                final int tableIndex = j;
 
                 toggleButton.addActionListener(event -> {
-                    game.toggleDeductionTable(names[finalI], finalJ);
+                    String name = assetLoader.ingredientNames.get(nameIndex);
+                    game.toggleDeductionTable(name, tableIndex);
                     this.update();
                 });
 
