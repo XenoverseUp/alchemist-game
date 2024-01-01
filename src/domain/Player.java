@@ -82,48 +82,46 @@ public class Player {
         if (!(testOn.equals("self") || testOn.equals("student")))
             throw new Exception("You can test your potion on only yourself of your student.");
 
-        switch (p) {
-            case Health: {
-                if (testOn.equals("self")) decreaseSickness(1);
-                else this.inventory.spendGold(1);
+            if (testOn.equals("student")){
+                this.inventory.spendGold(1);
                 return;
             }
-
-            case Poison: {
-                if (testOn.equals("self")) increaseSickness(1);
-                else this.inventory.spendGold(1);
-                return;
+            switch (p) {
+                case Health: {
+                    decreaseSickness(1);
+                    return;
+                }
+    
+                case Poison: {
+                    increaseSickness(1);
+                    return;
+                }
+    
+                case Wisdom: {
+                    increaseReputation(1);
+                    return;   
+                }
+    
+                case Insanity: {
+                    decreaseReputation(1);
+    
+                    return;   
+                }
+    
+                case Speed: {
+                    setExtraActions(1);
+                    return;
+                }
+    
+                case Paralysis: {
+                    setExtraActions(-2);
+                    return;
+                }
+    
+                case Neutral: {
+                    return;
+                }
             }
-
-            case Wisdom: {
-                if (testOn.equals("self")) increaseReputation(1);
-                else this.inventory.spendGold(1);
-                return;   
-            }
-
-            case Insanity: {
-                if (testOn.equals("self")) decreaseReputation(1);
-                else this.inventory.spendGold(1);
-                return;   
-            }
-
-            case Speed: {
-                if (testOn.equals("self")) setExtraActions(1);
-                else this.inventory.spendGold(1);
-                return;
-            }
-
-            case Paralysis: {
-                if (testOn.equals("self")) setExtraActions(-2);
-                else this.inventory.spendGold(1);
-                return;
-            }
-
-            case Neutral: {
-                if (testOn.equals("student")) this.inventory.spendGold(1);
-                return;
-            }
-        }
     }
 
     public int[] calculateFinalScore(){ 
