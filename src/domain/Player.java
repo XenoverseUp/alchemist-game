@@ -57,6 +57,21 @@ public class Player {
 
 
     public void use(Potion p, String testOn) throws Exception {
+       /* 
+        * @requires: p and testOn are not NULL,
+        *            testOn = "self" or "student" only
+        * 
+        * @effects: if testOn is not "self" or "student" throws Exception
+        *           if testOn is student, the gold of the player is decreased by 1
+        *           if testOn is self, below effects imply.
+        *           if p is Healt, sickness is of the player decreased by 1
+        *           if p is Poison, sickness of the player increased by 1
+        *           if p is Wisdom, reputation of the player is increased by 1
+        *           if p is Insanity, reputation of the player is decreased by 1
+        *           if p is Speed, extrac actions set to 1
+        *           if p is Paralysis, extra actions set to -2
+        *           if p is Neutral, nothing happens.          
+        */
         if (!(testOn.equals("self") || testOn.equals("student")))
             throw new Exception("You can test your potion on only yourself of your student.");
 
