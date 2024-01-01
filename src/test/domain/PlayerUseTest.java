@@ -76,7 +76,12 @@ public class PlayerUseTest {
         int sickness = auth.getCurrentPlayer().getSickness();
         auth.getCurrentPlayer().use(Potion.Health, "self");
 
-        assertEquals(sickness - 1, auth.getCurrentPlayer().getSickness());
+        if (sickness == 0){
+            assertEquals(0, auth.getCurrentPlayer().getSickness());
+
+        }else{
+            assertEquals(sickness - 1, auth.getCurrentPlayer().getSickness());
+        }
         assertTrue(auth.getCurrentPlayer().getSickness() >= 0, "The sickness of a player cannot be negative!");
     }
 
@@ -109,7 +114,7 @@ public class PlayerUseTest {
     @Test
     void testSelfInsanity() throws Exception{
         int reputation = auth.getCurrentPlayer().getReputation();
-        auth.getCurrentPlayer().use(Potion.Wisdom, "self");
+        auth.getCurrentPlayer().use(Potion.Insanity, "self");
 
         assertEquals(reputation - 1, auth.getCurrentPlayer().getReputation());
     }

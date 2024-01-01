@@ -33,10 +33,17 @@ public class Player {
 
     public void increaseSickness(int amount) {
         this.sickness += amount;
+
+        if (this.sickness == 3){
+            this.sickness = 0;
+            this.inventory.setGold(0);
+        }
     }
 
     public void decreaseSickness(int amount) {
-        this.sickness -= amount;
+        if (amount <= this.sickness){
+            this.sickness -= amount;
+        }
     }
 
     public void setSickness(int value) {
