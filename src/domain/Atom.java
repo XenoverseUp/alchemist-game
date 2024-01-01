@@ -16,6 +16,11 @@ public abstract class Atom {
     public char getSize() {
         return size;
     }
+
+    @Override
+    public String toString(){
+        return "" + color + size + sign;
+    }
 }
 
 
