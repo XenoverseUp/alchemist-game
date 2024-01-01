@@ -7,14 +7,14 @@ import java.util.Collections;
 public class IngredientCardDeck {
 	private ArrayList<IngredientCard> ingredientCardDeck = new ArrayList<IngredientCard>();
 	private ArrayList<String> ingredientNames = new ArrayList<String>() {{
-		add("scorpion tail");
-		add("bird claw");
+		add("mushroom");
+		add("fern");
 		add("warty toad");
+		add("bird claw");
+		add("moonshade");
 		add("mandrake root");
 		add("raven's feather");
-		add("mushroom");
-		add("moonshade");
-		add("fern");
+		add("scorpion tail");
 	}};
 
 	public IngredientCardDeck() {

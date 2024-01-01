@@ -53,6 +53,7 @@ public class Player {
         this.extraActions = extraActions;
     }
 
+
     public void use(Potion p, String testOn) throws Exception {
         if (!(testOn.equals("self") || testOn.equals("student")))
             throw new Exception("You can test your potion on only yourself of your student.");

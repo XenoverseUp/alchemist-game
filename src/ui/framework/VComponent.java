@@ -34,6 +34,7 @@ public abstract class VComponent implements IRenderable {
     protected Router router = Router.getInstance();
     protected WindowDimension windowDimension = WindowDimension.getInstance();
     protected Modal modal = ModalController.getModalInstance();
+    protected AssetLoader assetLoader = AssetLoader.getInstance();
 
     protected VComponent() {
         panel.setBackground(Color.WHITE);
