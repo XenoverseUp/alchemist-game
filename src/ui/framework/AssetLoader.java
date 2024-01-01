@@ -35,7 +35,7 @@ public class AssetLoader {
     private BufferedImage BTitle;
     private BufferedImage BCheckMark;
 
-    public ArrayList<String> ingredientNames = new ArrayList<>() {{
+    public ArrayList<String> ingredientNames = new ArrayList<String>() {{
         add("mushroom");
         add("fern");
         add("warty toad");

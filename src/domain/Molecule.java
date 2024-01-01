@@ -16,11 +16,15 @@ public class Molecule {
     }
 
     public Atom getGreen(){
-        return red;
+        return green;
     }
 
     public Atom getBlue(){
-        return red;
+        return blue;
+    }
+
+    public String toString(){
+        return red.toString() + " " + green.toString() +" "+blue.toString();
     }
 
     

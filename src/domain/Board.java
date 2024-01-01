@@ -72,6 +72,7 @@ public class Board {
 	    IngredientCard ingredient2 = auth.getIngredientCardFromCurrentPlayer(ingredientName2);
 
 		Potion potion = PotionBrewingArea.combine(ingredient1, ingredient2);
+
 		
 		try {
 			auth.getCurrentPlayer().deductionBoard.addExperimentResult(ingredientName1, ingredientName2, potion);

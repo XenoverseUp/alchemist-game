@@ -12,32 +12,42 @@ public class PotionBrewingArea {
         Atom redAtom2 = molecule2.getRed();
         Atom greenAtom2 = molecule2.getGreen();
         Atom blueAtom2 = molecule2.getBlue();
-        
+
 
         if(redAtom1.size != redAtom2.size){
-            if(redAtom1.sign == '+' && redAtom2.sign == '+'){
+
+            if(redAtom1.sign == '+' && redAtom2.sign == '+') {
                 return Potion.Health;
-            }
-            else if(redAtom1.sign == '-' && redAtom2.sign == '-'){
+            } 
+            
+            if(redAtom1.sign == '-' && redAtom2.sign == '-') {
                 return Potion.Poison;
             }
 
-        } else if(greenAtom1.size != greenAtom2.size){
-            if(greenAtom1.sign == '+' && greenAtom2.sign == '+'){
+        } 
+
+
+        if(greenAtom1.size != greenAtom2.size) {
+
+            if(greenAtom1.sign == '+' && greenAtom2.sign == '+') {
                 return Potion.Speed;
-            }
-            else if(greenAtom1.sign == '-' && greenAtom2.sign == '-'){
+            } 
+            
+            if(greenAtom1.sign == '-' && greenAtom2.sign == '-') {
                 return Potion.Paralysis;
             }
 
-        } else if(blueAtom1.size != blueAtom2.size){
-            if(blueAtom1.sign == '+' && blueAtom2.sign == '+'){
+        } 
+
+        if(blueAtom1.size != blueAtom2.size) {
+
+            if(blueAtom1.sign == '+' && blueAtom2.sign == '+') {
                 return Potion.Wisdom;
-            }
-            else if(blueAtom1.sign == '-' && blueAtom2.sign == '-'){
+            } 
+            
+            if(blueAtom1.sign == '-' && blueAtom2.sign == '-') {
                 return Potion.Insanity;
             }
-
         }
         
         return Potion.Neutral;

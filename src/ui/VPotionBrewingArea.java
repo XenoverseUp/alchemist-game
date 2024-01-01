@@ -23,12 +23,12 @@ import domain.TheAlchemistGame;
 import enums.View;
 
 public class VPotionBrewingArea extends VComponent {
-    private ArrayList<String> selectedIngredients = new ArrayList<>() {{
+    private ArrayList<String> selectedIngredients = new ArrayList<String>() {{
         add(null);
         add(null);
     }};
 
-    private ArrayList<JButton> previewButtons = new ArrayList<>() {{
+    private ArrayList<JButton> previewButtons = new ArrayList<JButton>() {{
         add(new JButton());
         add(new JButton());
     }};
@@ -120,7 +120,7 @@ public class VPotionBrewingArea extends VComponent {
     protected void mounted() {
         selectionPanel.removeAll();
         createSelectionPanel();
-        selectedIngredients = new ArrayList<>() {{
+        selectedIngredients = new ArrayList<String>() {{
             add(null);
             add(null);
         }};
