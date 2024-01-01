@@ -75,4 +75,8 @@ public class Inventory {
 	public int getGold() {
 		return gold;
 	}
+
+	public void setGold(int amount){
+		this.gold = amount;
+	}
 }
