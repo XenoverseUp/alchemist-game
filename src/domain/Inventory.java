@@ -43,7 +43,9 @@ public class Inventory {
 	}
 	
 	public void spendGold(int amount) {
-		this.gold -= amount;
+		if(amount <= this.gold){
+			this.gold -= amount;
+		}
 	}
 
 	public ArrayList<IngredientCard> getIngredientCards() {

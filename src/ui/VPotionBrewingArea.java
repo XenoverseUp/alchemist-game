@@ -225,7 +225,10 @@ public class VPotionBrewingArea extends VComponent {
         if (validate() == 1) return;
 
         String testOn = testingMethod == 0 ? "student" : testingMethod == 1 ? "self" : "sell";
-        game.makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
+        try{game.makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
+        } catch(Exception e){
+            System.out.println(e);
+        }
         router.to(View.DeductionBoard);
     }
 
