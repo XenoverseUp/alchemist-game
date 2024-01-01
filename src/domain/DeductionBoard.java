@@ -50,7 +50,7 @@ public class DeductionBoard {
 			case Wisdom: return DeductionToken.BluePlus;
 			case Insanity: return DeductionToken.BlueMinus;
 			case Speed: return DeductionToken.GreenPlus;
-			case Paralysis: return DeductionToken.GreenPlus;
+			case Paralysis: return DeductionToken.GreenMinus;
 			case Neutral: return DeductionToken.Neutral;
 			default: return null;
 		}
