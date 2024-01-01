@@ -68,7 +68,7 @@ public class Player {
         *           if p is Poison, sickness of the player increased by 1
         *           if p is Wisdom, reputation of the player is increased by 1
         *           if p is Insanity, reputation of the player is decreased by 1
-        *           if p is Speed, extrac actions set to 1
+        *           if p is Speed, extra actions set to 1
         *           if p is Paralysis, extra actions set to -2
         *           if p is Neutral, nothing happens.          
         */
