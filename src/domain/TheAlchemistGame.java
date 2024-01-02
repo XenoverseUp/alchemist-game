@@ -3,14 +3,21 @@ package domain;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import enums.ApplicationType;
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.Potion;
 import interfaces.ICurrentUserListener;
+import net.ClientHandler;
+import net.NetworkingHandler;
+import net.ServerHandler;
 
 public class TheAlchemistGame {
     private Auth auth;
     private Board gameBoard;
+    private ApplicationType applicationType;
+    private NetworkingHandler networkingHandler = null;
+    private int id;
 
     public TheAlchemistGame() {
     	auth = new Auth();
@@ -18,7 +25,7 @@ public class TheAlchemistGame {
     }
 
     public int createUser(String userName, Avatar a) {
-       return auth.createUser(userName, a);
+        return auth.createUser(userName, a);
     }
 
     public void toggleCurrentUser() {
@@ -27,6 +34,18 @@ public class TheAlchemistGame {
 
     public Player getCurrentUser() {
         return auth.getCurrentPlayer();
+    }
+
+    public void setApplicationType(ApplicationType applicationType, int port) {
+        this.applicationType = applicationType;
+        initializeConnection(port);
+    }
+
+    public void initializeConnection(int port) {
+        if (applicationType == ApplicationType.Host) networkingHandler = new ServerHandler(port, gameBoard);
+        else networkingHandler = new ClientHandler(port);
+        
+        this.id = networkingHandler.getPlayerCount();
     }
 
     public void initializeGame() {
