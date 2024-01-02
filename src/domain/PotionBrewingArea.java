@@ -1,9 +1,15 @@
 package domain;
 
 import enums.Potion;
+import error.NullParameterException;
+import error.SameMoleculeException;
 
 public class PotionBrewingArea {
-    public static Potion combine(IngredientCard ingredientCard1, IngredientCard ingredientCard2) {
+    public static Potion combine(IngredientCard ingredientCard1, IngredientCard ingredientCard2) throws NullParameterException, SameMoleculeException  {
+        if (ingredientCard1 == null || ingredientCard2 == null) throw new NullParameterException();
+        
+        if (ingredientCard1.getMolecule() == ingredientCard2.getMolecule()) throw new SameMoleculeException();
+        
         Molecule molecule1 = ingredientCard1.getMolecule();
         Molecule molecule2 = ingredientCard2.getMolecule();
         Atom redAtom1 = molecule1.getRed();
