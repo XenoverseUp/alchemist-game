@@ -18,5 +18,7 @@ public class IngredientCard {
 	public Molecule getMolecule() {
 		return molecule;
 	}
+
+	
 	
 }
