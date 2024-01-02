@@ -9,7 +9,7 @@ import java.net.Socket;
 
 import domain.Board;
 
-public class ServerHandler extends NetworkingHandler {
+public class ServerHandler implements NetworkingHandler {
     private Board board;
     private Socket socket;
     private ServerSocket ss;

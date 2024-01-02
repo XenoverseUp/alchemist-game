@@ -1,6 +1,6 @@
 package net;
 
-public class ClientHandler extends NetworkingHandler {
+public class ClientHandler implements NetworkingHandler {
     public ClientHandler(int port) {}
 
     @Override

@@ -1,6 +1,6 @@
 package net;
 
-public abstract class NetworkingHandler {
+public interface NetworkingHandler {
     public abstract int getPlayerCount();
     public abstract void dispose();
 }
