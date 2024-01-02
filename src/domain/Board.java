@@ -67,22 +67,36 @@ public class Board {
 		return auth;
 	}
 
-	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) {
+	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws Exception {
+
+		if (testOn.equals("sell") && auth.getCurrentPlayer().inventory.getGold() < 2){
+			throw new Exception("enough-gold-sell");
+		}
+		else if (testOn.equals("student") && auth.getCurrentPlayer().inventory.getGold() < 1){
+			throw new Exception("enough-gold-student");
+		}
+
 		IngredientCard ingredient1 = auth.getIngredientCardFromCurrentPlayer(ingredientName1);
 	    IngredientCard ingredient2 = auth.getIngredientCardFromCurrentPlayer(ingredientName2);
 
 		Potion potion = PotionBrewingArea.combine(ingredient1, ingredient2);
 
-		
-		try {
-			auth.getCurrentPlayer().deductionBoard.addExperimentResult(ingredientName1, ingredientName2, potion);
-			auth.getCurrentPlayer().playerBoard.addDiscoveredPotion(potion);
-			auth.getCurrentPlayer().use(potion, testOn);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		auth.getCurrentPlayer().deductionBoard.addExperimentResult(ingredientName1, ingredientName2, potion);
+		auth.getCurrentPlayer().playerBoard.addDiscoveredPotion(potion);
 
+		if(testOn.equals("sell")){
+			auth.getCurrentPlayer().sell(potion);
+		}
+		else{
+			try{
+			auth.getCurrentPlayer().use(potion, testOn);
+			} catch (Exception e) {
+			System.out.println(e);
+			}
+		}
 		return potion;
 	}
-
 }
+
+
+

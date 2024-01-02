@@ -124,6 +124,26 @@ public class Player {
             }
     }
 
+    public void sell(Potion p){
+        switch(p) {
+            case Poison:
+            case Insanity:
+            case Paralysis: {
+                this.inventory.spendGold(2);
+                return;
+            }
+            case Health:
+            case Wisdom:
+            case Speed:{
+                this.inventory.addGold(3);
+                return;
+            }
+            case Neutral:{
+                this.inventory.addGold(1);
+            }    
+        }
+    }
+
     public int[] calculateFinalScore(){ 
         int finalPoints = (this.reputation * 10);
         finalPoints += (this.inventory.getGold() / 3);
@@ -131,8 +151,4 @@ public class Player {
         int[] score =  {finalPoints, leftoverGold};
         return score;
     }
-
-
-
-
 }
