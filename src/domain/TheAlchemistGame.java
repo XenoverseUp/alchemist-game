@@ -8,12 +8,11 @@ import enums.Avatar;
 import enums.DeductionToken;
 import enums.Potion;
 import interfaces.ICurrentUserListener;
-import interfaces.IGameRegister;
 import net.ClientHandler;
 import net.NetworkingHandler;
 import net.ServerHandler;
 
-public class TheAlchemistGame implements IGameRegister {
+public class TheAlchemistGame {
     private Auth auth;
     private Board gameBoard;
     private ApplicationType applicationType;
