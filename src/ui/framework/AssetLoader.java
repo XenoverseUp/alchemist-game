@@ -30,10 +30,14 @@ public class AssetLoader {
     private BufferedImage BWartyToadIcon;
 
     private BufferedImage BPotionBrewingAreaBackground;
+    private BufferedImage BOnlineSelectionBackground;
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
     private BufferedImage BCheckMark;
+    private BufferedImage BOldFabric;
+    private BufferedImage BSelectionStripe;
+    private BufferedImage BLeftArrow;
 
     public ArrayList<String> ingredientNames = new ArrayList<String>() {{
         add("mushroom");
@@ -77,10 +81,14 @@ public class AssetLoader {
             BWartyToadIcon = ImageIO.read(new File("./src/resources/image/ingredientCards/wartyToadIcon.png"));
             
             BPotionBrewingAreaBackground =  ImageIO.read(new File("./src/resources/image/pbaBackground.png"));
+            BOnlineSelectionBackground =  ImageIO.read(new File("./src/resources/image/onlineSelectionBackground.png"));
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             BTitle = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
             BCheckMark = ImageIO.read(new File("./src/resources/image/HUD/checkMark.png"));
+            BOldFabric = ImageIO.read(new File("./src/resources/image/HUD/oldFabric.png"));
+            BSelectionStripe = ImageIO.read(new File("./src/resources/image/HUD/selectionStripe.png"));
+            BLeftArrow = ImageIO.read(new File("./src/resources/image/HUD/leftArrow.png"));
 
         } catch (IOException e) {
             System.out.println(e);
@@ -132,29 +140,26 @@ public class AssetLoader {
         switch (view) {
             case PotionBrewingArea:
                 return BPotionBrewingAreaBackground;
+            case OnlineSelection:
+                return BOnlineSelectionBackground;
             default:
                 return null;
         }
     }
 
-    public Image getClose() {
-        return this.scale(BClose, 60, 60);
-    }
+    public Image getClose() { return this.scale(BClose, 60, 60); }
+    public Image getPageBanner() { return this.scale(BTitle, 0.75); }
+    public BufferedImage getCheckMark() { return BCheckMark; }    
+    public BufferedImage getOldFabric() { return BOldFabric;  }
+    public BufferedImage getSelectionStripe() { return BSelectionStripe;  }
+    public BufferedImage getLeftArrow() { return BLeftArrow;  }
 
-    public Image getPageBanner() {
-        return this.scale(BTitle, 0.75);
-    }
-
-    public BufferedImage getCheckMark() {
-        return BCheckMark;
-    }
-
-    private Image scale(BufferedImage i, double scale) {
-        return i.getScaledInstance((int)(i.getWidth() * scale), (int)(i.getHeight() * scale), Image.SCALE_SMOOTH);
+    private Image scale(BufferedImage i, double scale) { 
+        return i.getScaledInstance((int)(i.getWidth() * scale), (int)(i.getHeight() * scale), Image.SCALE_SMOOTH); 
     }
   
-    private Image scale(BufferedImage i, int width, int height) {
-        return i.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    private Image scale(BufferedImage i, int width, int height) { 
+        return i.getScaledInstance(width, height, Image.SCALE_SMOOTH); 
     }
 
 }

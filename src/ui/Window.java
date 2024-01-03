@@ -70,6 +70,7 @@ public class Window {
             put(View.Pause, new VPause(game));
             put(View.Help, new VHelp());
             put(View.ArtifactShop, new VArtifactShop(game));
+            put(View.OnlineSelection, new VOnlineSelection(game));
         }};
 
         router = Router.getInstance();

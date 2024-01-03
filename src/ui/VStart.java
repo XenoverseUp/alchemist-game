@@ -27,19 +27,31 @@ public class VStart extends VComponent {
 
         JLabel background = new JLabel(new ImageIcon(img));
         background.setBounds(new Rectangle(0, 0, windowDimension.getWidth(), windowDimension.getHeight()));
-        panel.add(background);
-
-        JButton startButton = new JButton("Start");
-        startButton.setBounds(new Rectangle(629, 632, 183, 60));
-        startButton.setOpaque(false);
-        startButton.setContentAreaFilled(false);
-        startButton.setBorderPainted(false);
-        startButton.setFocusable(false);
         
-        panel.add(startButton);
-
-        startButton.addActionListener(event -> 
+        JButton quickStartButton = new JButton();
+        quickStartButton.setBounds(new Rectangle(452, 630, 308, 65));
+        quickStartButton.setOpaque(false);
+        quickStartButton.setContentAreaFilled(false);
+        quickStartButton.setBorderPainted(false);
+        quickStartButton.setFocusable(false);
+        
+        quickStartButton.addActionListener(event -> 
             router.to(View.Login)
         );
+        
+        JButton onlineButton = new JButton();
+        onlineButton.setBounds(new Rectangle(776, 630, 214, 65));
+        onlineButton.setOpaque(false);
+        onlineButton.setContentAreaFilled(false);
+        onlineButton.setBorderPainted(false);
+        onlineButton.setFocusable(false);
+        
+        onlineButton.addActionListener(event -> 
+            router.to(View.OnlineSelection)
+        );
+
+        panel.add(onlineButton);
+        panel.add(quickStartButton);
+        panel.add(background);
     }
 }

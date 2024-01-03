@@ -8,16 +8,16 @@ import enums.Avatar;
 import enums.DeductionToken;
 import enums.Potion;
 import interfaces.ICurrentUserListener;
+import interfaces.IGameRegister;
 import net.ClientHandler;
 import net.NetworkingHandler;
 import net.ServerHandler;
 
-public class TheAlchemistGame {
+public class TheAlchemistGame implements IGameRegister {
     private Auth auth;
     private Board gameBoard;
     private ApplicationType applicationType;
     private NetworkingHandler networkingHandler = null;
-    private int id;
 
     public TheAlchemistGame() {
     	auth = new Auth();
@@ -44,8 +44,6 @@ public class TheAlchemistGame {
     public void initializeConnection(int port) {
         if (applicationType == ApplicationType.Host) networkingHandler = new ServerHandler(port, gameBoard);
         else networkingHandler = new ClientHandler(port);
-        
-        this.id = networkingHandler.getPlayerCount();
     }
 
     public void initializeGame() {
