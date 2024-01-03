@@ -4,17 +4,24 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.MaskFormatter;
 
 import domain.TheAlchemistGame;
 import enums.View;
@@ -173,10 +180,47 @@ public class VOnlineSelection extends VComponent {
         description.setAlignmentX(Component.CENTER_ALIGNMENT);
         description.setFont(new Font("Crimson Pro", Font.PLAIN, 16));
         description.setForeground(Color.white);
+
+        JFormattedTextField portInput = null;
+
+        try {
+            portInput = new JFormattedTextField(new MaskFormatter("####"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        portInput.setFont(new Font("Itim-Regular", Font.PLAIN, 32));
+        portInput.setForeground(new Color(238, 219, 0));
+        portInput.setMaximumSize(new Dimension(120, 50));
+        portInput.setAlignmentX(Component.CENTER_ALIGNMENT);
+        portInput.setHorizontalAlignment(JTextField.CENTER);
+        portInput.setBackground(new Color(80, 58, 24));
+        portInput.setBorder(BorderFactory.createMatteBorder(8, 0, 8, 0, new Color(80, 58, 24)));
+        portInput.grabFocus();
+        final JFormattedTextField p = portInput;
+
+        portInput.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                p.setCaretPosition(0);
+            }
+        });
         
         
         JButton primaryAction = new JButton(type == FormState.Host ? "Create Session" : "Enter Lobby");
         primaryAction.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        primaryAction.addActionListener(e -> {
+            switch (type) {
+                case Host:
+                    // game.createServer(portInput.getValue());
+                    break;
+                    
+                case Join:
+                    // game.joinSession(portInput.getValue());
+                    break;
+            }            
+        });
 
 
         form.add(Box.createVerticalGlue());
@@ -184,6 +228,8 @@ public class VOnlineSelection extends VComponent {
         form.add(Box.createVerticalStrut(16));
         form.add(description);
         form.add(Box.createVerticalStrut(24));
+        form.add(portInput);
+        form.add(Box.createVerticalStrut(20));
         form.add(primaryAction);
         form.add(Box.createVerticalGlue());
 
