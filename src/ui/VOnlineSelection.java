@@ -197,6 +197,7 @@ public class VOnlineSelection extends VComponent {
         portInput.setBackground(new Color(80, 58, 24));
         portInput.setBorder(BorderFactory.createMatteBorder(8, 0, 8, 0, new Color(80, 58, 24)));
         portInput.grabFocus();
+
         final JFormattedTextField p = portInput;
 
         portInput.addMouseListener(new MouseAdapter() {
@@ -210,16 +211,25 @@ public class VOnlineSelection extends VComponent {
         JButton primaryAction = new JButton(type == FormState.Host ? "Create Session" : "Enter Lobby");
         primaryAction.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        
         primaryAction.addActionListener(e -> {
-            switch (type) {
-                case Host:
-                    // game.createServer(portInput.getValue());
-                    break;
+            if (type == FormState.Host) {
+                int result = game.createServer(Integer.parseInt(p.getText()));
+                if (result == 0) {
+                    router.to(View.Lobby);
+                    return;
+                }
+                
+                modal.info("Port is not available!", "This port is already in use by another game session or system. Please pick another port.");
+            } else if (type == FormState.Join) {
+                int result = game.connectToServer(Integer.parseInt(p.getText()));
+                if (result == 0) {
+                    router.to(View.Lobby);
+                    return;
+                }
 
-                case Join:
-                    // game.joinSession(portInput.getValue());
-                    break;
-            }            
+                modal.info("No game session on this port!", "This port doesn't have any game sessions available. Please pick another port.");
+            }              
         });
 
 

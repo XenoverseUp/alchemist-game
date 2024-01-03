@@ -1,0 +1,4 @@
+/usr/bin/env /opt/homebrew/Cellar/openjdk/21.0.1/libexec/openjdk.jdk/Contents/Home/bin/java @/var/folders/4q/xy84tzbx7rq2r2jyd0_6657h0000gn/T/cp_eyktniqw3gikesjpezuaen15s1.argfile App &
+/usr/bin/env /opt/homebrew/Cellar/openjdk/21.0.1/libexec/openjdk.jdk/Contents/Home/bin/java @/var/folders/4q/xy84tzbx7rq2r2jyd0_6657h0000gn/T/cp_eyktniqw3gikesjpezuaen15s1.argfile App &
+/usr/bin/env /opt/homebrew/Cellar/openjdk/21.0.1/libexec/openjdk.jdk/Contents/Home/bin/java @/var/folders/4q/xy84tzbx7rq2r2jyd0_6657h0000gn/T/cp_eyktniqw3gikesjpezuaen15s1.argfile App &
+/usr/bin/env /opt/homebrew/Cellar/openjdk/21.0.1/libexec/openjdk.jdk/Contents/Home/bin/java @/var/folders/4q/xy84tzbx7rq2r2jyd0_6657h0000gn/T/cp_eyktniqw3gikesjpezuaen15s1.argfile App

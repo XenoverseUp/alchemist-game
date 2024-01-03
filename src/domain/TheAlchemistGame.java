@@ -1,5 +1,8 @@
 package domain;
 
+import java.io.IOException;
+import java.net.BindException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,16 +10,17 @@ import enums.ApplicationType;
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.Potion;
+import error.HostDoesNotExistsException;
 import interfaces.ICurrentUserListener;
-import net.ClientHandler;
-import net.NetworkingHandler;
-import net.ServerHandler;
+import net.ClientSideConnection;
+import net.Server;
 
 public class TheAlchemistGame {
     private Auth auth;
     private Board gameBoard;
-    private ApplicationType applicationType;
-    private NetworkingHandler networkingHandler = null;
+    private ApplicationType applicationType = ApplicationType.Host;
+    private ServerSocket serverSocket = null;
+    private ClientSideConnection csc = null;
 
     public TheAlchemistGame() {
     	auth = new Auth();
@@ -37,12 +41,6 @@ public class TheAlchemistGame {
 
     public void setApplicationType(ApplicationType applicationType, int port) {
         this.applicationType = applicationType;
-        initializeConnection(port);
-    }
-
-    public void initializeConnection(int port) {
-        if (applicationType == ApplicationType.Host) networkingHandler = new ServerHandler(port, gameBoard);
-        else networkingHandler = new ClientHandler(port);
     }
 
     public void initializeGame() {
@@ -98,6 +96,37 @@ public class TheAlchemistGame {
 
     public ArrayList<Player> calculateWinner(){
         return this.gameBoard.getAuth().calculateWinner();
+    }
+
+    public int createServer(int port) {
+        try {
+            this.serverSocket = new ServerSocket(port);
+            Server server = new Server(serverSocket, this);
+            server.start();
+            this.connectToServer(port);
+        } catch (BindException e) {
+            return 1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return 0;
+    }
+
+    public int connectToServer(int port) {
+        try {
+            csc = new ClientSideConnection(port);
+            csc.listen();
+        } catch (HostDoesNotExistsException e) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    public int getId() {
+        if (csc != null) return csc.getId();
+        return 0;
     }
 
 }

@@ -13,5 +13,6 @@ public enum View {
     PublicationArea,
     Pause,
     ArtifactShop,
-    OnlineSelection
+    OnlineSelection,
+    Lobby
 }
