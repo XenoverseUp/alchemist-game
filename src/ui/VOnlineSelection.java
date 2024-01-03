@@ -93,6 +93,7 @@ public class VOnlineSelection extends VComponent {
         hostText.setBounds(388, 214, BSelectionStripe.getWidth(), BSelectionStripe.getHeight());
 
         host.addActionListener(e -> {
+            if (this.formState == FormState.Host) return;
             this.formState = FormState.Host;
             this.update();
         });
@@ -112,6 +113,7 @@ public class VOnlineSelection extends VComponent {
         joinText.setBounds(388, 326, BSelectionStripe.getWidth(), BSelectionStripe.getHeight());
 
         join.addActionListener(e -> {
+            if (this.formState == FormState.Join) return;
             this.formState = FormState.Join;
             this.update();
         });
@@ -215,7 +217,7 @@ public class VOnlineSelection extends VComponent {
                 case Host:
                     // game.createServer(portInput.getValue());
                     break;
-                    
+
                 case Join:
                     // game.joinSession(portInput.getValue());
                     break;
@@ -227,7 +229,7 @@ public class VOnlineSelection extends VComponent {
         form.add(title);
         form.add(Box.createVerticalStrut(16));
         form.add(description);
-        form.add(Box.createVerticalStrut(24));
+        form.add(Box.createVerticalStrut(28));
         form.add(portInput);
         form.add(Box.createVerticalStrut(20));
         form.add(primaryAction);

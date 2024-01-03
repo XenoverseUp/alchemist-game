@@ -229,24 +229,4 @@ public class RotatedLabel extends JLabel {
     super.paintComponent(gr);
     needsRotate = false;
   }
-
-  /**
-   * Test method.
-   * 
-   * @param args
-   *          command line arguments.
-   */
-  public static void main(String[] args) {
-    JFrame f = new JFrame("Test");
-    f.setLayout(new FlowLayout());
-    RotatedLabel rl = new RotatedLabel("BLAHBLAH");
-    rl.setBackground(Color.ORANGE);
-    rl.setOpaque(true);
-    rl.setDirection(Direction.VERTICAL_DOWN);
-    f.add(rl);
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.pack();
-    f.setVisible(true);
-  }
-
 }
