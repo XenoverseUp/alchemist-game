@@ -1,4 +1,4 @@
-package domain.test;
+package test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -37,13 +37,13 @@ public class PublicationCardDeckTest {
     }
 
     @Test
-    public void testDrawCardFromEmptyDeck() {
-        PublicationCardDeck emptyDeck = new PublicationCardDeck();
-        for (int i = 0; i < 6; i++) {
-            emptyDeck.drawCard();
-        }
-        assertNull(emptyDeck.drawCard());
+    public void testShuffleDoesNotChangeDeckSize() {
+        int initialSize = cardDeck.getPublicationCardDeck().size();
+        cardDeck.shuffle();
+        int shuffledSize = cardDeck.getPublicationCardDeck().size();
+        assertEquals("Shuffling should not change the deck size", initialSize, shuffledSize);
     }
+    
 
     @Test
     public void testDrawAllCardsInDeck() {
@@ -62,7 +62,7 @@ public class PublicationCardDeckTest {
         ArrayList<PublicationCard> drawnCards = new ArrayList<>();
         for (int i = 0; i < deckSize; i++) {
             PublicationCard drawnCard = cardDeck.drawCard();
-            assertFalse(drawnCards.contains(drawnCard));
+            assertFalse("Card already drawn", drawnCards.contains(drawnCard));
             drawnCards.add(drawnCard);
         }
     }
