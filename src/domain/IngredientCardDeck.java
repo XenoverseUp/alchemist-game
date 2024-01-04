@@ -67,9 +67,9 @@ public class IngredientCardDeck {
 	}
 	
 	public void incrIndex(){
-		if (index == ingredientCardDeck.size()){
+		if (index == ingredientCardDeck.size()-1){
 			shuffle();
-			index=-1;
+			index=0;
 		}
 		else {
 			index++;	
