@@ -26,7 +26,7 @@ public class PublicationCardDeckTest {
     @Test
     public void testDrawCardRemovesOneCard() {
         int initialSize = cardDeck.getPublicationCardDeck().size();
-        PublicationCard drawnCard = cardDeck.drawCard();
+        cardDeck.drawCard();
         assertEquals(initialSize - 1, cardDeck.getPublicationCardDeck().size());
     }
 
