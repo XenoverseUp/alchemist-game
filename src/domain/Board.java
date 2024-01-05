@@ -15,6 +15,7 @@ public class Board {
 	public ArtifactCardDeck artifactCardDeck;
 	public PublicationCardDeck publicationCardDeck;
 	public AlchemyMarkerDeck alchemyMarkerDeck;
+	
 
 	public Board(Auth auth) {
 		this.auth = auth;
@@ -22,6 +23,7 @@ public class Board {
 		this.ingredientCardDeck = new IngredientCardDeck();
 		this.artifactCardDeck = new ArtifactCardDeck();
 		this.publicationCardDeck = new PublicationCardDeck(this.ingredientCardDeck.getDeck());
+		
 	}
 
 	public void dealCards() {

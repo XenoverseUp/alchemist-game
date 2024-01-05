@@ -20,12 +20,14 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import enums.View;
 import domain.TheAlchemistGame;
 
 public class VPublicationArea extends VComponent {
     private Router router = Router.getInstance();
+    JPanel publicationPanel;
 
     public VPublicationArea(TheAlchemistGame game) {
         super(game);
@@ -34,16 +36,12 @@ public class VPublicationArea extends VComponent {
     @Override
     protected void mounted() {
         this.update();
-        showPublishedTheories();
+        
     }
 
     @Override
     protected void render() {
-    }
-    
-    private void update() {
-        
-        JPanel publicationPanel = createPublicationJPanel();
+        publicationPanel = createPublicationJPanel();
         JLabel text = new JLabel("Publication Area");
         text.setBounds(580, 20, 450, 50);
         text.setForeground(Color.WHITE);
@@ -76,10 +74,10 @@ public class VPublicationArea extends VComponent {
         panel.add(bgPic);
 
         int startX = 60;
-        int startY = 90;
-        int imageWidth = 170;
-        int imageHeight = 260;
-        int gap = 30;
+        int startY = 110;
+        int imageWidth = 130;
+        int imageHeight = 190;
+        int gap = 90;
 
         String[] ingredientCardNames = {"birdClaw", "fern", "mandrakeRoot", "moonshade", "mushroom", "ravensFeather", "scorpionTail", "wartyToad"};
         
@@ -152,6 +150,91 @@ public class VPublicationArea extends VComponent {
                    
                 }));// molecule id :2
         
+    }
+    
+    private void update() {
+        publicationPanel.removeAll();
+
+        int startX = 60;
+        int startY = 110;
+        int imageWidth = 130;
+        int imageHeight = 190;
+        int gap = 90;
+
+        String[] ingredientCardNames = {"birdClaw", "fern", "mandrakeRoot", "moonshade", "mushroom", "ravensFeather", "scorpionTail", "wartyToad"};
+        
+        for (int i = 0; i < ingredientCardNames.length; i ++) {
+            int x = startX + (i % 4) * (imageWidth + gap);
+            int y = startY + (i / 4) * (imageHeight + gap);
+
+            String imagePath = "./src/resources/image/" + ingredientCardNames[i] + ".png";
+            int a = i;
+            String ingredientCardName = ingredientCardNames[i];
+            addImageToPanel(i, publicationPanel, imagePath, x, y, imageWidth, imageHeight, (e -> {
+                game.setCard(a);
+                System.out.println(ingredientCardName + " is clicked!");
+                
+            }));
+        }
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker1.png", 1070, 370, 75, 70,
+                (e -> {
+                    game.setMarker(1);
+                    System.out.println("Clicked marker1!");
+                    
+                }));// molecule id:1
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker5.png", 1170, 370, 70, 70,
+                (e -> {
+                    game.setMarker(5);
+                    System.out.println("Clicked marker5!");
+                    
+                }));// molecule id:5
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker0.png", 1270, 370, 75, 70,
+                (e -> {
+                    game.setMarker(0);
+                    System.out.println("Clicked marker0!");
+                    
+                }));// molecule id: 0
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker3.png", 1070, 480, 75, 70,
+                (e -> {
+                    game.setMarker(3);
+                    System.out.println("Clicked marker3!");
+                    
+                }));// molecule id:3
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker6.png", 1170, 480, 70, 70,
+                (e -> {
+                    game.setMarker(6);
+                    System.out.println("Clicked marker6!");
+                   
+                }));// molecule id:6
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker7.png", 1270, 480, 75, 70,
+                (e -> {
+                    game.setMarker(7);
+                    System.out.println("CLicked marker7!");
+                    
+                }));// molecule id:7
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker4.png", 1120, 590, 75, 70,
+                (e -> {
+                    game.setMarker(4);
+                    System.out.println("Clicked marker4!");
+                    
+                }));// molecule id:4
+
+        createButtonWithImage(publicationPanel, "./src/resources/image/marker2.png", 1220, 590, 75, 70,
+                (e -> {
+                    game.setMarker(2);
+                    System.out.println("CLicked marker2!");
+                   
+                }));// molecule id :2
+        
+        publicationPanel.revalidate();
+        publicationPanel.repaint();
+ 
         
     }
 
@@ -168,104 +251,71 @@ public class VPublicationArea extends VComponent {
         publicationPanel.add(back);
 
         JButton publishTheory = new JButton("Publish Theory");
-        publishTheory.addActionListener(e -> game.publishTheory());
-        publishTheory.setBounds(1130, 200, 150, 30);
+        publishTheory.addActionListener(e -> {
+            game.publishTheory();
+            SwingUtilities.invokeLater(() -> {
+                update();
+            });
+        });
+        publishTheory.setBounds(1130, 150, 150, 30);
         panel.add(publishTheory);
 
         JButton debunkTheory = new JButton("Debunk Theory");
-        debunkTheory.addActionListener(e -> game.debunkTheory());
+        debunkTheory.addActionListener(e -> {
+            game.debunkTheory();
+            SwingUtilities.invokeLater(() -> {
+                update();
+            });
+        });
         debunkTheory.setBounds(1130, 100, 150, 30);
         panel.add(debunkTheory);
-
-        showPublishedTheories();
 
         panel.revalidate();
         panel.repaint();
 
         return publicationPanel;
-    }
+    } 
 
-    private void showPublishedTheories() {
-        JButton showPublisedTheoriesButton = new JButton("Show Theories");
-        showPublisedTheoriesButton.setBounds(1130, 250, 150, 30);
-        showPublisedTheoriesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showPublishedTheoriesWindow(); 
-            }
-        });
-        panel.add(showPublisedTheoriesButton); 
-    }
-
-    private void showPublishedTheoriesWindow() {
-        JDialog theoriesDialog = new JDialog();
-        theoriesDialog.setTitle("Guessed Theories");
-        theoriesDialog.setMinimumSize(new Dimension(500, 500));
-        theoriesDialog.setLayout(null); //absolute positioning 
-    
-        //ingredientCards: adding and positioning 
-        ImageIcon originalIngredientCardIcon = new ImageIcon("./src/resources/image/birdClaw.png");
-        Image originalIngredientCardImage = originalIngredientCardIcon.getImage();
-        Image scaledIngredientCardImage = originalIngredientCardImage.getScaledInstance(80, 120, Image.SCALE_SMOOTH); 
-        ImageIcon scaledIngredientCardIcon = new ImageIcon(scaledIngredientCardImage);
-        JLabel imageIngredientCardLabel = new JLabel(scaledIngredientCardIcon);
-        imageIngredientCardLabel.setBounds(75, 85, 80, 120); 
-        theoriesDialog.add(imageIngredientCardLabel);
-
-        //markers: adding and positioning 
-        ImageIcon originalMarkerIcon = new ImageIcon("./src/resources/image/marker1.png");
-        Image originalMarkerImage = originalMarkerIcon.getImage();
-        Image scaledMarkerImage = originalMarkerImage.getScaledInstance(80, 80, Image.SCALE_SMOOTH); 
-        ImageIcon scaledMarkerIcon = new ImageIcon(scaledMarkerImage);
-        JLabel imageMarkerLabel = new JLabel(scaledMarkerIcon);
-        imageMarkerLabel.setBounds(330, 110, 80, 80); 
-        theoriesDialog.add(imageMarkerLabel);
-
-        //arrow: adding and positioning 
-        ImageIcon originalArrowIcon = new ImageIcon("./src/resources/image/arrow.png");
-        Image originalArrowImage = originalArrowIcon.getImage();
-        Image scaledArrowImage = originalArrowImage.getScaledInstance(130, 60, Image.SCALE_SMOOTH); 
-        ImageIcon scaledArrowIcon = new ImageIcon(scaledArrowImage);
-        JLabel imageArrowLabel = new JLabel(scaledArrowIcon);
-        imageArrowLabel.setBounds(180, 120, 130, 60); 
-        theoriesDialog.add(imageArrowLabel);
-    
-        //texts: adding and positioning 
-        JLabel TextLabel = new JLabel("This window will show the published theories.");
-        JPanel TextlabelPanel = new JPanel(); 
-        TextlabelPanel.setLayout(new FlowLayout()); 
-        TextlabelPanel.add(TextLabel);
-        TextlabelPanel.setBounds(10, 10, 480, 20);
-        theoriesDialog.add(TextlabelPanel);
-    
-
-
-        theoriesDialog.pack();
-        theoriesDialog.setLocationRelativeTo(panel);
-        theoriesDialog.setVisible(true);
-    }
-    
 
     private void addImageToPanel(int id, JPanel panel, String imagePath, int x, int y, int width, int height, ActionListener action) {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(imagePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    BufferedImage img = null; //img -> publicationCard
+    BufferedImage img2 = null; //img2 -> marker
+    try {
+        img = ImageIO.read(new File(imagePath));
+        img2 = ImageIO.read(new File(game.getMarkerImagePath(id)));
 
-        if (img != null) {
-            ImageIcon icon = new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_SMOOTH));
-            JButton button = new JButton(icon);
-            button.setBounds(x, y, width, height);
-            button.setBorderPainted(false);
-            button.setContentAreaFilled(false);
-            button.setFocusPainted(false);
-            button.addActionListener(action);
-            panel.add(button);
-        }
-        
+
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+
+    if (img != null) {
+        ImageIcon icon = new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+        JButton button = new JButton(icon);
+        button.setBounds(x, y, width, height);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.addActionListener(action);
+        panel.add(button);
+        
+        if (img2 != null) {
+            ImageIcon icon2 = new ImageIcon(img2.getScaledInstance(60, 56, Image.SCALE_SMOOTH));
+
+            JPanel imagePanel = new JPanel();
+            imagePanel.setLayout(null);
+            imagePanel.setBounds(x + width/4 + 5, y + height + 10, 60, 56);
+            imagePanel.setOpaque(false);
+            
+
+            JLabel imageLabel = new JLabel(icon2);
+            imageLabel.setBounds(0, 0, 60, 56); 
+            imagePanel.add(imageLabel);
+
+            panel.add(imagePanel);         
+        }      
+    }
+}
 
 
     private void createButtonWithImage(JPanel panel, String imagePath, int x, int y, int width, int height,
