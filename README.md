@@ -1,5 +1,5 @@
 <p align="center">
-<img src="gamename.png" width="800"/>
+<img src="images\gamename.png" width="800"/>
 </p>
 
 # KU Alchemist Game
@@ -11,7 +11,7 @@ Welcome to the digital implementation of the captivating board game, Alchemist! 
 Alchemist is a strategic board game that combines deduction, logic, and alchemical experimentation. Players take on the roles of aspiring alchemist seeking to discover the secrets of the mystical Philosopher's Stone. Through deduction and experimentation, players brew potions, publish theories, and uncover the properties of various ingredients.
 
 <p align="center">
-<img src="cards.png" width="400"/>
+<img src="images\cards.png" width="400"/>
 </p>
 
 # How to Play
