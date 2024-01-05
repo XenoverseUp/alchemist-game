@@ -31,7 +31,7 @@ Contributions to improve this digital implementation of Alchemist are welcome! F
 This digital implementation of Alchemist is developed/maintained by our amazing team. The game itself was created by Czech Games Edition and designed by Matúš Kotry. You can reach the original game via <a href="https://boardgamegeek.com/boardgame/161970/alchemists">this link.</a>
 
 <p align="center">
-<img src="deductionboard.png" width="500"/>
+<img src="images\deductionboard.png" width="500"/>
 </p>
 
 # Disclaimer
