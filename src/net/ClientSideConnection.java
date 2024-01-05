@@ -9,9 +9,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import enums.Request;
-import enums.Response;
+import enums.Avatar;
+import enums.ServerAction;
+import enums.StringRequest;
+import enums.StringResponse;
 import error.HostDoesNotExistsException;
+import interfaces.IDynamicTypeValue;
 
 public class ClientSideConnection {
     private Socket socket;
@@ -29,7 +32,7 @@ public class ClientSideConnection {
             this.bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.dataIn = new DataInputStream(this.socket.getInputStream());
             this.dataOut = new DataOutputStream(this.socket.getOutputStream());
-            send(Request.GET_ID);
+            send(StringRequest.GET_ID);
         } catch (IOException e) {
             shutdown();
             throw new HostDoesNotExistsException();
@@ -38,7 +41,7 @@ public class ClientSideConnection {
         this.responseParser = new ResponseParser(this);
     }
 
-    public void send(Request request) {
+    public void send(StringRequest request) {
         try {
             if (!socket.isClosed()) {
                 bufferedWriter.write(request.toString());
@@ -46,7 +49,7 @@ public class ClientSideConnection {
                 bufferedWriter.flush();
             }
         } catch (Exception e) {
-            shutdown() ;
+            shutdown();
         }
     }
 
@@ -59,7 +62,7 @@ public class ClientSideConnection {
                 while (!socket.isClosed()) {
                     try {
                         String rawResponse = bufferedReader.readLine();
-                        Response responseType = responseParser.parseResponseType(rawResponse);
+                        StringResponse responseType = responseParser.parseResponseType(rawResponse);
 
                         switch (responseType) {
                             case ID:

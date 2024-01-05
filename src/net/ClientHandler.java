@@ -8,8 +8,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import enums.Request;
-import enums.Response;
+import enums.StringRequest;
+import enums.StringResponse;
 import domain.TheAlchemistGame;
 
 public class ClientHandler implements Runnable {
@@ -57,10 +57,10 @@ public class ClientHandler implements Runnable {
         clientHandlers.remove(this);
     }
 
-    public void respond(Response responsetType, String response) {
+    public void respond(StringResponse responseType, String response) {
         try {
             if (!socket.isClosed()) {
-                bufferedWriter.write(responsetType.toString() + "~" + response);
+                bufferedWriter.write(responseType.toString() + "~" + response);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
