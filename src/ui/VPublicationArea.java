@@ -42,21 +42,10 @@ public class VPublicationArea extends VComponent {
     @Override
     protected void render() {
         publicationPanel = createPublicationJPanel();
-        JLabel text = new JLabel("Publication Area");
-        text.setBounds(580, 20, 450, 50);
-        text.setForeground(Color.WHITE);
-        Font f3 = new Font(Font.DIALOG_INPUT, Font.BOLD, 30);
-        text.setFont(f3);
-
-        JLabel text1 = new JLabel("Alchemy Markers");
-        text1.setBounds(1130, 320, 450, 50);
-        text1.setForeground(Color.WHITE);
-        Font f4 = new Font(Font.DIALOG_INPUT, Font.BOLD, 17);
-        text1.setFont(f4);
 
         BufferedImage bg = null;
         try {
-            bg = ImageIO.read(new File("./src/resources/image/table.png"));
+            bg = ImageIO.read(new File("src/resources/image/publication-area-bg.png"));
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -69,15 +58,14 @@ public class VPublicationArea extends VComponent {
 
         panel.setLayout(null);
         panel.add(publicationPanel);
-        panel.add(text);
-        panel.add(text1);
+        
         panel.add(bgPic);
 
         int startX = 60;
         int startY = 110;
-        int imageWidth = 130;
-        int imageHeight = 190;
-        int gap = 90;
+        int imageWidth = 190;
+        int imageHeight = 240;
+        int gap = 80;
 
         String[] ingredientCardNames = {"birdClaw", "fern", "mandrakeRoot", "moonshade", "mushroom", "ravensFeather", "scorpionTail", "wartyToad"};
         
@@ -156,10 +144,10 @@ public class VPublicationArea extends VComponent {
         publicationPanel.removeAll();
 
         int startX = 60;
-        int startY = 110;
-        int imageWidth = 130;
-        int imageHeight = 190;
-        int gap = 90;
+        int startY = 75;
+        int imageWidth = 150;
+        int imageHeight = 230;
+        int gap = 85;
 
         String[] ingredientCardNames = {"birdClaw", "fern", "mandrakeRoot", "moonshade", "mushroom", "ravensFeather", "scorpionTail", "wartyToad"};
         
@@ -240,38 +228,55 @@ public class VPublicationArea extends VComponent {
 
     private JPanel createPublicationJPanel() {
 
+        Color customColor = new Color(71, 46, 27); 
         JPanel publicationPanel = new JPanel();
         publicationPanel.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
         publicationPanel.setLayout(null); // Use absolute positioning
         publicationPanel.setOpaque(false);
 
+        
         JButton back = new JButton("Back");
         back.setBounds(480, 690, 150, 30);
         back.addActionListener(event -> router.to(View.Board));
-        publicationPanel.add(back);
+        back.setForeground(customColor);
+        panel.add(back);
 
         JButton publishTheory = new JButton("Publish Theory");
+        
+
+        // Set the background color of the button to the custom color
+        
+        publishTheory.setFont(new Font("Cubano", Font.BOLD, 18)); 
         publishTheory.addActionListener(e -> {
             game.publishTheory();
             SwingUtilities.invokeLater(() -> {
                 update();
             });
         });
-        publishTheory.setBounds(1130, 150, 150, 30);
+        
+        publishTheory.setBounds(1100, 170, 170, 60);
+        
+
+        
+        publishTheory.setForeground(customColor);
         panel.add(publishTheory);
+        
 
         JButton debunkTheory = new JButton("Debunk Theory");
+        debunkTheory.setFont(new Font("Cubano", Font.BOLD, 18)); 
         debunkTheory.addActionListener(e -> {
             game.debunkTheory();
             SwingUtilities.invokeLater(() -> {
                 update();
             });
         });
-        debunkTheory.setBounds(1130, 100, 150, 30);
+        debunkTheory.setBounds(1100, 250, 170, 60);
+        debunkTheory.setForeground(customColor);
         panel.add(debunkTheory);
 
         panel.revalidate();
         panel.repaint();
+        
 
         return publicationPanel;
     } 
