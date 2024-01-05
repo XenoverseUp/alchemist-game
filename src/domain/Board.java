@@ -89,9 +89,9 @@ public class Board {
 		}
 		else{
 			try{
-			auth.getCurrentPlayer().use(potion, testOn);
+				auth.getCurrentPlayer().use(potion, testOn);
 			} catch (Exception e) {
-			System.out.println(e);
+				System.out.println(e);
 			}
 		}
 		return potion;

@@ -78,7 +78,7 @@ public class TheAlchemistGame {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws Exception{
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws Exception {
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
 

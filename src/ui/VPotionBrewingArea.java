@@ -225,11 +225,14 @@ public class VPotionBrewingArea extends VComponent {
         if (validate() == 1) return;
 
         String testOn = testingMethod == 0 ? "student" : testingMethod == 1 ? "self" : "sell";
-        try{game.makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
+        try{
+            game.makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
+            router.to(View.DeductionBoard);
         } catch(Exception e){
             System.out.println(e);
+            if (e.getMessage().equals("enough-gold-student")) modal.info("You little poor!", "To test a potion on a student you have to have at least one gold. You can still test it on yourself, tho.");
+            else if (e.getMessage().equals("enough-gold-sell")) modal.info("You little poor!", "To sell a potion you have to have at least two golds. But don't forget, you can still have a positive trade.");
         }
-        router.to(View.DeductionBoard);
     }
 
 }
