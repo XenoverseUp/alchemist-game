@@ -1,6 +1,6 @@
 package net;
 
-import enums.Response;
+import enums.StringResponse;
 
 public class ResponseParser {
     private ClientSideConnection csc;
@@ -9,10 +9,10 @@ public class ResponseParser {
         this.csc = csc;
     }
 
-    public Response parseResponseType(String rawResponse) {
+    public StringResponse parseResponseType(String rawResponse) {
         String[] tokens = rawResponse.split("~");
 
-        for (Response r : Response.values())
+        for (StringResponse r : StringResponse.values())
             if (tokens[0].equals(r.toString())) return r;
 
         return null;

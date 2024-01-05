@@ -1,5 +1,5 @@
 package enums;
 
-public enum Request {
+public enum StringRequest {
     GET_ID
 }

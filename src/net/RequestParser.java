@@ -3,8 +3,8 @@ package net;
 import java.net.Socket;
 
 import domain.TheAlchemistGame;
-import enums.Request;
-import enums.Response;
+import enums.StringRequest;
+import enums.StringResponse;
 
 public class RequestParser {
     private TheAlchemistGame game;
@@ -16,8 +16,8 @@ public class RequestParser {
     }
 
     public void parseAndExecute(String request) {
-        if (request.equals(Request.GET_ID.toString())) {
-            handler.respond(Response.ID, String.valueOf(handler.getId()));
+        if (request.equals(StringRequest.GET_ID.toString())) {
+            handler.respond(StringResponse.ID, String.valueOf(handler.getId()));
             return;
         };
         
