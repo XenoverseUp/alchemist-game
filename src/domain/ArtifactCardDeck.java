@@ -126,7 +126,7 @@ public class ArtifactCardDeck {
     }
     
 	public void useRobeOfRespect() {
-		
+		modifyReputationGain();
 
 	}
 
