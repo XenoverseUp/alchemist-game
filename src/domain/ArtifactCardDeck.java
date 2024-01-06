@@ -2,7 +2,11 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class ArtifactCardDeck {
 	private ArrayList<ArtifactCard> artifactCardDeck = new ArrayList<>();
@@ -81,12 +85,123 @@ public class ArtifactCardDeck {
 			for (int i = 0; i < 12 - card.getPrice(); i++) weighted.add(card);
 		});
 
-		return weighted.get(random.nextInt(weighted.size()));
+		ArtifactCard card = weighted.get(random.nextInt(weighted.size()));
+	
+		if (card.getName() == "Elixir of Insight"){
+			useElixirOfInsight();
+		}
+
+		if (card.getName() == "Robe of Respect"){
+			useRobeOfRespect();
+		}
+
+		if (card.getName() == "Trader's Touch"){
+			useTradersTouch();
+		}
+
+		if (card.getName() == "Magic Mortar"){
+			useMagicMortar();
+		}
+
+		if (card.getName() == "Printing Press"){
+			usePrintingPress();
+		}
+
+		if (card.getName() == "Wisdom Idol"){
+			useWisdomIdol();
+		}
+
+		//return weighted.get(random.nextInt(weighted.size()));
+		return card;
 	}
 
 	public ArrayList<ArtifactCard> getArtifactCardDeck(){
 		return this.artifactCardDeck;
 	}
+
+
+	public void useElixirOfInsight() {
+        viewAndRearrangeTopThreeCards();
+        
+    }
+    
+	public void useRobeOfRespect() {
+		
+
+	}
+
+	public void useTradersTouch() {
+	
+
+	}
+
+	public void useMagicMortar() {
+	
+
+	}
+
+	public void usePrintingPress() {
+		publishTheoryFreeOfCharge();
+	
+	}
+
+	public void useWisdomIdol() {
+		
+	
+	}
+
+
+    private void viewAndRearrangeTopThreeCards() {
+         ArrayList<IngredientCard> topThreeCards = IngredientCardDeck.subList(0, 3);
+
+        for (IngredientCard card : topThreeCards) {
+            System.out.println(card.getName());
+        }
+
+        Collections.shuffle(topThreeCards);
+		
+        for (int i = 0; i < 3; i++) {
+            IngredientCardDeck.set(i, topThreeCards.get(i));
+        }
+	}
+
+
+	private void publishTheoryFreeOfCharge() {
+		PublicationCard chosenPublicationCard = PublicationCardDeck.getChosen();
+		if (chosenPublicationCard != null && chosenPublicationCard.getAlchemyMarker() == null) {
+			Player currentPlayer = Auth.getCurrentPlayer();
+			currentPlayer.increaseReputation(1);
+	
+			// Set the Alchemy Marker associated with the publication card (assuming there is an available marker)
+			AlchemyMarker chosenAlchemyMarker = AlchemyMarker.getChosen();
+			if (chosenAlchemyMarker != null && chosenAlchemyMarker.checkAvailability()) {
+				chosenPublicationCard.setAlchemyMarker(chosenAlchemyMarker);
+				chosenAlchemyMarker.associate();
+				chosenPublicationCard.setPlayer(currentPlayer);
+	
+				// Using SwingUtilities.invokeLater to update GUI in a thread-safe manner
+				SwingUtilities.invokeLater(() -> {
+					JOptionPane.showMessageDialog(null,
+							"Published Theory Successfully without any charge!\n Reputation: +1",
+							"Success!", JOptionPane.PLAIN_MESSAGE);
+				});
+			} 
+		}
+    }
+
+
+	private void activateTradersTouch() {
+        
+	
+	}
+
+	public int modifyReputationGain() {
+		int reputation = getReputation();
+
+
+    }
+
+
 
 
 }
