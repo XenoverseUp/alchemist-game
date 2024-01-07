@@ -62,6 +62,16 @@ public class Player {
         this.extraActions = extraActions;
     }
 
+    public void decreaseLeftActions(){
+        if (this.leftActions > 0){
+            this.leftActions -= 1;
+        }
+    }
+
+    public void calculateTotalActions(){
+        this.leftActions += this.extraActions;
+    }
+
 
     public void use(Potion p, String testOn) throws Exception {
        /* 

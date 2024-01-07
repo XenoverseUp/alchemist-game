@@ -67,6 +67,18 @@ public class Auth {
     	return getCurrentPlayer().inventory.getIngredient(name);
     }
 
+    public void decreaseLeftActionsOfCurrentPlayer(){
+        getCurrentPlayer().decreaseLeftActions();
+    }
+
+    public void calculateTotalActionsNewCurrentPlayer(){
+        getCurrentPlayer().calculateTotalActions();
+    }
+
+    public int getLeftActionsOfCurrentPlayer(){
+        return getCurrentPlayer().leftActions;
+    }
+
     // Method for observer pattern
     public void addCurrentUserListener(ICurrentUserListener currentUserListener){
 		currentUserListeners.add(currentUserListener);

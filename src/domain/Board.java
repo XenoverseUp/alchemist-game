@@ -1,4 +1,5 @@
 package domain;
+import enums.GamePhase;
 import enums.Potion;
 
 public class Board {
@@ -6,11 +7,15 @@ public class Board {
 	private Auth auth;
 	public IngredientCardDeck ingredientCardDeck;
 	public ArtifactCardDeck artifactCardDeck;
+	protected GamePhase phase;
+	protected int numberOfTurns;
 	
 	public Board(Auth auth) {
 		this.auth = auth;
 		this.ingredientCardDeck = new IngredientCardDeck();
 		this.artifactCardDeck = new ArtifactCardDeck();
+		this.phase = GamePhase.FirstRound;
+		this.numberOfTurns = 0;
 	}
 	
 	public void dealCards() {
@@ -22,7 +27,6 @@ public class Board {
 		}
 	}
 
-	
 	public void dealGolds() {
 		for (Player p: auth.players) 
     		p.inventory.addGold(10);
@@ -30,6 +34,7 @@ public class Board {
 	
 	public void toggleCurrentUser() {
 		auth.toggleCurrentUser();
+		this.numberOfTurns += 1;
 	}
 	
 	public void forageIngredient() {
@@ -95,6 +100,15 @@ public class Board {
 			}
 		}
 		return potion;
+	}
+
+	// unfinished
+	public void updatePhase(){
+
+		if (numberOfTurns == 5){
+			this.phase = GamePhase.SecondRound;
+		}
+	
 	}
 }
 
