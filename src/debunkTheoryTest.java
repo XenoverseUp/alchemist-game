@@ -7,13 +7,9 @@ import static org.junit.Assert.*;
 1-Requirements for debunkTheory:
 
 The successful execution of debunkTheory requires the proper initialization and 
-correct state of the following components: alchemyMarkerDeck, which must be initialized and 
-in a valid state to perform the getChosen() function; publicationCardDeck, which needs to be 
-initialized and in a suitable condition for using the getChosen() method; and auth, which must 
+correct state of the following components: alchemyMarkerDeck, publicationCardDeck and auth, which must 
 be initialized and in a state where functions such as getCurrentPlayer(), increaseReputation(), 
-and removeGoldFromCurrentUser() can be utilized. Additionally, 
-the method alchemyMarkerDeck.getChosen().checkAvailability() is expected to provide a 
-boolean value indicating the course of action for the function.
+and removeGoldFromCurrentUser() can be utilized.
 
 2-Modifications by debunkTheory:
 
@@ -62,7 +58,8 @@ public class debunkTheoryTest {
     }
 
     /*
-     * Black box testing: The test primarily focuses on the external behavior of the
+     * 1) testDebunkTheoryWithWrongTheory(): Black box testing.
+     * The test primarily focuses on the external behavior of the
      * system. It checks
      * whether the wrong marker is dissociated after calling board.debunkTheory().
      * The
@@ -87,7 +84,8 @@ public class debunkTheoryTest {
     }
 
     /*
-     * Black box testing: The test primarily focuses on the external behavior of the
+     * 2) testDebunkTheoryWithAssociatedMarker(): Black box testing.
+     * The test primarily focuses on the external behavior of the
      * system. It checks
      * whether the association between the published theory and the true alchemy
      * marker
@@ -116,7 +114,8 @@ public class debunkTheoryTest {
     }
 
     /*
-     * Black box testing: The test primarily focuses on the external behavior of the
+     * 3) testReputationIncreaseOnDebunkedTheory(): Black box testing.
+     * The test primarily focuses on the external behavior of the
      * system. It checks whether the reputation of the current player increases by 2
      * points after calling board.debunkTheory().
      */
@@ -139,7 +138,8 @@ public class debunkTheoryTest {
     }
 
     /*
-     * Glass box testing: The test is designed to verify specific aspects of the
+     * 4) testDebunkTheoryAffectsCorrectPlayer(): Glass box testing.
+     * The test is designed to verify specific aspects of the
      * internal logic of the system. It checks conditions related to the association
      * and dissociation of markers and the calculation of player reputation. The
      * test includes assertions checking preconditions (for example marker
@@ -168,7 +168,8 @@ public class debunkTheoryTest {
     }
 
     /*
-     * Glass box testing: The test delves into the internal logic of the system by
+     * 5) testDebunkTheoryWithNoTheoryPublicationCard(): Glass box testing.
+     * The test delves into the internal logic of the system by
      * examining
      * its behavior when trying to debunk a theory without a corresponding theory
      * publication card (achieved through publicationCardDeck.setChosen(1)). The
