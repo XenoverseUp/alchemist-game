@@ -45,8 +45,8 @@ public class PublicationCardDeckTest {
     /**
      * Tests that drawing a card returns an instance of PublicationCard.
      *
-     * Requires: None.
-     * Modifies: None.
+     * Requires: An initialized cardDeck.
+     * Modifies: cardDeck.
      * Effects: Verifies that the drawn card is an instance of PublicationCard.
      */
     @Test
@@ -60,7 +60,7 @@ public class PublicationCardDeckTest {
     /**
      * Tests that shuffling does not change the deck size.
      *
-     * Requires: None.
+     * Requires: An initialized cardDeck.
      * Modifies: publicationCardDeck (by shuffling)
      * Effects: Verifies that shuffling doesn't change the deck size.
      */
@@ -77,7 +77,7 @@ public class PublicationCardDeckTest {
     /**
      * Tests that drawing all cards in the deck empties the deck.
      *
-     * Requires: None.
+     * Requires: An initialized cardDeck.
      * Modifies: publicationCardDeck (by repeatedly drawing cards)
      * Effects: Verifies that after drawing all cards, the deck becomes empty.
      */
@@ -100,7 +100,7 @@ public class PublicationCardDeckTest {
     /**
      * Tests that all drawn cards are unique.
      *
-     * Requires: None.
+     * Requires: An initialized cardDeck.
      * Modifies: publicationCardDeck (by repeatedly drawing cards)
      * Effects: Verifies that all drawn cards are different from each other.
      */
