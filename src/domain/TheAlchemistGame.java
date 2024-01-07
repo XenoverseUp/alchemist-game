@@ -12,7 +12,7 @@ import enums.DeductionToken;
 import enums.Potion;
 import error.HostDoesNotExistsException;
 import interfaces.ICurrentUserListener;
-import net.ClientSideConnection;
+import net.Client;
 import net.Server;
 
 public class TheAlchemistGame {
@@ -20,7 +20,7 @@ public class TheAlchemistGame {
     private Board gameBoard;
     private ApplicationType applicationType = ApplicationType.Local;
     private ServerSocket serverSocket = null;
-    private ClientSideConnection csc = null;
+    private Client csc = null;
 
     public TheAlchemistGame() {
     	auth = new Auth();
@@ -123,7 +123,7 @@ public class TheAlchemistGame {
 
     public int connectToServer(int port) {
         try {
-            csc = new ClientSideConnection(port);
+            csc = new Client(port);
             csc.listen();
             this.applicationType = ApplicationType.Online;
         } catch (HostDoesNotExistsException e) {

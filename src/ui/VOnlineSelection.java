@@ -216,7 +216,7 @@ public class VOnlineSelection extends VComponent {
             if (type == FormState.Host) {
                 int result = game.createServer(Integer.parseInt(p.getText()));
                 if (result == 0) {
-                    router.to(View.OnlineLogin);
+                    router.to(View.Lobby);
                     return;
                 }
                 
@@ -224,7 +224,7 @@ public class VOnlineSelection extends VComponent {
             } else if (type == FormState.Join) {
                 int result = game.connectToServer(Integer.parseInt(p.getText()));
                 if (result == 0) {
-                    router.to(View.OnlineLogin);
+                    router.to(View.Lobby);
                     return;
                 }
 
