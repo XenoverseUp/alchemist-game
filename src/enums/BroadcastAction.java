@@ -1,6 +1,6 @@
 package enums;
 
 public enum BroadcastAction {
-    USER_CREATED,
+    PLAYER_CREATED,
     CLIENT_CONNECTED
 }

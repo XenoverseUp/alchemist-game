@@ -1,12 +1,19 @@
 package ui;
 
+import java.util.HashMap;
+
 import javax.swing.JLabel;
 
 import domain.TheAlchemistGame;
+import enums.BroadcastAction;
+import interfaces.IBroadcastListener;
+import interfaces.IDynamicTypeValue;
 import ui.framework.VComponent;
 
-public class VLobby extends VComponent {
-    public VLobby(TheAlchemistGame game) { super(game); }
+public class VLobby extends VComponent implements IBroadcastListener {
+    public VLobby(TheAlchemistGame game) { 
+        super(game);
+    }
     private JLabel id;
 
     @Override
@@ -19,6 +26,12 @@ public class VLobby extends VComponent {
 
     @Override
     protected void mounted() {
-        id.setText(String.format("You are the %s.", game.getId() == 0 ? "host" : "client #" + game.getId()));
+        game.addBroadcastListener(this);
+    }
+
+    @Override
+    public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
+        if (action == BroadcastAction.PLAYER_CREATED) 
+            id.setText(String.format("You are the %s.", game.getId() == 0 ? "host" : "client #" + game.getId()));
     }
 }

@@ -137,35 +137,10 @@ public class VOnlineLogin extends VComponent {
                 }
             }
 
-            int result = game.createUser(playerName, playerAvatar);
+            game.createUserClient(game.getId(), playerName, playerAvatar);
 
-            switch (result) {
-                case 0: {
-                    nextButton.setText("Ready");
-                    userNameTextField.setEditable(false);
-                    info.setText("Waiting for other alchemist.");
-                    info.setForeground(Color.black);
-                    break;
-                }
-                case 1: {
-                    info.setText(String.format("There is already a player named %s.", playerName));
-                    info.setForeground(Color.red);
-                    break;
-                }
-                case 2: {
-                    info.setText("Name cannot be empty.");
-                    info.setForeground(Color.red);
-                    break;
-                }
-                case 3: {
-                    info.setText(String.format("%s is already taken. Pick another avatar.", avatarName));
-                    info.setForeground(Color.red);
-                    break;
-                }
-            }
-
-            // game.initializeGame();
-            router.to(View.Lobby);
+            // game.initializeGame(); Move to serverside
+            // router.to(View.Lobby);
 
         });
 

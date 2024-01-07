@@ -11,6 +11,7 @@ import enums.Avatar;
 import enums.DeductionToken;
 import enums.Potion;
 import error.HostDoesNotExistsException;
+import interfaces.IBroadcastListener;
 import interfaces.ICurrentUserListener;
 import net.Client;
 import net.Server;
@@ -20,7 +21,7 @@ public class TheAlchemistGame {
     private Board gameBoard;
     private ApplicationType applicationType = ApplicationType.Local;
     private ServerSocket serverSocket = null;
-    private Client csc = null;
+    private Client client = null;
 
     public TheAlchemistGame() {
     	auth = new Auth();
@@ -31,8 +32,12 @@ public class TheAlchemistGame {
         return auth.createUser(userName, a);
     }
    
-    public int createUser(int id, String userName, Avatar a) {
-        return auth.createUser(id, userName, a);
+    public int createUser(int id, String name, Avatar avatar) {
+        return auth.createUser(id, name, avatar);
+    }
+  
+    public int createUserClient(int id, String name, Avatar avatar) {
+        return client.createUser(id, name, avatar);
     }
 
     public String getPlayerName(int id) {
@@ -106,6 +111,14 @@ public class TheAlchemistGame {
         return this.gameBoard.getAuth().calculateWinner();
     }
 
+
+
+    /** NETWORKING */
+
+    public ApplicationType getApplicationType() {
+        return applicationType;
+    }
+
     public int createServer(int port) {
         try {
             this.serverSocket = new ServerSocket(port);
@@ -123,8 +136,8 @@ public class TheAlchemistGame {
 
     public int connectToServer(int port) {
         try {
-            csc = new Client(port);
-            csc.listen();
+            client = new Client(port);
+            client.listen();
             this.applicationType = ApplicationType.Online;
         } catch (HostDoesNotExistsException e) {
             return 1;
@@ -134,8 +147,12 @@ public class TheAlchemistGame {
     }
 
     public int getId() {
-        if (csc != null) return csc.getId();
+        if (client != null) return client.getId();
         return 0;
     }
 
+    public void addBroadcastListener(IBroadcastListener component) {
+        if (this.applicationType == ApplicationType.Online && client != null)
+            client.addBroadcastListener(component);
+    }
 }

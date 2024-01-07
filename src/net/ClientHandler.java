@@ -31,14 +31,11 @@ public class ClientHandler  {
         this.id = clientHandlers.size();
         clientHandlers.add(this);
 
-        BroadcastPackage p = new BroadcastPackage(
-            BroadcastAction.CLIENT_CONNECTED, 
-            new HashMap<String, IDynamicTypeValue>() {{
-                put("id", new DynamicTypeValue<Integer>(id));
-            }}
-        );
 
-        broadcast(p);
+        HashMap<String, IDynamicTypeValue> payload = new HashMap<>();
+        payload.put("id", new DynamicTypeValue<Integer>(id));
+
+        emit(new BroadcastPackage(BroadcastAction.CLIENT_CONNECTED, payload));
     }
 
     public int getId() {
@@ -53,11 +50,10 @@ public class ClientHandler  {
         clientHandlers.remove(this);
     }
 
-
-    public void emit(BroadcastPackage response) {
+    public void emit(BroadcastPackage p) {
         try {
             if (!socket.isClosed()) {
-                out.writeObject(response);
+                out.writeObject(p);
                 out.flush();
             }
         } catch (Exception e) {
@@ -67,6 +63,7 @@ public class ClientHandler  {
 
     public void shutdown() {
         removeClientHandler();
+        
         try {
             if (socket != null) socket.close();
             if (out != null) out.close();

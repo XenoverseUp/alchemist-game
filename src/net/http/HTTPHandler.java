@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -14,6 +13,9 @@ import com.sun.net.httpserver.HttpHandler;
 
 import domain.TheAlchemistGame;
 import enums.Avatar;
+import enums.BroadcastAction;
+import interfaces.IDynamicTypeValue;
+import net.BroadcastPackage;
 import net.ClientHandler;
 
 public class HTTPHandler implements HttpHandler {
@@ -53,6 +55,9 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+            put("/http/players", (HttpExchange exchange) -> {
+
+            });
         }});
 
         endpoints.put("POST", new HashMap<String, Consumer<HttpExchange>>() {{
@@ -64,12 +69,18 @@ public class HTTPHandler implements HttpHandler {
                     Avatar avatar = Avatar.Serene;
 
                     for (Avatar a : Avatar.values())
-                        if (a.toString().equals(parsed.get("avatar"))) avatar = a;
-
-
-                    game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
+                        if (a.toString().equals(parsed.get("avatar"))){
+                            avatar = a;
+                            break;
+                        }
                     
-                    sendResponse(exchange, 200, String.format("Created a user %s with name %s and avatar %s.", parsed.get("id"), parsed.get("name"), parsed.get("avatar")));
+
+                    int result = game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
+
+                    sendResponse(exchange, 200, String.format("Created a user %s with name %s and avatar %s. Result: %d", parsed.get("id"), parsed.get("name"), parsed.get("avatar"), result));
+                        
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.PLAYER_CREATED));
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
