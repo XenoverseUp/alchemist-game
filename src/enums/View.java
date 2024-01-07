@@ -14,5 +14,6 @@ public enum View {
     Pause,
     ArtifactShop,
     OnlineSelection,
-    Lobby
+    Lobby,
+    OnlineLogin
 }

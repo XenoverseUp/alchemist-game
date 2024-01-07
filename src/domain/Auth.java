@@ -36,6 +36,21 @@ public class Auth {
         return 0;
     }
 
+    public int createUser(int id, String name, Avatar avatar) {
+        if (name.equals("") || name == null) return 2;
+
+        for (Player p : this.players) {
+            if (p.name.equals(name)) return 1;
+            if (p.avatar == avatar) return 3;
+        }
+        
+        Player player = new Player(id, name, avatar);
+
+        this.players.add(player);
+
+        return 0;
+    }
+
     public void toggleCurrentUser() {
         this.currentUser += 1;
         if (this.currentUser == players.size()) this.currentUser = 0;

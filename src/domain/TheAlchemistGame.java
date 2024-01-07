@@ -18,7 +18,7 @@ import net.Server;
 public class TheAlchemistGame {
     private Auth auth;
     private Board gameBoard;
-    private ApplicationType applicationType = ApplicationType.Host;
+    private ApplicationType applicationType = ApplicationType.Local;
     private ServerSocket serverSocket = null;
     private ClientSideConnection csc = null;
 
@@ -29,6 +29,14 @@ public class TheAlchemistGame {
 
     public int createUser(String userName, Avatar a) {
         return auth.createUser(userName, a);
+    }
+   
+    public int createUser(int id, String userName, Avatar a) {
+        return auth.createUser(id, userName, a);
+    }
+
+    public String getPlayerName(int id) {
+        return this.auth.players.get(id).name;
     }
 
     public void toggleCurrentUser() {
@@ -117,6 +125,7 @@ public class TheAlchemistGame {
         try {
             csc = new ClientSideConnection(port);
             csc.listen();
+            this.applicationType = ApplicationType.Online;
         } catch (HostDoesNotExistsException e) {
             return 1;
         }

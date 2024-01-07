@@ -8,8 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import enums.StringRequest;
-import enums.StringResponse;
 import domain.TheAlchemistGame;
 
 public class ClientHandler implements Runnable {
@@ -17,13 +15,12 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private RequestParser requestParser;
     private TheAlchemistGame game;
     private final int id;
 
     public ClientHandler(Socket socket, TheAlchemistGame game) {
         this.socket = socket;
-        this.requestParser = new RequestParser(this, game);
+        this.game = game;
         
         try {
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
@@ -34,6 +31,7 @@ public class ClientHandler implements Runnable {
 
         this.id = clientHandlers.size();
         clientHandlers.add(this);
+        emit(String.format("id~%d", this.id));
     }
 
     @Override
@@ -41,7 +39,6 @@ public class ClientHandler implements Runnable {
         while (!socket.isClosed()) {
             try {
                 String request = bufferedReader.readLine();
-                requestParser.parseAndExecute(request);
             } catch (IOException e) {
                 shutdown();
                 break;
@@ -53,14 +50,30 @@ public class ClientHandler implements Runnable {
         return id;
     }
 
+    public static void broadcast(Package p) {
+        for (ClientHandler c : clientHandlers) c.emit(p);
+    }
+
     public void removeClientHandler() {
         clientHandlers.remove(this);
     }
 
-    public void respond(StringResponse responseType, String response) {
+    public void emit(String response) {
         try {
             if (!socket.isClosed()) {
-                bufferedWriter.write(responseType.toString() + "~" + response);
+                bufferedWriter.write(response);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+            }
+        } catch (Exception e) {
+            shutdown() ;
+        }
+    }
+
+    public void emit(Package response) {
+        try {
+            if (!socket.isClosed()) {
+                // bufferedWriter.write(response);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }

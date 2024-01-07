@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import domain.TheAlchemistGame;
+import net.http.HTTPServer;
 
 public class Server {
     private ServerSocket serverSocket;
@@ -14,7 +15,11 @@ public class Server {
         this.serverSocket = ss;
         this.game = game;
         System.out.println(String.format("Game Server is up and running on http://localhost:%d", serverSocket.getLocalPort()));
-
+        try {
+            new HTTPServer(game);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void start() {
@@ -39,7 +44,7 @@ public class Server {
                     closeServer();
                 }
             }    
-        }).start();;
+        }).start();
     }
 
     public void closeServer() {

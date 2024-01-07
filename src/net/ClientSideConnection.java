@@ -9,12 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import enums.Avatar;
-import enums.ServerAction;
-import enums.StringRequest;
-import enums.StringResponse;
 import error.HostDoesNotExistsException;
-import interfaces.IDynamicTypeValue;
 
 public class ClientSideConnection {
     private Socket socket;
@@ -22,7 +17,6 @@ public class ClientSideConnection {
     private BufferedWriter bufferedWriter;
     private DataInputStream dataIn;
     private DataOutputStream dataOut;
-    private ResponseParser responseParser;
     private int id;
 
     public ClientSideConnection(int port) throws HostDoesNotExistsException {
@@ -32,19 +26,17 @@ public class ClientSideConnection {
             this.bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.dataIn = new DataInputStream(this.socket.getInputStream());
             this.dataOut = new DataOutputStream(this.socket.getOutputStream());
-            send(StringRequest.GET_ID);
         } catch (IOException e) {
             shutdown();
             throw new HostDoesNotExistsException();
         }
 
-        this.responseParser = new ResponseParser(this);
     }
 
-    public void send(StringRequest request) {
+    public void send(String request) {
         try {
             if (!socket.isClosed()) {
-                bufferedWriter.write(request.toString());
+                bufferedWriter.write(request);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
@@ -62,17 +54,10 @@ public class ClientSideConnection {
                 while (!socket.isClosed()) {
                     try {
                         String rawResponse = bufferedReader.readLine();
-                        StringResponse responseType = responseParser.parseResponseType(rawResponse);
+                        String[] tokens = rawResponse.split("~");
 
-                        switch (responseType) {
-                            case ID:
-                                id = responseParser.parseId(rawResponse);
-                                break;
-                            default:
-                                break;
-                        }
+                        if (tokens[0].equals("id")) id = Integer.parseInt(tokens[1]);
 
-                        
                     } catch (IOException e) {
                         shutdown();
                     }
