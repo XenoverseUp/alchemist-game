@@ -2,6 +2,8 @@ package domain;
 
 import java.util.ArrayList;
 import enums.Avatar;
+import error.HostDoesNotExistsException;
+import error.NotEnoughActionsException;
 import interfaces.ICurrentUserListener;
 
 public class Auth {
@@ -39,8 +41,8 @@ public class Auth {
     public void toggleCurrentUser() {
         this.currentUser += 1;
         if (this.currentUser == players.size()) this.currentUser = 0;
+        getCurrentPlayer().calculateTotalActions();
         publishCurrentUserChange();
-        getCurrentPlayer().leftActions = 2 + getCurrentPlayer().extraActions;
     }
 
     public Player getCurrentPlayer() {
@@ -65,6 +67,22 @@ public class Auth {
     
     public IngredientCard getIngredientCardFromCurrentPlayer(String name) {
     	return getCurrentPlayer().inventory.getIngredient(name);
+    }
+
+    public void decreaseLeftActionsOfCurrentPlayer() throws NotEnoughActionsException {
+        getCurrentPlayer().decreaseLeftActions();
+    }
+
+    public void calculateTotalActionsNewCurrentPlayer(){
+        getCurrentPlayer().calculateTotalActions();
+    }
+
+    public int getLeftActionsOfCurrentPlayer(){
+        return getCurrentPlayer().leftActions;
+    }
+
+    public int getNumOfPlayers(){
+        return players.size();
     }
 
     // Method for observer pattern
