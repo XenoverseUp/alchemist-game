@@ -1,9 +1,7 @@
 package net.http;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HTTPRequestParser {
     public static String parseParameter(String originalPath, String template) {
