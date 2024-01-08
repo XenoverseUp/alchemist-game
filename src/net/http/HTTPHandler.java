@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.google.gson.Gson; 
-import com.google.gson.GsonBuilder; 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -25,7 +23,6 @@ public class HTTPHandler implements HttpHandler {
     private TheAlchemistGame game;
     private HashMap<String, HashMap<String, Consumer<HttpExchange>>> endpoints = new HashMap<String, HashMap<String, Consumer<HttpExchange>>>();
     private List<String> paths = new ArrayList<>();
-    private Gson gson = new Gson();
 
     public HTTPHandler(TheAlchemistGame game) {
         this.game = game;
