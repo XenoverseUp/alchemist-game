@@ -64,14 +64,19 @@ public class Board {
 		} else return 1;
 	}
 
+
 	public int drawMysteryCard() throws NotEnoughActionsException {
 		auth.decreaseLeftActionsOfCurrentPlayer();
 		if (this.auth.getCurrentPlayer().inventory.getGold() < 5) return 1; 
 		ArtifactCard card = this.artifactCardDeck.drawMysteryCard();
 		this.auth.getCurrentPlayer().inventory.spendGold(5);
 		this.auth.getCurrentPlayer().inventory.addArtifactCard(card);
-		
 		return 0;
+	}
+
+	public void discardArtifact(String name) throws NotEnoughActionsException{
+		auth.decreaseLeftActionsOfCurrentPlayer();
+		auth.getCurrentPlayer().inventory.discardArtifactCard(name);
 	}
 	
 	public Auth getAuth() {
@@ -79,6 +84,11 @@ public class Board {
 	}
 
 	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+		if(testOn.equals("sell")){
+			if (this.phase == GamePhase.FirstRound){
+				throw new WrongGameRoundException();
+			}
+		}
 		auth.decreaseLeftActionsOfCurrentPlayer();
 		if (testOn.equals("sell") && auth.getCurrentPlayer().inventory.getGold() < 2){
 			throw new Exception("enough-gold-sell");
@@ -96,12 +106,7 @@ public class Board {
 		auth.getCurrentPlayer().playerBoard.addDiscoveredPotion(potion);
 
 		if(testOn.equals("sell")){
-			if (this.phase == GamePhase.FirstRound){
-				throw new WrongGameRoundException();
-			}
-			else{
-				auth.getCurrentPlayer().sell(potion);
-			}
+			auth.getCurrentPlayer().sell(potion);
 		}
 		else{
 			try{

@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import enums.BoardHover;
+import enums.GamePhase;
 import enums.View;
 import ui.framework.Router;
 import ui.framework.WindowDimension;
@@ -126,10 +127,12 @@ public class Canvas extends JPanel {
         g.drawString(game.getCurrentUser().name, 1248, 35);
         
         g.setFont(new Font("Itim-Regular", Font.PLAIN, 14));
-        g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 65);
-        g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 85);
-
+        g.drawString(Integer.toString(game.getCurrentUser().leftActions) + " left actions", 1248, 65);
+        g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 85);
+        g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 105);
         
+
+
         // Draw title
         setCurrentPlayer(g, game.getCurrentUser().name);
         
@@ -147,22 +150,25 @@ public class Canvas extends JPanel {
         if (boardHover == BoardHover.DeductionBoard) 
             g.drawImage(deductionOutlineHover, null, 227, 381);
         
-        g.drawImage(pbaOutline, null, 799, 294);
-        g.drawString("Potion Brewing Area", 863, 311);
-        if (boardHover == BoardHover.PotionBrewingArea) 
-            g.drawImage(pbaOutlineHover, null, 787, 318);
+        if(game.getPhase() != GamePhase.FirstRound){
+            g.drawImage(pbaOutline, null, 799, 294);
+            g.drawString("Potion Brewing Area", 863, 311);
+            if (boardHover == BoardHover.PotionBrewingArea) 
+                g.drawImage(pbaOutlineHover, null, 787, 318);
+        }
+      
         
         g.drawImage(cardDeckOutline, null, -24, 567);
         g.drawString("Card Deck", 22, 584);
         if (boardHover == BoardHover.CardDeck) 
             g.drawImage(cardDeckOutlineHover, null, -36, 606);
         
-        
-        g.drawImage(publicationAreaOutline, null, 520, 175);
-        g.drawString("Publication Area", 532, 192);
-        if (boardHover == BoardHover.PublicationArea) 
-            g.drawImage(publicationAreaOutlineHover, null, 611, 175);
-
+        if(game.getPhase() != GamePhase.FirstRound){
+            g.drawImage(publicationAreaOutline, null, 520, 175);
+            g.drawString("Publication Area", 532, 192);
+            if (boardHover == BoardHover.PublicationArea) 
+                g.drawImage(publicationAreaOutlineHover, null, 611, 175);
+        }
         // Fill Sidebar
 
         if (nextButtonPressed) {
@@ -203,11 +209,11 @@ public class Canvas extends JPanel {
         public void mousePressed(MouseEvent e) {
             Point p = e.getPoint();
 
-            if (publicationArea.contains(p)) 
-                router.to(View.PublicationArea);
-            else if (potionBrewingArea.contains(p)) 
-                router.to(View.PotionBrewingArea);
-            else if (inventoryArea.contains(p)) 
+            if (publicationArea.contains(p)) {
+                if (game.getPhase() != GamePhase.FirstRound) router.to(View.PublicationArea);
+            } else if (potionBrewingArea.contains(p)) {
+                if (game.getPhase() != GamePhase.FirstRound) router.to(View.PotionBrewingArea);
+            } else if (inventoryArea.contains(p)) 
                 router.to(View.Inventory);
             else if (cardArea.contains(p)) 
                 router.to(View.CardDeck);
@@ -227,6 +233,7 @@ public class Canvas extends JPanel {
 
             if (new Rectangle(1250, 675,175, 50).contains(p)) { 
                 game.toggleCurrentUser();
+
             }
             
             Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -237,10 +244,10 @@ public class Canvas extends JPanel {
         public void mouseMoved(MouseEvent e) {
             Point p = e.getPoint();
 
-            if (publicationArea.contains(p)) {
+            if (publicationArea.contains(p) && game.getPhase() != GamePhase.FirstRound) {
                 Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 boardHover = BoardHover.PublicationArea;
-            } else if (potionBrewingArea.contains(p)) {
+            } else if (potionBrewingArea.contains(p) && game.getPhase() != GamePhase.FirstRound) {
                 Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 boardHover = BoardHover.PotionBrewingArea;
             } else if (inventoryArea.contains(p)) {

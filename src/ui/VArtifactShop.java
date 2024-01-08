@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 
 import domain.TheAlchemistGame;
 import enums.View;
+import error.NotEnoughActionsException;
 import ui.framework.VComponent;
 import ui.util.WrapLayout;
 
@@ -109,9 +110,15 @@ public class VArtifactShop extends VComponent {
         JButton drawMysteryButton = new JButton("Draw Mystery Card (5 Gold)");
         drawMysteryButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         drawMysteryButton.addActionListener(e -> {
-            int result = game.drawMysteryCard();
-            if (result == 0) router.to(View.Inventory);
-            else modal.info("Not enough money!", "Fuck you bitch.");
+            int result;
+            try {
+                result = game.drawMysteryCard();
+                if (result == 0) router.to(View.Inventory);
+                else modal.info("Not enough money!", "Fuck you bitch.");
+            } catch (NotEnoughActionsException e1) {
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+            }
+           
         });
 
         container.add(Box.createVerticalGlue());
@@ -222,10 +229,15 @@ public class VArtifactShop extends VComponent {
         activateButton.setBorderPainted(false);
 
         activateButton.addActionListener(event -> {
-            int result = game.buyArtifact(name);
+            int result;
+            try {
+                result = game.buyArtifact(name);
+                if (result == 0) router.to(View.Inventory);
+                else modal.info("Not enough money!", "Fuck you bitch.");
+            } catch (NotEnoughActionsException e) {
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+            }
 
-            if (result == 0) router.to(View.Inventory);
-            else modal.info("Not enough money!", "Fuck you bitch.");
         });
 
         card.add(activateButton);

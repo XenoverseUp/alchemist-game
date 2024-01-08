@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import enums.View;
+import error.NotEnoughActionsException;
 import ui.framework.VComponent;
 import domain.TheAlchemistGame;
 
@@ -109,8 +110,12 @@ public class VCardDeck extends VComponent {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(event -> {
             if (type == "ingredient") {
-                game.forageIngredient();
-                router.to(View.Inventory);
+                try {
+                    game.forageIngredient();
+                    router.to(View.Inventory);
+                } catch (NotEnoughActionsException e) {
+                   modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+                }
             } else router.to(View.ArtifactShop);
             
         });
