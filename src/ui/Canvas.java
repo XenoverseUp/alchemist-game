@@ -133,6 +133,7 @@ public class Canvas extends JPanel {
         g.drawString(Integer.toString(game.getCurrentUser().leftActions) + " left actions", 1248, 65);
         g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 85);
         g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 105);
+        g.drawString(Integer.toString(game.getCurrentUser().getSickness()) + " sickness", 1248, 125);
         
 
 

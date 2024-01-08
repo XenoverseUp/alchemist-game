@@ -77,6 +77,7 @@ public class Player implements Serializable {
 
     public void calculateTotalActions(){
         this.leftActions = 2 + this.extraActions;
+        this.extraActions = 0;
     }
 
 
