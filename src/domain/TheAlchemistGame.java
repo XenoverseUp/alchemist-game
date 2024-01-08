@@ -9,8 +9,10 @@ import java.util.HashMap;
 import enums.ApplicationType;
 import enums.Avatar;
 import enums.DeductionToken;
+import enums.GamePhase;
 import enums.Potion;
 import error.HostDoesNotExistsException;
+import error.NotEnoughActionsException;
 import interfaces.ICurrentUserListener;
 import net.ClientSideConnection;
 import net.Server;
@@ -50,15 +52,15 @@ public class TheAlchemistGame {
         gameBoard.dealGolds();
     }
 
-    public void forageIngredient() {
+    public void forageIngredient() throws NotEnoughActionsException   {
         gameBoard.forageIngredient();
     }
 
-    public void transmuteIngredient(String ingredientName) {
+    public void transmuteIngredient(String ingredientName) throws NotEnoughActionsException {
         gameBoard.transmuteIngredient(ingredientName);
     }
 
-    public int buyArtifact(String name) {
+    public int buyArtifact(String name) throws NotEnoughActionsException {
         return gameBoard.buyArtifact(name);
     }
 
@@ -70,7 +72,7 @@ public class TheAlchemistGame {
 		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
 	}
 
-    public int drawMysteryCard() {
+    public int drawMysteryCard() throws NotEnoughActionsException {
         return this.gameBoard.drawMysteryCard();
     }
 
@@ -96,6 +98,14 @@ public class TheAlchemistGame {
 
     public ArrayList<Player> calculateWinner(){
         return this.gameBoard.getAuth().calculateWinner();
+    }
+
+    public GamePhase getPhase(){
+        return gameBoard.getPhase();
+    }
+
+    public int getCurrentLeftActions(){
+        return gameBoard.getCurrentLeftActions();
     }
 
     public int createServer(int port) {
@@ -128,5 +138,6 @@ public class TheAlchemistGame {
         if (csc != null) return csc.getId();
         return 0;
     }
+
 
 }
