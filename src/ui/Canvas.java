@@ -17,14 +17,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import enums.Avatar;
 import enums.BoardHover;
 import enums.View;
+import ui.framework.AssetLoader;
 import ui.framework.Router;
 import ui.framework.WindowDimension;
 
 public class Canvas extends JPanel {
     private Router router = Router.getInstance();
     private WindowDimension windowDimension = WindowDimension.getInstance();
+    private AssetLoader assetLoader = AssetLoader.getInstance();
     
     private Timer timer;
     private int FPS = 80;
@@ -179,18 +182,19 @@ public class Canvas extends JPanel {
         
 
         g.setPaint(Color.ORANGE);
-        g.fillOval(x, y, 100, 100);
+        g.fillOval(x, y, 130, 130);
+        g.drawImage(assetLoader.getAvatarImage(Avatar.Serene), null, x, y);
 
         g.dispose();
 
     }
 
     private void update() {
-        if (this.x < 0 || this.x + 100 > windowDimension.getWidth()) {
+        if (this.x < 0 || this.x + 130 > windowDimension.getWidth()) {
             this.velocityX *= -1;
         }
         
-        if (this.y < 0 || this.y + 100 > windowDimension.getHeight()) {
+        if (this.y < 0 || this.y + 130 > windowDimension.getHeight()) {
             this.velocityY *= -1;
         }
 
