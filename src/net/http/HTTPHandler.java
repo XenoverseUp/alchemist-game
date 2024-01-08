@@ -8,20 +8,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.google.gson.Gson; 
+import com.google.gson.GsonBuilder; 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.BroadcastAction;
-import interfaces.IDynamicTypeValue;
 import net.BroadcastPackage;
 import net.ClientHandler;
+import net.util.JON;
+
 
 public class HTTPHandler implements HttpHandler {
     private TheAlchemistGame game;
     private HashMap<String, HashMap<String, Consumer<HttpExchange>>> endpoints = new HashMap<String, HashMap<String, Consumer<HttpExchange>>>();
     private List<String> paths = new ArrayList<>();
+    private Gson gson = new Gson();
 
     public HTTPHandler(TheAlchemistGame game) {
         this.game = game;
@@ -42,7 +46,7 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
-            put("/http/playerName/:id", (HttpExchange exchange) -> {
+            put("/http/playerAvatar/:id", (HttpExchange exchange) -> {
                 String handle = HTTPRequestParser.parsePath(exchange.getRequestURI().getPath(), paths);
                 String idParameter = HTTPRequestParser.parseParameter(exchange.getRequestURI().getPath(), handle);
 
@@ -50,12 +54,19 @@ public class HTTPHandler implements HttpHandler {
                     if (idParameter == null) sendResponse(exchange, 400, "Cannot parse the passed parameter.");
                     int id = Integer.parseInt(idParameter);
 
-                    sendResponse(exchange, 200, game.getPlayerName(id));
+                    sendResponse(exchange, 200, game.getPlayerAvatar(id).toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
             put("/http/players", (HttpExchange exchange) -> {
+                HashMap<String, String> players = game.getPlayers();
+
+                try {
+                    sendResponse(exchange, 200, JON.build(players));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             });
         }});
@@ -64,7 +75,7 @@ public class HTTPHandler implements HttpHandler {
             put("/http/createPlayer", (HttpExchange exchange) -> {
                 try {
                     String body = getRequestString(exchange);
-                    Map<String, String> parsed = HTTPRequestParser.parseBody(body);
+                    Map<String, String> parsed = JON.parse(body);
 
                     Avatar avatar = Avatar.Serene;
 
@@ -74,13 +85,13 @@ public class HTTPHandler implements HttpHandler {
                             break;
                         }
                     
-
                     int result = game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
-
-                    sendResponse(exchange, 200, String.format("Created a user %s with name %s and avatar %s. Result: %d", parsed.get("id"), parsed.get("name"), parsed.get("avatar"), result));
-                        
-                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.PLAYER_CREATED));
                     
+                    if (result == 0) {
+                        sendResponse(exchange, 200, String.format("Created a user %s with name %s and avatar %s. Result: %d", parsed.get("id"), parsed.get("name"), parsed.get("avatar"), result));
+                        ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.PLAYER_CREATED));
+                    } else sendResponse(exchange, 409, String.valueOf(result));
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -128,5 +139,4 @@ public class HTTPHandler implements HttpHandler {
             return scanner.hasNext() ? scanner.next() : "";
         }
     }
-
 }

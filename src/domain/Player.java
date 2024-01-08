@@ -1,8 +1,10 @@
 package domain;
+import java.io.Serializable;
+
 import enums.Avatar;
 import enums.Potion;
 
-public class Player {
+public class Player implements Serializable {
     public int id;
     public String name;
     public Avatar avatar;

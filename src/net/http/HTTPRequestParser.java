@@ -44,18 +44,6 @@ public class HTTPRequestParser {
         return bestMatch != null ? bestMatch : resultPath.toString();
     }
 
-    public static Map<String, String> parseBody(String requestBody) {
-        Map<String, String> data = new HashMap<String, String>();
-
-        for (var line : requestBody.split("\n")) {
-            if (line.trim().equals("")) continue;
-            String[] kv = line.trim().split(":");
-            data.put(kv[0], kv[1]);
-        }
-        
-        return data;
-    }
-
     private static boolean isPlaceholder(String str) {
         return str.startsWith(":");
     }

@@ -42,6 +42,7 @@ public class Auth {
         for (Player p : this.players) {
             if (p.name.equals(name)) return 1;
             if (p.avatar == avatar) return 3;
+            if (p.id == id) return 4;
         }
         
         Player player = new Player(id, name, avatar);
@@ -60,6 +61,13 @@ public class Auth {
 
     public Player getCurrentPlayer() {
         return this.players.get(currentUser);
+    }
+
+    public Avatar getPlayerAvatar(int id) {
+        for (Player p : players) 
+            if (id == p.id) return p.avatar;
+
+        return null;
     }
 
     public void addGoldToCurrentUser(int amount) {

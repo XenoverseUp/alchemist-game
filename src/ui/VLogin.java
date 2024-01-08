@@ -118,7 +118,7 @@ public class VLogin extends VComponent {
         for (Avatar a: Avatar.values()) {
         	JRadioButton avatar = new JRadioButton(a.toString());
 
-            if (a == Avatar.Radiant) avatar.setSelected(true);
+            if (a == Avatar.Thunderous) avatar.setSelected(true);
 
             avatar.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
         	avatar.setAlignmentX(Component.CENTER_ALIGNMENT);

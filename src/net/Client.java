@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import enums.Avatar;
 import enums.BroadcastAction;
@@ -14,6 +15,7 @@ import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
 import net.http.HTTPClient;
 import net.util.DynamicTypeValue;
+import net.util.JON;
 
 public class Client {
     private Socket socket;
@@ -34,16 +36,36 @@ public class Client {
 
     }
 
+    /** HTTP Methods */
+
     public int createUser(int id, String name, Avatar avatar) {
         String body = httpClient.buildBody(new HashMap<String, String>() {{
             put("name", name);
             put("id", String.valueOf(id));
             put("avatar", avatar.toString());
         }});
+
         HttpResponse<String> response = httpClient.post("/http/createPlayer", body);
-        System.out.println(response);
-        return 0;
+
+        if (response.statusCode() == 200) return 0;
+        else return Integer.parseInt((String)response.body());
     }
+
+    public Map<String, String> getPlayerNames() {
+        HttpResponse<String> response = httpClient.get("/http/players");
+        Map<String, String> data = JON.parse((String)response.body());
+        
+        return data;
+    }
+
+    public Avatar getAvatar(int id) {
+        HttpResponse<String> response = httpClient.get(String.format("/http/playerAvatar/%d", id));
+
+        if (response.statusCode() == 200) return Avatar.valueOf((String)response.body());
+        return null;
+    }
+
+    /** TCP Package Listener and Publisher */
 
     @SuppressWarnings("unchecked")
     public void listen() {
@@ -62,7 +84,6 @@ public class Client {
                                 break;
                             case CLIENT_CONNECTED:
                                 id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
-                                System.out.println(id);
                                 break;
                         }
 
@@ -96,6 +117,11 @@ public class Client {
     public void addBroadcastListener(IBroadcastListener listener) {
         if (!this.broadcastListeners.contains(listener))
             this.broadcastListeners.add(listener);
+    }
+
+    public void removeBroadcastListener(IBroadcastListener listener) {
+        if (this.broadcastListeners.contains(listener))
+            this.broadcastListeners.remove(listener);
     }
 
     public void publishBroadcastListener(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {

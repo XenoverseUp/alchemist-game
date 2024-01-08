@@ -4,14 +4,8 @@ import com.sun.net.httpserver.HttpServer;
 
 import domain.TheAlchemistGame;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
-
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HTTPServer {
     private HttpServer server;
