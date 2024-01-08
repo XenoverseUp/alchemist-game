@@ -21,6 +21,8 @@ import javax.swing.SwingConstants;
 
 import domain.TheAlchemistGame;
 import enums.View;
+import error.NotEnoughActionsException;
+import error.WrongGameRoundException;
 
 public class VPotionBrewingArea extends VComponent {
     private ArrayList<String> selectedIngredients = new ArrayList<String>() {{
@@ -228,7 +230,14 @@ public class VPotionBrewingArea extends VComponent {
         try{
             game.makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
             router.to(View.DeductionBoard);
-        } catch(Exception e){
+        } 
+        catch(WrongGameRoundException e){
+            modal.info("Not Available in First Round", "Selling a potion is not available in First Round");
+        }
+        catch(NotEnoughActionsException e){
+            modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+        }
+        catch(Exception e){
             System.out.println(e);
             if (e.getMessage().equals("enough-gold-student")) modal.info("You little poor!", "To test a potion on a student you have to have at least one gold. You can still test it on yourself, tho.");
             else if (e.getMessage().equals("enough-gold-sell")) modal.info("You little poor!", "To sell a potion you have to have at least two golds. But don't forget, you can still have a positive trade.");

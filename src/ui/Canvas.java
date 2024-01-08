@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import enums.BoardHover;
+import enums.GamePhase;
 import enums.View;
 import ui.framework.Router;
 import ui.framework.WindowDimension;
@@ -128,8 +129,9 @@ public class Canvas extends JPanel {
         g.setFont(new Font("Itim-Regular", Font.PLAIN, 14));
         g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 65);
         g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 85);
+        g.drawString(Integer.toString(game.getCurrentUser().leftActions) + " left actions", 1248, 105);
 
-        
+
         // Draw title
         setCurrentPlayer(g, game.getCurrentUser().name);
         
@@ -205,9 +207,9 @@ public class Canvas extends JPanel {
 
             if (publicationArea.contains(p)) 
                 router.to(View.PublicationArea);
-            else if (potionBrewingArea.contains(p)) 
-                router.to(View.PotionBrewingArea);
-            else if (inventoryArea.contains(p)) 
+            else if (potionBrewingArea.contains(p)) {
+                if (game.getPhase() != GamePhase.FirstRound) router.to(View.PotionBrewingArea);
+            } else if (inventoryArea.contains(p)) 
                 router.to(View.Inventory);
             else if (cardArea.contains(p)) 
                 router.to(View.CardDeck);

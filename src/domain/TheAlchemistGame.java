@@ -65,8 +65,8 @@ public class TheAlchemistGame {
         return gameBoard.buyArtifact(name);
     }
 
-    public void discardArtifact(String name) {
-        gameBoard.getAuth().getCurrentPlayer().inventory.discardArtifactCard(name);
+    public void discardArtifact(String name) throws NotEnoughActionsException {
+        gameBoard.discardArtifact(name);
     }
 
     public ArrayList<ArtifactCard> getArtifactCardDeck(){
@@ -103,10 +103,6 @@ public class TheAlchemistGame {
 
     public GamePhase getPhase(){
         return gameBoard.getPhase();
-    }
-
-    public int getCurrentLeftActions(){
-        return gameBoard.getCurrentLeftActions();
     }
 
     public int createServer(int port) {
