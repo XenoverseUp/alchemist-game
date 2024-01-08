@@ -159,6 +159,7 @@ public class TheAlchemistGame {
         public void startGame(int id) {
             
         }
+    }
 
     public int createServer(int port) {
         try {
