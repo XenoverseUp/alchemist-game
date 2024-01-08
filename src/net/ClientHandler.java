@@ -1,68 +1,60 @@
 package net;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import enums.StringRequest;
-import enums.StringResponse;
 import domain.TheAlchemistGame;
+import enums.BroadcastAction;
+import interfaces.IDynamicTypeValue;
+import net.util.DynamicTypeValue;
 
-public class ClientHandler implements Runnable {
+public class ClientHandler  {
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<ClientHandler>();
     private Socket socket;
-    private BufferedReader bufferedReader;
-    private BufferedWriter bufferedWriter;
-    private RequestParser requestParser;
+    private ObjectOutputStream out;
     private TheAlchemistGame game;
     private final int id;
 
     public ClientHandler(Socket socket, TheAlchemistGame game) {
         this.socket = socket;
-        this.requestParser = new RequestParser(this, game);
+        this.game = game;
         
         try {
-            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
-            this.bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            this.out = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             shutdown();
         }
 
         this.id = clientHandlers.size();
         clientHandlers.add(this);
-    }
 
-    @Override
-    public void run() {
-        while (!socket.isClosed()) {
-            try {
-                String request = bufferedReader.readLine();
-                requestParser.parseAndExecute(request);
-            } catch (IOException e) {
-                shutdown();
-                break;
-            }
-        }
+
+        HashMap<String, IDynamicTypeValue> payload = new HashMap<>();
+        payload.put("id", new DynamicTypeValue<Integer>(id));
+
+        emit(new BroadcastPackage(BroadcastAction.CLIENT_CONNECTED, payload));
     }
 
     public int getId() {
         return id;
     }
 
+    public static synchronized void broadcast(BroadcastPackage p) {
+        for (ClientHandler c : clientHandlers) c.emit(p);
+    }
+
     public void removeClientHandler() {
         clientHandlers.remove(this);
     }
 
-    public void respond(StringResponse responseType, String response) {
+    public void emit(BroadcastPackage p) {
         try {
             if (!socket.isClosed()) {
-                bufferedWriter.write(responseType.toString() + "~" + response);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+                out.writeObject(p);
+                out.flush();
             }
         } catch (Exception e) {
             shutdown() ;
@@ -71,10 +63,10 @@ public class ClientHandler implements Runnable {
 
     public void shutdown() {
         removeClientHandler();
+        
         try {
             if (socket != null) socket.close();
-            if (bufferedReader != null) bufferedReader.close();
-            if (bufferedWriter != null) bufferedWriter.close();
+            if (out != null) out.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

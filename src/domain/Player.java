@@ -1,10 +1,12 @@
 package domain;
+import java.io.Serializable;
+
 import enums.Avatar;
 import enums.Potion;
 import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
 
-public class Player {
+public class Player implements Serializable {
     public int id;
     public String name;
     public Avatar avatar;

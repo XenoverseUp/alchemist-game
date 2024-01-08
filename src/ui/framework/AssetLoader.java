@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import enums.Avatar;
 import enums.View;
 
 public class AssetLoader {
@@ -29,8 +30,18 @@ public class AssetLoader {
     private BufferedImage BScorpionTailIcon;
     private BufferedImage BWartyToadIcon;
 
+    private BufferedImage BThunderous;
+    private BufferedImage BMystical;
+    private BufferedImage BCelestial;
+    private BufferedImage BCrimson;
+    private BufferedImage BLuminous;
+    private BufferedImage BGalactic;
+    private BufferedImage BEnigmatic;
+    private BufferedImage BSerene;
+
     private BufferedImage BPotionBrewingAreaBackground;
     private BufferedImage BOnlineSelectionBackground;
+    private BufferedImage BLobbyBackground;
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
@@ -80,8 +91,18 @@ public class AssetLoader {
             BScorpionTailIcon = ImageIO.read(new File("./src/resources/image/ingredientCards/scorpionTailIcon.png"));
             BWartyToadIcon = ImageIO.read(new File("./src/resources/image/ingredientCards/wartyToadIcon.png"));
             
+            BThunderous = ImageIO.read(new File("./src/resources/image/avatars/Thunderous.png"));
+            BMystical = ImageIO.read(new File("./src/resources/image/avatars/Mystical.png"));
+            BCelestial = ImageIO.read(new File("./src/resources/image/avatars/Celestial.png"));
+            BCrimson = ImageIO.read(new File("./src/resources/image/avatars/Crimson.png"));
+            BLuminous = ImageIO.read(new File("./src/resources/image/avatars/Luminous.png"));
+            BGalactic = ImageIO.read(new File("./src/resources/image/avatars/Galactic.png"));
+            BEnigmatic = ImageIO.read(new File("./src/resources/image/avatars/Enigmatic.png"));
+            BSerene = ImageIO.read(new File("./src/resources/image/avatars/Serene.png"));
+            
             BPotionBrewingAreaBackground =  ImageIO.read(new File("./src/resources/image/pbaBackground.png"));
             BOnlineSelectionBackground =  ImageIO.read(new File("./src/resources/image/onlineSelectionBackground.png"));
+            BLobbyBackground =  ImageIO.read(new File("./src/resources/image/lobbyBackground.png"));
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             BTitle = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
@@ -136,12 +157,37 @@ public class AssetLoader {
         return null;
     }
 
+    public BufferedImage getAvatarImage(Avatar avatar) {
+        switch (avatar) {
+            case Thunderous:
+                return BThunderous;
+            case Mystical:
+                return BMystical;
+            case Celestial:
+                return BCelestial;
+            case Crimson:
+                return BCrimson;
+            case Luminous:
+                return BLuminous;
+            case Galactic:
+                return BGalactic;
+            case Enigmatic:
+                return BEnigmatic;
+            case Serene:
+                return BSerene;
+        }
+
+        return BThunderous;
+    }
+
     public BufferedImage getBackground(View view) {
         switch (view) {
             case PotionBrewingArea:
                 return BPotionBrewingAreaBackground;
             case OnlineSelection:
                 return BOnlineSelectionBackground;
+            case Lobby:
+                return BLobbyBackground;
             default:
                 return null;
         }

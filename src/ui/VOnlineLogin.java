@@ -1,11 +1,5 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -20,31 +14,29 @@ import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
 import ui.framework.VComponent;
 
-public class VLogin extends VComponent {
-    private boolean isFirstPlayerReady = false;
-    private boolean isSecondPlayerReady = false;
-
-    public VLogin(TheAlchemistGame game) { super(game); }
+public class VOnlineLogin extends VComponent {
+    public VOnlineLogin(TheAlchemistGame game) { super(game); }
 
     @Override
     protected void render() {
         JPanel firstUserForm = createUserForm("First Alchemist", 0);
-        JPanel secondUserForm = createUserForm("Second Alchemist", 1);
 
         firstUserForm.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
-        secondUserForm.setBounds(windowDimension.getWidth() / 2 - 1, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
 
-        this.panel.add(secondUserForm);
         this.panel.add(firstUserForm);
     }
 
-    private JPanel createUserForm(String title, int userIndex) {
+
+      private JPanel createUserForm(String title, int userIndex) {
         JPanel form = new JPanel();
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setOpaque(false);
@@ -127,10 +119,6 @@ public class VLogin extends VComponent {
         }
 
         nextButton.addActionListener(event -> {
-            if ((userIndex == 0 && this.isFirstPlayerReady == true) ||
-                (userIndex == 1 && this.isSecondPlayerReady == true)) return;
-
-
             String playerName = userNameTextField.getText().equals("Name") ? "" : userNameTextField.getText();
             String avatarName = null;
             Avatar playerAvatar = null;
@@ -149,17 +137,12 @@ public class VLogin extends VComponent {
                 }
             }
 
-            int result = game.createUser(playerName, playerAvatar);
+            int result = game.online.createUser(game.getId(), playerName, playerAvatar);
 
             switch (result) {
                 case 0: {
-                    if (userIndex == 0) this.isFirstPlayerReady = true;
-                    else if (userIndex == 1) this.isSecondPlayerReady = true;
-
-                    nextButton.setText("Ready");
                     userNameTextField.setEditable(false);
-                    info.setText("Waiting for other alchemist.");
-                    info.setForeground(Color.black);
+                    router.to(View.Lobby);
                     break;
                 }
                 case 1: {
@@ -178,12 +161,7 @@ public class VLogin extends VComponent {
                     break;
                 }
             }
-
-            if (isFirstPlayerReady && isSecondPlayerReady) { 
-                game.initializeGame();
-                router.to(View.Board);
-            }
-
+           
         });
 
         form.add(Box.createVerticalStrut(32));
@@ -192,4 +170,6 @@ public class VLogin extends VComponent {
 
         return form;
     }
+
+
 }

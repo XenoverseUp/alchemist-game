@@ -72,6 +72,7 @@ public class Window {
             put(View.ArtifactShop, new VArtifactShop(game));
             put(View.OnlineSelection, new VOnlineSelection(game));
             put(View.Lobby, new VLobby(game));
+            put(View.OnlineLogin, new VOnlineLogin(game));
         }};
 
         router = Router.getInstance();
