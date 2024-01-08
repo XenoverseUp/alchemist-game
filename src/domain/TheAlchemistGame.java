@@ -10,9 +10,12 @@ import java.util.Map;
 import enums.ApplicationType;
 import enums.Avatar;
 import enums.DeductionToken;
+import enums.GamePhase;
 import enums.Potion;
 import error.HostDoesNotExistsException;
 import interfaces.IBroadcastListener;
+import error.NotEnoughActionsException;
+import error.WrongGameRoundException;
 import interfaces.ICurrentUserListener;
 import net.Client;
 import net.Server;
@@ -63,27 +66,27 @@ public class TheAlchemistGame {
         gameBoard.dealGolds();
     }
 
-    public void forageIngredient() {
+    public void forageIngredient() throws NotEnoughActionsException   {
         gameBoard.forageIngredient();
     }
 
-    public void transmuteIngredient(String ingredientName) {
+    public void transmuteIngredient(String ingredientName) throws NotEnoughActionsException {
         gameBoard.transmuteIngredient(ingredientName);
     }
 
-    public int buyArtifact(String name) {
+    public int buyArtifact(String name) throws NotEnoughActionsException {
         return gameBoard.buyArtifact(name);
     }
 
-    public void discardArtifact(String name) {
-        gameBoard.getAuth().getCurrentPlayer().inventory.discardArtifactCard(name);
+    public void discardArtifact(String name) throws NotEnoughActionsException {
+        gameBoard.discardArtifact(name);
     }
 
     public ArrayList<ArtifactCard> getArtifactCardDeck(){
 		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
 	}
 
-    public int drawMysteryCard() {
+    public int drawMysteryCard() throws NotEnoughActionsException {
         return this.gameBoard.drawMysteryCard();
     }
 
@@ -91,7 +94,7 @@ public class TheAlchemistGame {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws Exception {
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
 
@@ -110,6 +113,11 @@ public class TheAlchemistGame {
     public ArrayList<Player> calculateWinner(){
         return this.gameBoard.getAuth().calculateWinner();
     }
+
+    public GamePhase getPhase() {
+        return gameBoard.getPhase();
+    }
+  
 
     // NEW
 
@@ -151,7 +159,6 @@ public class TheAlchemistGame {
         public void startGame(int id) {
             
         }
-    }
 
     public int createServer(int port) {
         try {
@@ -193,4 +200,5 @@ public class TheAlchemistGame {
     public void removeBroadcastListener(IBroadcastListener component) {
         client.removeBroadcastListener(component);
     }
+
 }

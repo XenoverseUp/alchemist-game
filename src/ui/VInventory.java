@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import domain.TheAlchemistGame;
 import enums.View;
+import error.NotEnoughActionsException;
 import interfaces.ICurrentUserListener;
 import ui.framework.VComponent;
 import ui.util.WrapLayout;
@@ -189,8 +190,12 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         transmuteButton.setBorderPainted(false);
         transmuteButton.setFocusable(false);
         transmuteButton.addActionListener(event -> {
-            game.transmuteIngredient(name);
-            this.update();
+            try {
+                game.transmuteIngredient(name);
+                this.update();
+            } catch (NotEnoughActionsException e) {
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+            }
         });
 
         card.add(transmuteButton);
@@ -239,8 +244,13 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         );
 
         discard.addActionListener(event -> {
-            game.discardArtifact(name);
-            this.update();            
+            try {
+                game.discardArtifact(name);
+                this.update();  
+            } catch (NotEnoughActionsException e) {
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+            }
+                      
         });
 
         discard.setBorderPainted(false); 
