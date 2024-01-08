@@ -13,6 +13,7 @@ import enums.GamePhase;
 import enums.Potion;
 import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
+import error.WrongGameRoundException;
 import interfaces.ICurrentUserListener;
 import net.ClientSideConnection;
 import net.Server;
@@ -80,7 +81,7 @@ public class TheAlchemistGame {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws Exception {
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
 

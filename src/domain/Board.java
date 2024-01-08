@@ -1,8 +1,8 @@
 package domain;
 import enums.GamePhase;
 import enums.Potion;
-import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
+import error.WrongGameRoundException;
 
 public class Board {
 	
@@ -78,7 +78,7 @@ public class Board {
 		return auth;
 	}
 
-	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws Exception {
+	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
 		auth.decreaseLeftActionsOfCurrentPlayer();
 		if (testOn.equals("sell") && auth.getCurrentPlayer().inventory.getGold() < 2){
 			throw new Exception("enough-gold-sell");
@@ -96,7 +96,12 @@ public class Board {
 		auth.getCurrentPlayer().playerBoard.addDiscoveredPotion(potion);
 
 		if(testOn.equals("sell")){
-			auth.getCurrentPlayer().sell(potion);
+			if (this.phase == GamePhase.FirstRound){
+				throw new WrongGameRoundException();
+			}
+			else{
+				auth.getCurrentPlayer().sell(potion);
+			}
 		}
 		else{
 			try{
