@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 
 import domain.TheAlchemistGame;
@@ -201,6 +205,39 @@ public class VOnlineSelection extends VComponent {
         ipInput.grabFocus();
 
         final JTextField i = ipInput;
+
+        // ipInput.getDocument().addDocumentListener(new DocumentListener() {
+        //     @Override
+        //     public void changedUpdate(DocumentEvent e) {
+        //         format();
+        //     }
+
+        //     @Override
+        //     public void removeUpdate(DocumentEvent e) {
+        //         format();
+        //     }
+
+        //     @Override
+        //     public void insertUpdate(DocumentEvent e) {
+        //         format();
+        //     }
+
+        //     public void format() {
+        //         String[] splitted = i.getText().split(".");
+        //         List<String> tokens = Arrays.asList(splitted);
+        //         StringBuilder text = new StringBuilder("");
+
+        //         for (String t : tokens) {
+        //             text.append(t.substring(0, 2));
+        //         }
+
+        //         i.setText(text.toString());
+        //         i.revalidate();
+        //         i.repaint();
+                
+        //     }
+            
+        // });
 
         portInput.setFont(new Font("Itim-Regular", Font.PLAIN, 32));
         portInput.setForeground(new Color(238, 219, 0));
