@@ -23,11 +23,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import enums.View;
+import ui.framework.VComponent;
 import domain.TheAlchemistGame;
 
 public class VPublicationArea extends VComponent {
+
     private Router router = Router.getInstance();
     JPanel publicationPanel;
+
 
     public VPublicationArea(TheAlchemistGame game) {
         super(game);
@@ -52,9 +55,11 @@ public class VPublicationArea extends VComponent {
         int desiredWidth = 1450;
         int desiredHeight = 750;
 
+
         Image scaledBg = bg.getScaledInstance(desiredWidth, desiredHeight, Image.SCALE_SMOOTH);
         JLabel bgPic = new JLabel(new ImageIcon(scaledBg));
         bgPic.setBounds(0, 0, desiredWidth, desiredHeight);
+
 
         panel.setLayout(null);
         panel.add(publicationPanel);
@@ -230,7 +235,7 @@ public class VPublicationArea extends VComponent {
 
         Color customColor = new Color(71, 46, 27); 
         JPanel publicationPanel = new JPanel();
-        publicationPanel.setBounds(0, 0, Window.frame.getWidth(), Window.frame.getHeight());
+        publicationPanel.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
         publicationPanel.setLayout(null); // Use absolute positioning
         publicationPanel.setOpaque(false);
 

@@ -1,9 +1,10 @@
-package ui;
+package ui.framework;
 
 import java.util.Map;
 import java.util.Stack;
 
 import enums.View;
+import ui.Window;
 
 public class Router {
     private static Router instance = null;
@@ -27,20 +28,22 @@ public class Router {
 
     public void to(View nextView) {
         if (currentView != null) {
-            history.push(currentView);
+            if (currentView != View.Help && currentView != View.Pause) 
+                history.push(currentView);
             views.get(currentView).unmounted();
         }
 
-        Window.frame.getContentPane().removeAll();
+
+        Window.mainPanel.removeAll();
         VComponent component = views.get(nextView);
 
-        component.getContentPanel().setPreferredSize(Window.frame.getSize());
-        component.getContentPanel().setLocation(0, 0);
-        component.getContentPanel().setVisible(true);
+        component.getContentPane().setPreferredSize(Window.mainPanel.getSize());
+        component.getContentPane().setLocation(0, 0);
+        component.getContentPane().setVisible(true);
 
-        Window.frame.add(component.getContentPanel());
-        Window.frame.revalidate();
-        Window.frame.repaint();
+        Window.mainPanel.add(component.getContentPane());
+        Window.mainPanel.revalidate();
+        Window.mainPanel.repaint();
 
         component.mounted();
 

@@ -1,6 +1,6 @@
 package domain;
 
-public class Molecule {
+public class Molecule implements Comparable<Molecule> {
     public Atom red;
     public Atom green;
     public Atom blue;
@@ -16,12 +16,21 @@ public class Molecule {
     }
 
     public Atom getGreen(){
-        return red;
+        return green;
     }
 
     public Atom getBlue(){
-        return red;
+        return blue;
     }
 
-    
+    @Override
+    public String toString(){
+        return red.toString() + " " + green.toString() +" "+blue.toString();
+    }
+
+    @Override
+    public int compareTo(Molecule m) {
+        if (this.red == m.getRed() && this.green == m.getGreen() && this.blue == m.getBlue()) return 0;
+        return -1;
+    }
 }

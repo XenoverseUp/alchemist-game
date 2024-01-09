@@ -3,8 +3,8 @@ package domain;
 import java.util.ArrayList;
 
 public class Molecules {
-    static AtomFactory factory = new AtomFactory();
-    static ArrayList<Molecule> molecules = new ArrayList<Molecule>() {{
+    public static AtomFactory factory = new AtomFactory();
+    public static ArrayList<Molecule> molecules = new ArrayList<Molecule>() {{
         add(new Molecule(
             factory.red().plus().small().create(), 
             factory.green().minus().big().create(),

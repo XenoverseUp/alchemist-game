@@ -16,12 +16,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import enums.View;
+import javax.swing.SwingConstants;
 
+import enums.View;
+import error.NotEnoughActionsException;
+import ui.framework.VComponent;
 import domain.TheAlchemistGame;
 
 public class VCardDeck extends VComponent {
-    private Router router = Router.getInstance();
 
     public VCardDeck(TheAlchemistGame game) {
         super(game);
@@ -30,43 +32,37 @@ public class VCardDeck extends VComponent {
     @Override
     protected void render() {
         JPanel ingredientCardDeck = createCardDeck("ingredient", "Forage Ingredient");
-        JPanel artifactCardDeck = createCardDeck("artifact", "Draw Artifact");
+        JPanel artifactCardDeck = createCardDeck("artifact", "Visit Artifact Shop");
         
-        ingredientCardDeck.setBounds(0, 0, Window.frame.getWidth() / 2, Window.frame.getHeight());
-        artifactCardDeck.setBounds(Window.frame.getWidth() / 2, 0, Window.frame.getWidth() / 2,
-        Window.frame.getHeight());
+        ingredientCardDeck.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        artifactCardDeck.setBounds(
+            windowDimension.getWidth() / 2, 
+            0, 
+            windowDimension.getWidth() / 2,
+            windowDimension.getHeight()
+        );
         
-        BufferedImage bg = null;
-        BufferedImage close = null;
-        BufferedImage title = null;
-        try {
-            bg = ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
-            close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
-            title = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        BufferedImage BBackground = assetLoader.getBackground(View.CardDeck);
+        JLabel bgPic = new JLabel(new ImageIcon(BBackground));
+        bgPic.setBounds(0,0, windowDimension.getWidth(), windowDimension.getHeight());
 
 
-        JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(0,0,Window.frame.getWidth(), Window.frame.getHeight());
+        Image BTitle = assetLoader.getPageBanner();
+        JLabel title = new JLabel(new ImageIcon(BTitle));
+        title.setBounds(windowDimension.getWidth() / 2 - BTitle.getWidth(null) / 2, -16, BTitle.getWidth(null), BTitle.getHeight(null));
 
-        JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
-        titlePic.setBounds((int)(Window.frame.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
-        
-        JLabel titleText = new JLabel("Card Deck");
-        titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
+        JLabel titleText = new JLabel("Card Deck", SwingConstants.CENTER);
         titleText.setForeground(Color.white);
-        titleText.setBounds(656 ,16, 200, 20);
+        titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
+        titleText.setBounds(title.getBounds());
 
+        Image close = assetLoader.getClose();
         JButton closePic = new JButton(new ImageIcon(close.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         closePic.setBounds(10, 10, 60, 60);
-        closePic.addActionListener(event -> {
-            router.to(View.Board);
-        });
+        closePic.addActionListener(e -> router.to(View.Board));
 
         panel.add(titleText);
-        panel.add(titlePic);
+        panel.add(title);
         panel.add(closePic);
         panel.add(ingredientCardDeck);
         panel.add(artifactCardDeck);
@@ -87,14 +83,14 @@ public class VCardDeck extends VComponent {
         BufferedImage artifactCardPile = null;
         
         try {
-            if (type == "ingredient") ingredientCardPile = ImageIO.read(new File("./src/resources/image/ingredientCardPile.png"));
+            if (type.equals("ingredient")) ingredientCardPile = ImageIO.read(new File("./src/resources/image/ingredientCardPile.png"));
             else artifactCardPile = ImageIO.read(new File("./src/resources/image/artifactCardPile.png"));
         } catch (Exception e) {
             System.out.println(e);
         }
 
         JLabel deckPic = new JLabel(new ImageIcon(
-            type == "ingredient" 
+            type.equals("ingredient") 
                 ? ingredientCardPile
                 : artifactCardPile
         ));
@@ -105,14 +101,17 @@ public class VCardDeck extends VComponent {
         JButton button = new JButton(buttonText);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(event -> {
-            // add card to current user
-            if (type == "ingredient")
-                game.forageIngredient();
-            else 
-                game.buyArtifact();
+            if (type == "ingredient") {
+                try {
+                    game.forageIngredient();
+                    router.to(View.Inventory);
+                } catch (NotEnoughActionsException e) {
+                   modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+                }
+            } else router.to(View.ArtifactShop);
             
-            router.to(View.Inventory);
         });
+
 
         cardPanel.add(Box.createVerticalGlue());
         cardPanel.add(pile);

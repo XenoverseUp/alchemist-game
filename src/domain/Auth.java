@@ -2,6 +2,8 @@ package domain;
 
 import java.util.ArrayList;
 import enums.Avatar;
+import error.HostDoesNotExistsException;
+import error.NotEnoughActionsException;
 import interfaces.ICurrentUserListener;
 
 public class Auth {
@@ -9,15 +11,44 @@ public class Auth {
     private int currentUser = 0;
     private ArrayList<ICurrentUserListener> currentUserListeners = new ArrayList<>();
 
+    /**
+     * @param name - Name of the alchemist.
+     * @param avatar - Avatar of the alchemist.
+     * @returns {int} Error code.
+     * 
+     * Error Codes:
+     *  0 - Everything worked as expected.
+     *  1 - Name is already taken.
+     *  2 - Name is empty.
+     *  3 - Avatar is already taken.
+     */
     public int createUser(String name, Avatar avatar) {
         if (name.equals("") || name == null) return 2;
 
         for (Player p : this.players) {
-            if (p.name.equals(name))
-                return 1;
+            if (p.name.equals(name)) return 1;
+            if (p.avatar == avatar) return 3;
         }
 
-        Player player = new Player(this.players.size(), name, avatar);
+        int id = this.players.size();
+        Player player = new Player(id, name, avatar);
+
+        this.players.add(player);
+
+        return 0;
+    }
+
+    public int createUser(int id, String name, Avatar avatar) {
+        if (name.equals("") || name == null) return 2;
+
+        for (Player p : this.players) {
+            if (p.name.equals(name)) return 1;
+            if (p.avatar == avatar) return 3;
+            if (p.id == id) return 4;
+        }
+        
+        Player player = new Player(id, name, avatar);
+
         this.players.add(player);
 
         return 0;
@@ -26,12 +57,19 @@ public class Auth {
     public void toggleCurrentUser() {
         this.currentUser += 1;
         if (this.currentUser == players.size()) this.currentUser = 0;
+        getCurrentPlayer().calculateTotalActions();
         publishCurrentUserChange();
-        getCurrentPlayer().leftActions = 2 + getCurrentPlayer().extraActions;
     }
 
     public Player getCurrentPlayer() {
         return this.players.get(currentUser);
+    }
+
+    public Avatar getPlayerAvatar(int id) {
+        for (Player p : players) 
+            if (id == p.id) return p.avatar;
+
+        return null;
     }
 
     public void addGoldToCurrentUser(int amount) {
@@ -54,6 +92,22 @@ public class Auth {
     	return getCurrentPlayer().inventory.getIngredient(name);
     }
 
+    public void decreaseLeftActionsOfCurrentPlayer() throws NotEnoughActionsException {
+        getCurrentPlayer().decreaseLeftActions();
+    }
+
+    public void calculateTotalActionsNewCurrentPlayer(){
+        getCurrentPlayer().calculateTotalActions();
+    }
+
+    public int getLeftActionsOfCurrentPlayer(){
+        return getCurrentPlayer().leftActions;
+    }
+
+    public int getNumOfPlayers(){
+        return players.size();
+    }
+
     // Method for observer pattern
     public void addCurrentUserListener(ICurrentUserListener currentUserListener){
 		currentUserListeners.add(currentUserListener);
@@ -63,4 +117,32 @@ public class Auth {
 	public void publishCurrentUserChange(){
 		for(ICurrentUserListener listener : currentUserListeners) listener.onCurrentUserChange();
 	}
+
+    public ArrayList<Player> calculateWinner(){
+        ArrayList<Player> winners = new ArrayList<>();
+        Player candidateWinner = null;
+        int[] candidateScore = null;
+        for (Player player: this.players){
+            if(candidateWinner == null || candidateScore == null){
+                candidateWinner = player;
+                candidateScore = player.calculateFinalScore();
+            } 
+            else{
+                int [] score = player.calculateFinalScore();
+                if ((score[0] > candidateScore[0]) || (score[0] == candidateScore[0] && score[1] > score[1] )){
+                    candidateWinner = player;
+                    candidateScore = score;
+                    if (winners.size() > 0){
+                        winners.clear();
+                    }
+                }
+                else if (score[0] == candidateScore[0] && score[1] == candidateScore[1]){
+                    winners.add(player);
+                }
+                
+            }
+        }
+        winners.add(candidateWinner);
+        return winners;
+    }
 }
