@@ -8,8 +8,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,6 +31,7 @@ import javax.swing.text.MaskFormatter;
 import domain.TheAlchemistGame;
 import enums.View;
 import ui.framework.VComponent;
+import ui.util.LimitedDocument;
 import ui.util.RotatedLabel;
 import ui.util.RotatedLabel.Direction;
 
@@ -177,7 +181,7 @@ public class VOnlineSelection extends VComponent {
         title.setForeground(Color.white);
         
         String hostDescription = "Host a game to share a session with your friends and play online. Pick a 4-digit port number to create a session.";
-        String joinDescription = "Join a game to play with your friends in an existing session. Enter the 4-digit port number you got from the host.";
+        String joinDescription = "Join a game to play with your friends in an existing session. Enter the IP address and the 4-digit port number you got from the host.";
         
         JLabel description = new JLabel(String.format("<html><div style='text-align: center;'>%s</div><html>", type == FormState.Host ? hostDescription : joinDescription), SwingConstants.CENTER);
         description.setMaximumSize(new Dimension(modalContent.getWidth() - 250, modalContent.getHeight()));
@@ -197,47 +201,17 @@ public class VOnlineSelection extends VComponent {
 
         ipInput.setFont(new Font("Itim-Regular", Font.PLAIN, 24));
         ipInput.setForeground(Color.white);
-        ipInput.setMaximumSize(new Dimension(212, 50));
+        ipInput.setMaximumSize(new Dimension(240, 50));
         ipInput.setAlignmentX(Component.CENTER_ALIGNMENT);
         ipInput.setHorizontalAlignment(JTextField.CENTER);
         ipInput.setBackground(new Color(80, 58, 24));
         ipInput.setBorder(BorderFactory.createMatteBorder(8, 0, 8, 0, new Color(80, 58, 24)));
         ipInput.grabFocus();
+        ipInput.setDocument(new LimitedDocument(15));
 
         final JTextField i = ipInput;
 
-        // ipInput.getDocument().addDocumentListener(new DocumentListener() {
-        //     @Override
-        //     public void changedUpdate(DocumentEvent e) {
-        //         format();
-        //     }
-
-        //     @Override
-        //     public void removeUpdate(DocumentEvent e) {
-        //         format();
-        //     }
-
-        //     @Override
-        //     public void insertUpdate(DocumentEvent e) {
-        //         format();
-        //     }
-
-        //     public void format() {
-        //         String[] splitted = i.getText().split(".");
-        //         List<String> tokens = Arrays.asList(splitted);
-        //         StringBuilder text = new StringBuilder("");
-
-        //         for (String t : tokens) {
-        //             text.append(t.substring(0, 2));
-        //         }
-
-        //         i.setText(text.toString());
-        //         i.revalidate();
-        //         i.repaint();
-                
-        //     }
-            
-        // });
+        
 
         portInput.setFont(new Font("Itim-Regular", Font.PLAIN, 32));
         portInput.setForeground(new Color(238, 219, 0));
@@ -272,6 +246,15 @@ public class VOnlineSelection extends VComponent {
                 
                 modal.info("Port is not available!", "This port is already in use by another game session or system. Please pick another port.");
             } else if (type == FormState.Join) {
+                if (!isValidIPAddress(i.getText())) {
+                    modal.info(
+                        "Hark! The IP address must be deemed valid in the digital realm.", 
+                        "The passed IP adress is invalid. Please pick a valid one, contacting the host."
+                    );
+
+                    return;
+                }
+
                 int result = game.connectToServer(i.getText(), Integer.parseInt(p.getText()));
                 if (result == 0) {
                     router.to(View.OnlineLogin);
@@ -300,5 +283,18 @@ public class VOnlineSelection extends VComponent {
         form.add(Box.createVerticalGlue());
 
         return form;
+    }
+
+
+    private boolean isValidIPAddress(String ipAddress) {
+        String ipPattern = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                           "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                           "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                           "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
+        Pattern pattern = Pattern.compile(ipPattern);
+        Matcher matcher = pattern.matcher(ipAddress);
+
+        return matcher.matches();
     }
 }

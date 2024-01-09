@@ -75,11 +75,15 @@ public class ModalController {
             infoPopoverTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
             infoPopoverTitle.setFont(new Font("Crimson Pro", Font.BOLD, 24));
             infoPopoverTitle.setForeground(new Color(41, 31, 25));
+            infoPopoverTitle.setMaximumSize(new Dimension(BPopover.getWidth() - 400, 99));
+            infoPopoverTitle.setHorizontalAlignment(SwingConstants.CENTER);
+
             
             infoPopoverDescription = new JLabel();
             infoPopoverDescription.setAlignmentX(Component.CENTER_ALIGNMENT);
             infoPopoverDescription.setFont(new Font("Crimson Pro", Font.PLAIN, 18));
             infoPopoverDescription.setMaximumSize(new Dimension(360, 9999));
+            infoPopoverDescription.setHorizontalAlignment(SwingConstants.CENTER);
 
 
             JButton defaultActionButton = new JButton("Ok!");
@@ -133,7 +137,7 @@ public class ModalController {
 
     public static class Modal {
         public void info(String title, String description) {
-            infoPopoverTitle.setText(title);
+            infoPopoverTitle.setText(String.format("<html><div style='text-align: center;'>%s</div></html>", title));
             infoPopoverDescription.setText(String.format("<html><div style='text-align: center;'>%s</div></html>", description));
             infoPopover.setVisible(true);
             overlay.setVisible(true);
