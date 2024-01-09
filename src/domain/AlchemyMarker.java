@@ -8,10 +8,13 @@ public class AlchemyMarker {
     private int markerAmount;
     private String imPath;
 
-    public AlchemyMarker(int id) {
+    public AlchemyMarker(int id, Molecule molecule) {
         this.id = id;
         this.associated = false;
-        this.molecule = null;
+        this.molecule = molecule;
+        this.markerAmount = 8;
+        this.imPath = "./src/resources/image/marker" + id + ".png"; 
+
     }
 
     public boolean associate() {
