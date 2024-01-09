@@ -27,7 +27,7 @@ public class Board {
 	}
 
 	public void dealCards() {
-		for (Player player : auth.players) {
+		for (Player player: auth.players) {
 			for (int i = 0; i < 2; i++) {
 				IngredientCard iCard = this.ingredientCardDeck.drawCard();
 				player.inventory.addIngredientCard(iCard);
@@ -35,14 +35,16 @@ public class Board {
 		}
 	}
 
+
 	public void dealGolds() {
-		for (Player p : auth.players)
+		for (Player p: auth.players)
 			p.inventory.addGold(3);
 	}
 
 	public void toggleCurrentUser() {
 		auth.toggleCurrentUser();
 	}
+
 
 	public void forageIngredient() {
 		IngredientCard icard = this.ingredientCardDeck.drawCard();
@@ -61,6 +63,7 @@ public class Board {
 		this.auth.addArtifactCardToCurrentPlayer(aCard);
 		this.auth.removeGoldFromCurrentUser(aCard.getPrice());
 	}
+	
 
 	public Auth getAuth() {
 		return auth;
