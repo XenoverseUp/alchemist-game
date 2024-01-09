@@ -181,13 +181,26 @@ public class VOnlineSelection extends VComponent {
         description.setFont(new Font("Crimson Pro", Font.PLAIN, 16));
         description.setForeground(Color.white);
 
+        JTextField ipInput = null;
         JFormattedTextField portInput = null;
 
         try {
+            ipInput = new JTextField(15);
             portInput = new JFormattedTextField(new MaskFormatter("####"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        ipInput.setFont(new Font("Itim-Regular", Font.PLAIN, 24));
+        ipInput.setForeground(Color.white);
+        ipInput.setMaximumSize(new Dimension(212, 50));
+        ipInput.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ipInput.setHorizontalAlignment(JTextField.CENTER);
+        ipInput.setBackground(new Color(80, 58, 24));
+        ipInput.setBorder(BorderFactory.createMatteBorder(8, 0, 8, 0, new Color(80, 58, 24)));
+        ipInput.grabFocus();
+
+        final JTextField i = ipInput;
 
         portInput.setFont(new Font("Itim-Regular", Font.PLAIN, 32));
         portInput.setForeground(new Color(238, 219, 0));
@@ -222,7 +235,7 @@ public class VOnlineSelection extends VComponent {
                 
                 modal.info("Port is not available!", "This port is already in use by another game session or system. Please pick another port.");
             } else if (type == FormState.Join) {
-                int result = game.connectToServer(Integer.parseInt(p.getText()));
+                int result = game.connectToServer(i.getText(), Integer.parseInt(p.getText()));
                 if (result == 0) {
                     router.to(View.OnlineLogin);
                     return;
@@ -238,6 +251,12 @@ public class VOnlineSelection extends VComponent {
         form.add(Box.createVerticalStrut(16));
         form.add(description);
         form.add(Box.createVerticalStrut(28));
+
+        if (type == FormState.Join) {
+            form.add(ipInput);
+            form.add(Box.createVerticalStrut(12));
+        }
+
         form.add(portInput);
         form.add(Box.createVerticalStrut(20));
         form.add(primaryAction);

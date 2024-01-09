@@ -44,6 +44,20 @@ public class Client {
 
     }
 
+    public Client(String host, int port) throws HostDoesNotExistsException {
+        try {
+            this.socket = new Socket(host, port);
+            this.in = new ObjectInputStream(socket.getInputStream());
+            this.httpClient = HTTPClient.getInstance();
+            this.httpClient.setHost(host);
+            setupCache();
+        } catch (IOException e) {
+            shutdown();
+            throw new HostDoesNotExistsException();
+        }
+
+    }
+
     private void setupCache() {
         cache.create("current-player", this::currentPlayerSupplier);
         cache.create("game-phase", this::gamePhaseSupplier);
@@ -155,7 +169,6 @@ public class Client {
 
                         switch (action) {
                             case PLAYER_CREATED:
-
                                 break;
                             case CLIENT_CONNECTED:
                                 id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();

@@ -170,6 +170,19 @@ public class TheAlchemistGame {
         return 0;
     }
 
+    public int connectToServer(String host, int port) {
+        try {
+            client = new Client(host, port);
+            client.listen();
+            setApplicationType(ApplicationType.Online);
+            online = new OnlineRegister();
+        } catch (HostDoesNotExistsException e) {
+            return 1;
+        }
+
+        return 0;
+    }
+
     public void addBroadcastListener(IBroadcastListener component) {
         if (this.applicationType == ApplicationType.Online && client != null)
             client.addBroadcastListener(component);

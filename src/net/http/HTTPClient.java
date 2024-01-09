@@ -5,13 +5,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.util.Map;
 
 public class HTTPClient {
     private static HTTPClient instance = null;
     private HttpClient httpClient;
+    private String host = "localhost";
 
     private HTTPClient() {
         this.httpClient = HttpClient.newHttpClient();
@@ -24,10 +24,13 @@ public class HTTPClient {
         return instance;
     }
 
+    public void setHost(String host) {
+        this.host = host;
+    }
 
     public HttpResponse<String> get(String path) {
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(String.format("http://localhost:8080%s", path)))
+            .uri(URI.create(String.format("http://%s:8080%s", host, path)))
             .build();
 
         try {
@@ -43,7 +46,7 @@ public class HTTPClient {
 
     public HttpResponse<String> post(String path, String body) {
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(String.format("http://localhost:8080%s", path)))
+            .uri(URI.create(String.format("http://%s:8080%s", host, path)))
             .header("Content-Type", "text/plain")
             .POST(BodyPublishers.ofString(body))
             .build();
@@ -61,7 +64,7 @@ public class HTTPClient {
 
     public HttpResponse<String> put(String path, String body) {
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(String.format("http://localhost:8080%s", path)))
+            .uri(URI.create(String.format("http://%s:8080%s", host, path)))
             .header("Content-Type", "text/plain")
             .PUT(BodyPublishers.ofString(body))
             .build();
@@ -79,7 +82,7 @@ public class HTTPClient {
 
     public HttpResponse<String> put(String path) {
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(String.format("http://localhost:8080%s", path)))
+            .uri(URI.create(String.format("http://%s:8080%s", host, path)))
             .PUT(BodyPublishers.noBody())
             .build();
 
