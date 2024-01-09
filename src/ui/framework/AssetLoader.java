@@ -43,6 +43,8 @@ public class AssetLoader {
     private BufferedImage BPotionBrewingAreaBackground;
     private BufferedImage BOnlineSelectionBackground;
     private BufferedImage BLobbyBackground;
+    private BufferedImage BCardDeckBackground;
+    private BufferedImage BArtifactShopBackground;
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
@@ -110,6 +112,8 @@ public class AssetLoader {
             BPotionBrewingAreaBackground =  ImageIO.read(new File("./src/resources/image/pbaBackground.png"));
             BOnlineSelectionBackground =  ImageIO.read(new File("./src/resources/image/onlineSelectionBackground.png"));
             BLobbyBackground =  ImageIO.read(new File("./src/resources/image/lobbyBackground.png"));
+            BCardDeckBackground =  ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
+            BArtifactShopBackground =  ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             BTitle = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
@@ -196,27 +200,19 @@ public class AssetLoader {
 
     public BufferedImage getNameRibbon(int i) {
         switch (i) {
-            case 1:
-                return BNameRibbonBlue;
-            case 2:
-                return BNameRibbonRed;
-            case 3:
-                return BNameRibbonGreen;
-            default:
-                return BNameRibbonYellow;
+            case 1: return BNameRibbonBlue;
+            case 2: return BNameRibbonRed;
+            case 3: return BNameRibbonGreen;
+            default: return BNameRibbonYellow;
         }
     }
 
     public Color getNameRibbonColor(int i) {
         switch (i) {
-            case 1:
-                return new Color(0, 55, 66);
-            case 2:
-                return new Color(76, 43, 32);
-            case 3:
-                return new Color(47, 55, 16);
-            default:
-                return new Color(63, 33, 0);
+            case 1: return new Color(0, 55, 66);
+            case 2: return new Color(76, 43, 32);
+            case 3: return new Color(47, 55, 16);
+            default: return new Color(63, 33, 0);
         }
     }
 
@@ -232,6 +228,10 @@ public class AssetLoader {
                 return BOnlineSelectionBackground;
             case Lobby:
                 return BLobbyBackground;
+            case CardDeck:
+            return BCardDeckBackground;
+            case ArtifactShop:
+                return BArtifactShopBackground;
             default:
                 return null;
         }

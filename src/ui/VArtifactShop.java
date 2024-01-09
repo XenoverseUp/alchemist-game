@@ -35,14 +35,11 @@ public class VArtifactShop extends VComponent {
 
     @Override
     protected void render() {
-        BufferedImage bg = null;
-        BufferedImage close = null;
-        BufferedImage title = null;
+        BufferedImage BBackground = assetLoader.getBackground(View.ArtifactShop);
+        Image BClose = assetLoader.getClose();
+        Image BTitle = assetLoader.getPageBanner();
 
         try {
-            bg = ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
-            close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
-            title = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
             BArtifactCardTemplate = ImageIO.read(new File("./src/resources/image/artifactCard.png"));
             BMysteryCard = ImageIO.read(new File("./src/resources/image/mysteryCard.png"));
         } catch (IOException e) {
@@ -50,18 +47,18 @@ public class VArtifactShop extends VComponent {
         }
 
 
-        JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
+        JLabel background = new JLabel(new ImageIcon(BBackground));
+        background.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
 
-        JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
-        titlePic.setBounds((int)(windowDimension.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
+        JLabel title = new JLabel(new ImageIcon(BTitle));
+        title.setBounds(windowDimension.getWidth() / 2 - BTitle.getWidth(null) / 2, -16, BTitle.getWidth(null), BTitle.getHeight(null));
         
         JLabel titleText = new JLabel("Artifact Shop", SwingConstants.CENTER);
         titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
         titleText.setForeground(Color.white);
-        titleText.setBounds(titlePic.getBounds());
+        titleText.setBounds(title.getBounds());
 
-        JButton closePic = new JButton(new ImageIcon(close.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
+        JButton closePic = new JButton(new ImageIcon(BClose.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         closePic.setBounds(10, 10, 60, 60);
         closePic.addActionListener(e -> router.navigateBack());
 
@@ -77,11 +74,11 @@ public class VArtifactShop extends VComponent {
         artifactContainer.repaint();
 
         panel.add(titleText);
-        panel.add(titlePic);
+        panel.add(title);
         panel.add(closePic);
         panel.add(mysteryCardPanel);
         panel.add(artifactContainer);
-        panel.add(bgPic);
+        panel.add(background);
         
     }
 

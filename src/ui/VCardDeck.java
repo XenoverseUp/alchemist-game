@@ -42,35 +42,27 @@ public class VCardDeck extends VComponent {
             windowDimension.getHeight()
         );
         
-        BufferedImage bg = null;
-        BufferedImage close = null;
-        BufferedImage title = null;
-
-        try {
-            bg = ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
-            close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
-            title = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        BufferedImage BBackground = assetLoader.getBackground(View.CardDeck);
+        JLabel bgPic = new JLabel(new ImageIcon(BBackground));
+        bgPic.setBounds(0,0, windowDimension.getWidth(), windowDimension.getHeight());
 
 
-        JLabel bgPic = new JLabel(new ImageIcon(bg));
-        bgPic.setBounds(0,0,windowDimension.getWidth(), windowDimension.getHeight());
+        Image BTitle = assetLoader.getPageBanner();
+        JLabel title = new JLabel(new ImageIcon(BTitle));
+        title.setBounds(windowDimension.getWidth() / 2 - BTitle.getWidth(null) / 2, -16, BTitle.getWidth(null), BTitle.getHeight(null));
 
-        JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
-        titlePic.setBounds((int)(windowDimension.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
-        
         JLabel titleText = new JLabel("Card Deck", SwingConstants.CENTER);
-        titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
         titleText.setForeground(Color.white);
-        titleText.setBounds(titlePic.getBounds());
+        titleText.setFont(new Font("Itim-Regular", Font.BOLD, 24));
+        titleText.setBounds(title.getBounds());
+
+        Image close = assetLoader.getClose();
         JButton closePic = new JButton(new ImageIcon(close.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
         closePic.setBounds(10, 10, 60, 60);
         closePic.addActionListener(e -> router.to(View.Board));
 
         panel.add(titleText);
-        panel.add(titlePic);
+        panel.add(title);
         panel.add(closePic);
         panel.add(ingredientCardDeck);
         panel.add(artifactCardDeck);
