@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import domain.TheAlchemistGame;
+import enums.BroadcastAction;
 import net.http.HTTPServer;
 
 public class Server {
@@ -37,6 +38,7 @@ public class Server {
                     }
 
                     System.out.println("Game Server: Everyone is ready. Starting the game session.");
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.ROOM_IS_FULL));
                 } catch (IOException e) {
                     closeServer();
                 }

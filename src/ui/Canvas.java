@@ -16,16 +16,22 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
+import enums.ApplicationType;
 import enums.Avatar;
 import enums.BoardHover;
+import enums.BroadcastAction;
 import enums.GamePhase;
 import enums.View;
+import error.ServerSideException;
+import interfaces.IBroadcastListener;
+import interfaces.IDynamicTypeValue;
 import ui.framework.AssetLoader;
 import ui.framework.Router;
 import ui.framework.WindowDimension;
 
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements IBroadcastListener {
     private Router router = Router.getInstance();
     private WindowDimension windowDimension = WindowDimension.getInstance();
     private AssetLoader assetLoader = AssetLoader.getInstance();
@@ -113,6 +119,21 @@ public class Canvas extends JPanel {
         super.paintComponent(graphics);
         Graphics2D g = (Graphics2D) graphics;
 
+        if (game.isOnline() && Integer.parseInt(game.online.getCurrentUser(true).get("id")) != game.online.getId()) {
+            g.drawRect(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
+            
+            g.setPaint(Color.ORANGE);
+            g.fillOval(x, y, 130, 130);
+            g.drawImage(assetLoader.getAvatarImage(Avatar.Celestial), null, x, y);
+
+            g.setFont(new Font("Itim-Regular", Font.PLAIN, 32));
+            g.drawString("Not your turn.", 528, 333);
+
+            g.dispose();
+
+            return;
+        }
+
 
         // Draw background
         g.drawImage(bg, null, -20, -30);
@@ -127,18 +148,31 @@ public class Canvas extends JPanel {
 
         g.setPaint(Color.white);
         g.setFont(new Font("Itim-Regular", Font.BOLD, 18));
-        g.drawString(game.getCurrentUser().name, 1248, 35);
+
+        if (!game.isOnline())
+            g.drawString(game.getCurrentUser().name, 1248, 35);
+        else 
+            g.drawString(game.online.getCurrentUser(true).get("name"), 1248, 35);
         
         g.setFont(new Font("Itim-Regular", Font.PLAIN, 14));
-        g.drawString(Integer.toString(game.getCurrentUser().leftActions) + " left actions", 1248, 65);
-        g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 85);
-        g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 105);
-        g.drawString(Integer.toString(game.getCurrentUser().getSickness()) + " sickness", 1248, 125);
+
+        if (!game.isOnline()) {
+            g.drawString(Integer.toString(game.getCurrentUser().leftActions) + " left actions", 1248, 65);
+            g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 85);
+            g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 105);
+            g.drawString(Integer.toString(game.getCurrentUser().getSickness()) + " sickness", 1248, 125);
+        } else {
+            g.drawString(game.online.getCurrentUser(true).get("left-actions") + " left actions", 1248, 65);
+            g.drawString(game.online.getCurrentUser(true).get("gold") + " golds", 1248, 85);
+            g.drawString(game.online.getCurrentUser(true).get("reputation") + " reputations", 1248, 105);
+            g.drawString(game.online.getCurrentUser(true).get("sickness") + " sickness", 1248, 125);
+        }
         
 
 
         // Draw title
-        setCurrentPlayer(g, game.getCurrentUser().name);
+        if (game.isOnline()) setCurrentPlayer(g, game.online.getCurrentUser(true).get("name"));
+        else setCurrentPlayer(g, game.getCurrentUser().name);
         
         // Draw outlines
         g.setPaint(Color.BLACK);
@@ -154,7 +188,8 @@ public class Canvas extends JPanel {
         if (boardHover == BoardHover.DeductionBoard) 
             g.drawImage(deductionOutlineHover, null, 227, 381);
         
-        if(game.getPhase() != GamePhase.FirstRound){
+
+        if((game.isOnline() ? game.online.getPhase(true) : game.getPhase()) != GamePhase.FirstRound){
             g.drawImage(pbaOutline, null, 799, 294);
             g.drawString("Potion Brewing Area", 863, 311);
             if (boardHover == BoardHover.PotionBrewingArea) 
@@ -167,12 +202,14 @@ public class Canvas extends JPanel {
         if (boardHover == BoardHover.CardDeck) 
             g.drawImage(cardDeckOutlineHover, null, -36, 606);
         
-        if(game.getPhase() != GamePhase.FirstRound){
+        if((game.isOnline() ? game.online.getPhase(true) : game.getPhase())  != GamePhase.FirstRound){
             g.drawImage(publicationAreaOutline, null, 520, 175);
             g.drawString("Publication Area", 532, 192);
             if (boardHover == BoardHover.PublicationArea) 
                 g.drawImage(publicationAreaOutlineHover, null, 611, 175);
         }
+
+
         // Fill Sidebar
 
         if (nextButtonPressed) {
@@ -215,9 +252,11 @@ public class Canvas extends JPanel {
             Point p = e.getPoint();
 
             if (publicationArea.contains(p)) {
-                if (game.getPhase() != GamePhase.FirstRound) router.to(View.PublicationArea);
+                if ((game.isOnline() ? game.online.getPhase(true) : game.getPhase())  != GamePhase.FirstRound) 
+                    router.to(View.PublicationArea);
             } else if (potionBrewingArea.contains(p)) {
-                if (game.getPhase() != GamePhase.FirstRound) router.to(View.PotionBrewingArea);
+                if ((game.isOnline() ? game.online.getPhase(true) : game.getPhase())  != GamePhase.FirstRound) 
+                    router.to(View.PotionBrewingArea);
             } else if (inventoryArea.contains(p)) 
                 router.to(View.Inventory);
             else if (cardArea.contains(p)) 
@@ -237,8 +276,10 @@ public class Canvas extends JPanel {
             Point p = e.getPoint();
 
             if (new Rectangle(1250, 675,175, 50).contains(p)) { 
-                game.toggleCurrentUser();
-
+                if (game.isOnline()) {
+                    try { game.online.toggleCurrentUser(); } 
+                    catch (ServerSideException e1) { e1.printStackTrace(); }
+                } else game.toggleCurrentUser();
             }
             
             Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -249,10 +290,10 @@ public class Canvas extends JPanel {
         public void mouseMoved(MouseEvent e) {
             Point p = e.getPoint();
 
-            if (publicationArea.contains(p) && game.getPhase() != GamePhase.FirstRound) {
+            if (publicationArea.contains(p) && (game.isOnline() ? game.online.getPhase(true) : game.getPhase()) != GamePhase.FirstRound) {
                 Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 boardHover = BoardHover.PublicationArea;
-            } else if (potionBrewingArea.contains(p) && game.getPhase() != GamePhase.FirstRound) {
+            } else if (potionBrewingArea.contains(p) && (game.isOnline() ? game.online.getPhase(true) : game.getPhase()) != GamePhase.FirstRound) {
                 Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 boardHover = BoardHover.PotionBrewingArea;
             } else if (inventoryArea.contains(p)) {
@@ -272,10 +313,12 @@ public class Canvas extends JPanel {
     }
 
     public void start() {
+        if (game.isOnline()) game.addBroadcastListener(this);
         this.timer.start();
     }
     
     public void stop() {
+        if (game.isOnline()) game.removeBroadcastListener(this);
         this.timer.stop();
     }
 
@@ -318,5 +361,10 @@ public class Canvas extends JPanel {
         );
 
         
+    }
+
+    @Override
+    public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
+        if (action == BroadcastAction.PLAYER_TOGGLED) game.online.revalidateCache();
     }
 }

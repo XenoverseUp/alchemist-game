@@ -14,6 +14,7 @@ import com.sun.net.httpserver.HttpHandler;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.BroadcastAction;
+import enums.GamePhase;
 import net.BroadcastPackage;
 import net.ClientHandler;
 import net.util.JON;
@@ -26,19 +27,28 @@ public class HTTPHandler implements HttpHandler {
 
     public HTTPHandler(TheAlchemistGame game) {
         this.game = game;
-        setup();
+        setupRouter();
         this.endpoints.forEach((_k, v) -> v.forEach((k, _v) -> paths.add(k)));
     }
-
 
     /**
      * Allowed methods are: GET, POST and PUT.
      */
-    private void setup() {
+    private void setupRouter() {
         endpoints.put("GET", new HashMap<String, Consumer<HttpExchange>>() {{
-            put("/http/currentPlayerId", (HttpExchange) -> {
+            put("/http/currentPlayer", (HttpExchange) -> {
+                HashMap<String, String> currentPlayer = new HashMap<>() {{
+                    put("id", String.valueOf(game.getCurrentUser().id));
+                    put("name", game.getCurrentUser().name);
+                    put("avatar", game.getCurrentUser().avatar.toString());
+                    put("left-actions", String.valueOf(game.getCurrentUser().leftActions));
+                    put("gold", String.valueOf(game.getCurrentUser().inventory.getGold()));
+                    put("sickness", String.valueOf(game.getCurrentUser().getSickness()));
+                    put("reputation", String.valueOf(game.getCurrentUser().getReputation()));
+                }};
+
                 try {
-                    sendResponse(HttpExchange, 200, String.valueOf(game.getCurrentUser().id));
+                    sendResponse(HttpExchange, 200, JON.build(currentPlayer));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -65,6 +75,15 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
 
+            });
+            put("/http/gamePhase", (HttpExchange exchange) -> {
+                GamePhase currentPhase = game.getPhase();
+
+                try {
+                    sendResponse(exchange, 200, currentPhase.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             });
         }});
 
@@ -98,6 +117,7 @@ public class HTTPHandler implements HttpHandler {
         endpoints.put("PUT", new HashMap<String, Consumer<HttpExchange>>() {{
             put("/http/togglePlayer", (HttpExchange exchange) -> {
                 game.toggleCurrentUser();
+                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.PLAYER_TOGGLED));
                 try {
                     sendResponse(exchange, 200, "It fucking works");
                 } catch (IOException e) {
@@ -108,6 +128,20 @@ public class HTTPHandler implements HttpHandler {
                     }
                 }
             });
+            put("/http/startGame", (HttpExchange exchange) -> {
+                game.initializeGame();
+                try {
+                    sendResponse(exchange, 200, "Game is started by the host.");
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_STARTED));
+                } catch (IOException e) {
+                    try {
+                        sendResponse(exchange, 500, "Internal Server Error");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+            
         }});
     }
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import enums.ApplicationType;
 import enums.Avatar;
 import enums.DeductionToken;
@@ -15,10 +16,12 @@ import enums.Potion;
 import error.HostDoesNotExistsException;
 import interfaces.IBroadcastListener;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
 import error.WrongGameRoundException;
 import interfaces.ICurrentUserListener;
 import net.Client;
 import net.Server;
+import net.util.JON;
 
 public class TheAlchemistGame {
     private Auth auth;
@@ -31,7 +34,6 @@ public class TheAlchemistGame {
     public TheAlchemistGame() {
     	auth = new Auth();
         gameBoard = new Board(auth);
-        online = new OnlineRegister();
     }
 
     public int createUser(String userName, Avatar a) {
@@ -56,7 +58,6 @@ public class TheAlchemistGame {
 
     public void setApplicationType(ApplicationType applicationType) {
         this.applicationType = applicationType;
-        this.online.setActive(applicationType == ApplicationType.Online);
     }
 
     public void initializeGame() {
@@ -121,6 +122,10 @@ public class TheAlchemistGame {
 
     // NEW
 
+    public boolean isOnline() {
+        return this.applicationType == ApplicationType.Online;
+    }
+
     public HashMap<String, String> getPlayers() {
         HashMap<String, String> players = new HashMap<String, String>();
         this.auth.players.forEach(player -> players.put(String.valueOf(player.id), player.name));
@@ -135,30 +140,6 @@ public class TheAlchemistGame {
 
     public ApplicationType getApplicationType() {
         return applicationType;
-    }
-
-    public class OnlineRegister {
-        private boolean active = false;
-
-        public void setActive(boolean active) {
-            this.active = active;
-        }
-
-        public int createUser(int id, String name, Avatar avatar) {
-            return active ? client.createUser(id, name, avatar) : null;
-        }
-
-        public Map<String, String> getPlayerNames() {
-            return active ? client.getPlayerNames() : null;
-        }
-
-        public Avatar getAvatar(int id) {
-            return active ? client.getAvatar(id) : null;
-        }
-
-        public void startGame(int id) {
-            
-        }
     }
 
     public int createServer(int port) {
@@ -181,15 +162,11 @@ public class TheAlchemistGame {
             client = new Client(port);
             client.listen();
             setApplicationType(ApplicationType.Online);
+            online = new OnlineRegister();
         } catch (HostDoesNotExistsException e) {
             return 1;
         }
 
-        return 0;
-    }
-
-    public int getId() {
-        if (client != null) return client.getId();
         return 0;
     }
 
@@ -200,6 +177,60 @@ public class TheAlchemistGame {
 
     public void removeBroadcastListener(IBroadcastListener component) {
         client.removeBroadcastListener(component);
+    }
+
+
+    public class OnlineRegister {
+
+        public int getId() {
+            if (client != null) return client.getId();
+            return 0;
+        }
+
+        public boolean isHost() {
+            return getId() == 0;
+        }
+
+        public int createUser(int id, String name, Avatar avatar) {
+            return client.createUser(id, name, avatar);
+        }
+
+        public Map<String, String> getPlayerNames() {
+            return client.getPlayerNames();
+        }
+
+        public Avatar getAvatar(int id) {
+            return client.getAvatar(id);
+        }
+
+        public void startGame() throws ServerSideException {
+            client.startGame();
+        }
+        
+        public Map<String, String> getCurrentUser(boolean cached) {
+            return client.getCurrentUser(cached);
+        }
+       
+        public Map<String, String> getCurrentUser() {
+            return client.getCurrentUser();
+        }
+
+        public GamePhase getPhase(boolean cached) {
+            return client.getPhase(cached);
+        }
+
+        public GamePhase getPhase() {
+            return client.getPhase();
+        }
+
+        public void toggleCurrentUser() throws ServerSideException {
+            client.toggleCurrentUser();
+        }
+
+        public void revalidateCache() {
+            client.getCache().revalidateAll();
+        }
+
     }
 
 }

@@ -1,6 +1,9 @@
 package enums;
 
 public enum BroadcastAction {
+    CLIENT_CONNECTED,
     PLAYER_CREATED,
-    CLIENT_CONNECTED
+    ROOM_IS_FULL,
+    GAME_STARTED,
+    PLAYER_TOGGLED
 }

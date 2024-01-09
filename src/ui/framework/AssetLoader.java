@@ -1,5 +1,6 @@
 package ui.framework;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -49,6 +50,12 @@ public class AssetLoader {
     private BufferedImage BOldFabric;
     private BufferedImage BSelectionStripe;
     private BufferedImage BLeftArrow;
+    private BufferedImage BStartButton;
+    private BufferedImage BStartButtonPressed;
+    private BufferedImage BNameRibbonYellow;
+    private BufferedImage BNameRibbonGreen;
+    private BufferedImage BNameRibbonRed;
+    private BufferedImage BNameRibbonBlue;
 
     public ArrayList<String> ingredientNames = new ArrayList<String>() {{
         add("mushroom");
@@ -110,6 +117,13 @@ public class AssetLoader {
             BOldFabric = ImageIO.read(new File("./src/resources/image/HUD/oldFabric.png"));
             BSelectionStripe = ImageIO.read(new File("./src/resources/image/HUD/selectionStripe.png"));
             BLeftArrow = ImageIO.read(new File("./src/resources/image/HUD/leftArrow.png"));
+
+            BStartButton = ImageIO.read(new File("./src/resources/image/HUD/startButton.png"));
+            BStartButtonPressed = ImageIO.read(new File("./src/resources/image/HUD/startButtonPressed.png"));
+            BNameRibbonYellow = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonYellow.png"));
+            BNameRibbonGreen = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonGreen.png"));
+            BNameRibbonRed = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonRed.png"));
+            BNameRibbonBlue = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonBlue.png"));
 
         } catch (IOException e) {
             System.out.println(e);
@@ -178,6 +192,36 @@ public class AssetLoader {
         }
 
         return BThunderous;
+    }
+
+    public BufferedImage getNameRibbon(int i) {
+        switch (i) {
+            case 1:
+                return BNameRibbonBlue;
+            case 2:
+                return BNameRibbonRed;
+            case 3:
+                return BNameRibbonGreen;
+            default:
+                return BNameRibbonYellow;
+        }
+    }
+
+    public Color getNameRibbonColor(int i) {
+        switch (i) {
+            case 1:
+                return new Color(0, 55, 66);
+            case 2:
+                return new Color(76, 43, 32);
+            case 3:
+                return new Color(47, 55, 16);
+            default:
+                return new Color(63, 33, 0);
+        }
+    }
+
+    public BufferedImage getStartButton(boolean pressed) {
+        return !pressed ? BStartButton : BStartButtonPressed;
     }
 
     public BufferedImage getBackground(View view) {

@@ -8,32 +8,45 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 import enums.Avatar;
 import enums.BroadcastAction;
+import enums.GamePhase;
 import error.HostDoesNotExistsException;
+import error.ServerSideException;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
 import net.http.HTTPClient;
+import net.util.Cache;
 import net.util.DynamicTypeValue;
 import net.util.JON;
 
 public class Client {
+    private int id;
     private Socket socket;
     private ObjectInputStream in;
-    private int id;
-    private ArrayList<IBroadcastListener> broadcastListeners = new ArrayList<IBroadcastListener>();
     private HTTPClient httpClient;
+    private ArrayList<IBroadcastListener> broadcastListeners = new ArrayList<IBroadcastListener>();
+    private Cache cache = new Cache();
+
 
     public Client(int port) throws HostDoesNotExistsException {
         try {
             this.socket = new Socket("localhost", port);
             this.in = new ObjectInputStream(socket.getInputStream());
             this.httpClient = HTTPClient.getInstance();
+            setupCache();
         } catch (IOException e) {
             shutdown();
             throw new HostDoesNotExistsException();
         }
 
+    }
+
+    private void setupCache() {
+        cache.create("current-player", this::currentPlayerSupplier);
+        cache.create("game-phase", this::gamePhaseSupplier);
     }
 
     /** HTTP Methods */
@@ -62,6 +75,68 @@ public class Client {
         HttpResponse<String> response = httpClient.get(String.format("/http/playerAvatar/%d", id));
 
         if (response.statusCode() == 200) return Avatar.valueOf((String)response.body());
+        return null;
+    }
+
+    public void startGame() throws ServerSideException {
+        String body = httpClient.buildBody(new HashMap<String, String>() {{
+            put("id", String.valueOf(id));
+        }});
+
+        HttpResponse<String> response = httpClient.put("/http/startGame", body);
+
+        if (response.statusCode() != 200) throw new ServerSideException();
+    }
+
+    public Map<String, String> getCurrentUser(boolean cached) {
+        if (!cached) cache.revalidate("current-player");
+        String body = cache.get("current-player");
+
+        return JON.parse(body);
+    }
+   
+    public Map<String, String> getCurrentUser() {
+        cache.revalidate("current-player");
+        String body = cache.get("current-player");
+
+        return JON.parse(body);
+    }
+
+    public GamePhase getPhase(boolean cached) {
+        if (!cached) cache.revalidate("game-phase");
+        String phase = cache.get("game-phase");
+
+        return GamePhase.valueOf(phase);
+    }
+
+    public GamePhase getPhase() {
+        cache.revalidate("game-phase");
+        String phase = cache.get("game-phase");
+
+        return GamePhase.valueOf(phase);
+    }
+
+    public void toggleCurrentUser() throws ServerSideException {
+        HttpResponse<String> response = httpClient.put("/http/togglePlayer");
+        if (response.statusCode() != 200) throw new ServerSideException();
+    }
+
+
+    /** Cache Supplier Methods */
+    
+    private String currentPlayerSupplier() {
+        HttpResponse<String> response = httpClient.get("/http/currentPlayer");
+        if (response.statusCode() == 200) 
+            return (String)response.body();
+        
+        return null;
+    }
+   
+    private String gamePhaseSupplier() {
+        HttpResponse<String> response = httpClient.get("/http/gamePhase");
+        if (response.statusCode() == 200) 
+            return (String)response.body();
+        
         return null;
     }
 
@@ -101,8 +176,14 @@ public class Client {
         }).start();;
     }
 
+    /** Utilities */
+
     public int getId() {
         return this.id;
+    }
+
+    public Cache getCache() {
+        return cache;
     }
     
     public void shutdown() {

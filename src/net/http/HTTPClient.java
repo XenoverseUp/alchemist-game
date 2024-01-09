@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.util.Map;
 
@@ -45,6 +46,41 @@ public class HTTPClient {
             .uri(URI.create(String.format("http://localhost:8080%s", path)))
             .header("Content-Type", "text/plain")
             .POST(BodyPublishers.ofString(body))
+            .build();
+
+        try {
+            HttpResponse<String> response = httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+            return response;
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public HttpResponse<String> put(String path, String body) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(String.format("http://localhost:8080%s", path)))
+            .header("Content-Type", "text/plain")
+            .PUT(BodyPublishers.ofString(body))
+            .build();
+
+        try {
+            HttpResponse<String> response = httpClient.send(request,
+                HttpResponse.BodyHandlers.ofString());
+            return response;
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public HttpResponse<String> put(String path) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(String.format("http://localhost:8080%s", path)))
+            .PUT(BodyPublishers.noBody())
             .build();
 
         try {

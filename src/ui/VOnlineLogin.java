@@ -137,7 +137,7 @@ public class VOnlineLogin extends VComponent {
                 }
             }
 
-            int result = game.online.createUser(game.getId(), playerName, playerAvatar);
+            int result = game.online.createUser(game.online.getId(), playerName, playerAvatar);
 
             switch (result) {
                 case 0: {
