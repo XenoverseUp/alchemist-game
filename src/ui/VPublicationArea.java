@@ -36,7 +36,6 @@ public class VPublicationArea extends VComponent {
     protected void render() {
         publicationPanel = createPublicationJPanel();
 
-        AssetLoader assetLoader = AssetLoader.getInstance();
         BufferedImage bg = assetLoader.getPbBackground();
         if (bg == null){
             System.out.println("Background image not available.");
