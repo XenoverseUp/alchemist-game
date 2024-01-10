@@ -103,7 +103,8 @@ public class VCardDeck extends VComponent {
         button.addActionListener(event -> {
             if (type == "ingredient") {
                 try {
-                    game.forageIngredient();
+                    if (game.isOnline()) game.online.forageIngredient();
+                    else game.forageIngredient();
                     router.to(View.Inventory);
                 } catch (NotEnoughActionsException e) {
                    modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");

@@ -19,15 +19,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import domain.ArtifactCard;
 import domain.TheAlchemistGame;
 import enums.View;
 import error.NotEnoughActionsException;
-import interfaces.ICurrentUserListener;
 import ui.framework.VComponent;
 import ui.util.WrapLayout;
 
 
-public class VInventory extends VComponent implements ICurrentUserListener {
+public class VInventory extends VComponent {
     private JLabel titleText;
     private JLabel background;
 
@@ -41,19 +41,15 @@ public class VInventory extends VComponent implements ICurrentUserListener {
 
     public VInventory(TheAlchemistGame game) {
         super(game);
-        game.addCurrentUserListener(this);
     }
 
     @Override
     protected void render() {
-        BufferedImage bg = null;
-        BufferedImage close = null;
-        BufferedImage title = null;
+        BufferedImage BBackground = assetLoader.getBackground(View.Inventory);
+        Image BClose = assetLoader.getClose();
+        Image BTitle = assetLoader.getPageBanner();
 
         try {
-            bg = ImageIO.read(new File("./src/resources/image/inventoryBg.png"));
-            close = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
-            title = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
             BHammer =  ImageIO.read(new File("./src/resources/image/HUD/hammer.png"));
             BArtifactCardTemplate = ImageIO.read(new File("./src/resources/image/artifactCard.png"));
             BDiscardArtifactCard = ImageIO.read(new File("./src/resources/image/HUD/discardArtifact.png"));
@@ -61,19 +57,19 @@ public class VInventory extends VComponent implements ICurrentUserListener {
             System.out.println(e);
         }
 
-        JLabel titlePic = new JLabel(new ImageIcon(title.getScaledInstance((int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75), Image.SCALE_SMOOTH)));
-        titlePic.setBounds((int)(windowDimension.getWidth() / 2 - title.getWidth() / 2 * 0.75), -16, (int)(title.getWidth() * 0.75), (int)(title.getHeight() * 0.75));
+        JLabel title = new JLabel(new ImageIcon(BTitle));
+        title.setBounds(windowDimension.getWidth() / 2 - BTitle.getWidth(null) / 2 , -16, BTitle.getWidth(null), BTitle.getHeight(null));
 
         titleText = new JLabel("",  SwingConstants.CENTER);
         titleText.setForeground(Color.white);
         titleText.setFont(new Font("Itim-Regular", Font.BOLD, 20));
-        titleText.setBounds(titlePic.getBounds());
+        titleText.setBounds(title.getBounds());
 
-        JButton closePic = new JButton(new ImageIcon(close.getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
-        closePic.setBounds(10, 10, 60, 60);
-        closePic.addActionListener(e -> router.to(View.Board));
+        JButton close = new JButton(new ImageIcon(BClose));
+        close.setBounds(10, 10, BClose.getWidth(null), BClose.getHeight(null));
+        close.addActionListener(e -> router.to(View.Board));
 
-        background = new JLabel(new ImageIcon(bg));
+        background = new JLabel(new ImageIcon(BBackground));
         background.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
 
         scrollPane = new JScrollPane();
@@ -86,8 +82,8 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         panel.add(titleText);
-        panel.add(titlePic);
-        panel.add(closePic);
+        panel.add(title);
+        panel.add(close);
         panel.add(scrollPane);
         panel.add(background);
     }
@@ -107,7 +103,7 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         this.scrollPosition = scrollPane.getVerticalScrollBar().getValue();
         scrollPane.setViewportView(null);
 
-        this.titleText.setText(String.format("%s's Inventory", game.getCurrentUser().name));
+        this.titleText.setText(String.format("%s's Inventory", game.online.getCurrentUser().get("name")));
 
         JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER, 24, 24));
         cards.setOpaque(false);
@@ -123,15 +119,44 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         artifactsTitle.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
         cards.add(artifactsTitle);
 
-        game.getCurrentUser()
-            .inventory
-            .getArtifactCards()
-            .stream()
-            .map(card -> this.generateArtifactCard(card.getName(), card.getDescription(), card.getPrice(), card.getVictoryPoints()))
-            .forEach(cards::add);
+
+        if (game.isOnline()) {
+            if (game.online.getCurrentPlayerArtifacts().size() > 0)
+                game.online
+                    .getCurrentPlayerArtifacts()
+                    .stream()
+                    .map(name -> {
+                        System.out.println(name);
+                        ArtifactCard card = game.getArtifactCardDeck()
+                            .stream()
+                            .filter(c -> c.getName().equals(name))
+                            .findFirst()
+                            .get();
+
+                        return this.generateArtifactCard(card.getName(), card.getDescription(), card.getPrice(), card.getVictoryPoints());
+                    })
+                    .forEach(cards::add);
+        } else {
+            if (game.getCurrentUser().inventory.getArtifactCards().size() > 0)
+                game.getCurrentUser()
+                    .inventory
+                    .getArtifactCards()
+                    .stream()
+                    .map(card -> card.getName())
+                    .map(name -> {
+                        ArtifactCard card = game.getArtifactCardDeck()
+                            .stream()
+                            .filter(c -> c.getName().equals(name))
+                            .findFirst()
+                            .get();
+
+                        return this.generateArtifactCard(card.getName(), card.getDescription(), card.getPrice(), card.getVictoryPoints());
+                    })
+                    .forEach(cards::add);
+        }
 
 
-        if (game.getCurrentUser().inventory.getArtifactCards().size() == 0) {
+        if ((game.isOnline() ? game.online.getCurrentPlayerArtifacts() : game.getCurrentUser().inventory.getArtifactCards()).size() == 0) {
             JLabel emptyIngredientsText = new JLabel("You don't have any artifact cards. Visit the card deck to buy.", SwingConstants.CENTER);
             emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
             emptyIngredientsText.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
@@ -146,14 +171,26 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         ingredientsTitle.setForeground(Color.WHITE);
         cards.add(ingredientsTitle);
 
-        game.getCurrentUser()
-            .inventory
-            .getIngredientCards()
-            .stream()
-            .map(card -> this.generateIngredientCard(card.getName()))
-            .forEach(cards::add);
 
-        if (game.getCurrentUser().inventory.getIngredientCards().size() == 0) {
+        if (game.isOnline()) {
+            if (game.online.getCurrentPlayerIngredients().size() > 0)
+                game.online
+                    .getCurrentPlayerIngredients()
+                    .stream()
+                    .map(name -> this.generateIngredientCard(name))
+                    .forEach(cards::add);
+        } else {
+            if (game.getCurrentUser().inventory.getIngredientCards().size() > 0)
+                game.getCurrentUser()
+                    .inventory
+                    .getIngredientCards()
+                    .stream()
+                    .map(card -> card.getName())
+                    .map(name -> this.generateIngredientCard(name))
+                    .forEach(cards::add);
+        }
+
+        if ((game.isOnline() ? game.online.getCurrentPlayerIngredients() :game.getCurrentUser().inventory.getIngredientCards()).size() == 0) {
              JLabel emptyIngredientsText = new JLabel("You don't have any ingredient cards. Visit the card deck to forage.", SwingConstants.CENTER);
             emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
             emptyIngredientsText.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
@@ -191,7 +228,8 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         transmuteButton.setFocusable(false);
         transmuteButton.addActionListener(event -> {
             try {
-                game.transmuteIngredient(name);
+                if (game.isOnline()) game.online.transmuteIngredient(name);
+                else game.transmuteIngredient(name);
                 this.update();
             } catch (NotEnoughActionsException e) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
@@ -245,7 +283,8 @@ public class VInventory extends VComponent implements ICurrentUserListener {
 
         discard.addActionListener(event -> {
             try {
-                game.discardArtifact(name);
+                if (game.isOnline()) game.online.discardArtifact(name);
+                else game.discardArtifact(name);
                 this.update();  
             } catch (NotEnoughActionsException e) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
@@ -294,11 +333,5 @@ public class VInventory extends VComponent implements ICurrentUserListener {
         card.add(bg);
 
         return card;
-    }
-
-
-    @Override
-    public void onCurrentUserChange() {
-        this.update();
     }
 }

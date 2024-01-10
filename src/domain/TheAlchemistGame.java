@@ -5,6 +5,7 @@ import java.net.BindException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -21,7 +22,6 @@ import error.WrongGameRoundException;
 import interfaces.ICurrentUserListener;
 import net.Client;
 import net.Server;
-import net.util.JON;
 
 public class TheAlchemistGame {
     private Auth auth;
@@ -83,7 +83,7 @@ public class TheAlchemistGame {
         gameBoard.discardArtifact(name);
     }
 
-    public ArrayList<ArtifactCard> getArtifactCardDeck(){
+    public ArrayList<ArtifactCard> getArtifactCardDeck() {
 		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
 	}
 
@@ -242,6 +242,35 @@ public class TheAlchemistGame {
 
         public void revalidateCache() {
             client.getCache().revalidateAll();
+        }
+
+        public void forageIngredient() throws NotEnoughActionsException   {
+            client.forageIngredient();
+        }
+
+        public int drawMysteryCard() throws NotEnoughActionsException {
+            return client.drawMysteryCard();
+        }
+
+
+        public int buyArtifact(String name) throws NotEnoughActionsException {
+            return client.buyArtifact(name);
+        }
+
+        public List<String> getCurrentPlayerArtifacts() {
+            return client.getCurrentPlayerArtifacts();
+        }
+        
+        public List<String> getCurrentPlayerIngredients() {
+            return client.getCurrentPlayerIngredients();
+        }
+        
+        public void transmuteIngredient(String name) throws NotEnoughActionsException {
+            client.transmuteIngredient(name);
+        }
+
+        public void discardArtifact(String name) throws NotEnoughActionsException {
+            client.discardArtifact(name);
         }
 
     }

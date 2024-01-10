@@ -46,6 +46,7 @@ public class Auth {
             if (p.avatar == avatar) return 3;
             if (p.id == id) return 4;
         }
+
         
         Player player = new Player(id, name, avatar);
 
