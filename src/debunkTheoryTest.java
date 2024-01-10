@@ -56,7 +56,7 @@ public class debunkTheoryTest {
     public void setUp() {
         auth = new Auth();
         auth.createUser("Beril", Avatar.Mystical);
-        auth.createUser("Ceren", Avatar.Radiant);
+        auth.createUser("Ceren", Avatar.Mystical);
         board = new Board(auth);
         assertFalse("Players list should not be empty", auth.players.isEmpty());
     }

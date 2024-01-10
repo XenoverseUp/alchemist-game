@@ -99,11 +99,6 @@ public class TheAlchemistGame {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
-
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) {
-        return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
-    }
-
     public void publishTheory() {
         gameBoard.publishTheory();
     }

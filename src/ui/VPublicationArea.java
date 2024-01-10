@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import enums.View;
+import ui.framework.Router;
 import ui.framework.VComponent;
 import domain.TheAlchemistGame;
 

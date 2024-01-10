@@ -5,10 +5,6 @@ import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
 import error.WrongGameRoundException;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -199,7 +195,7 @@ public class Board {
 				});
 			}
 		}
-
+	}
 
 	public void updatePhase(){
 		if (numberOfTurns == 3 * auth.getNumOfPlayers()){
