@@ -62,8 +62,8 @@ public class Client {
     }
 
     private void setupCache() {
-        cache.create("current-player", this::currentPlayerSupplier);
         cache.create("game-phase", this::gamePhaseSupplier);
+        cache.create("current-player", this::currentPlayerSupplier);
     }
 
     /** HTTP Methods */
