@@ -109,7 +109,7 @@ public class VArtifactShop extends VComponent {
         drawMysteryButton.addActionListener(e -> {
             int result;
             try {
-                result = game.drawMysteryCard();
+                result = game.isOnline() ? game.online.drawMysteryCard() : game.drawMysteryCard();
                 if (result == 0) router.to(View.Inventory);
                 else modal.info("Not enough money!", "Fuck you bitch.");
             } catch (NotEnoughActionsException e1) {
@@ -228,7 +228,7 @@ public class VArtifactShop extends VComponent {
         activateButton.addActionListener(event -> {
             int result;
             try {
-                result = game.buyArtifact(name);
+                result = game.isOnline() ? game.online.buyArtifact(name) : game.buyArtifact(name);
                 if (result == 0) router.to(View.Inventory);
                 else modal.info("Not enough money!", "Fuck you bitch.");
             } catch (NotEnoughActionsException e) {

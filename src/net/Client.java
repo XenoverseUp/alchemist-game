@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -14,6 +15,7 @@ import enums.Avatar;
 import enums.BroadcastAction;
 import enums.GamePhase;
 import error.HostDoesNotExistsException;
+import error.NotEnoughActionsException;
 import error.ServerSideException;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
@@ -66,7 +68,7 @@ public class Client {
     /** HTTP Methods */
 
     public int createUser(int id, String name, Avatar avatar) {
-        String body = httpClient.buildBody(new HashMap<String, String>() {{
+        String body = JON.build(new HashMap<String, String>() {{
             put("name", name);
             put("id", String.valueOf(id));
             put("avatar", avatar.toString());
@@ -79,8 +81,8 @@ public class Client {
     }
 
     public Map<String, String> getPlayerNames() {
-        HttpResponse<String> response = httpClient.get("/http/players");
-        Map<String, String> data = JON.parse((String)response.body());
+        HttpResponse<String> response = httpClient.get("/http/game/players");
+        Map<String, String> data = JON.parseMap((String)response.body());
         
         return data;
     }
@@ -93,7 +95,7 @@ public class Client {
     }
 
     public void startGame() throws ServerSideException {
-        String body = httpClient.buildBody(new HashMap<String, String>() {{
+        String body = JON.build(new HashMap<String, String>() {{
             put("id", String.valueOf(id));
         }});
 
@@ -106,14 +108,14 @@ public class Client {
         if (!cached) cache.revalidate("current-player");
         String body = cache.get("current-player");
 
-        return JON.parse(body);
+        return JON.parseMap(body);
     }
    
     public Map<String, String> getCurrentUser() {
         cache.revalidate("current-player");
         String body = cache.get("current-player");
 
-        return JON.parse(body);
+        return JON.parseMap(body);
     }
 
     public GamePhase getPhase(boolean cached) {
@@ -135,6 +137,59 @@ public class Client {
         if (response.statusCode() != 200) throw new ServerSideException();
     }
 
+    public void forageIngredient() throws NotEnoughActionsException   {
+        HttpResponse<String> response = httpClient.put("/http/forageIngredient");
+
+        if (response.statusCode() == 400) throw new NotEnoughActionsException();
+    }
+
+    public int drawMysteryCard() throws NotEnoughActionsException {
+        HttpResponse<String> response = httpClient.put("/http/drawMysteryCard");
+        
+        if (response.statusCode() == 400) throw new NotEnoughActionsException();
+        else if (response.statusCode() == 200) return 0;
+        else return Integer.parseInt((String)response.body());
+    }
+
+
+    public int buyArtifact(String name) throws NotEnoughActionsException {
+        HttpResponse<String> response = httpClient.put("/http/buyArtifact", name);
+
+        if (response.statusCode() == 400) throw new NotEnoughActionsException();
+        else if (response.statusCode() == 200) return 0;
+        else return Integer.parseInt((String)response.body());
+    }
+
+    public List<String> getCurrentPlayerArtifacts() {
+        HttpResponse<String> response = httpClient.get("/http/inventory/artifact");
+
+        if (response.statusCode() == 200)
+            return JON.parseList((String)response.body());
+        
+        return null;
+    }
+    
+    public List<String> getCurrentPlayerIngredients() {
+        HttpResponse<String> response = httpClient.get("/http/inventory/ingredient");
+
+        if (response.statusCode() == 200)
+            return JON.parseList((String)response.body());
+        
+        return null;
+    }
+    
+    public void transmuteIngredient(String name) throws NotEnoughActionsException {
+        HttpResponse<String> response = httpClient.put("/http/transmuteIngredient", name);
+
+        if (response.statusCode() == 400) throw new NotEnoughActionsException();
+    }
+
+    public void discardArtifact(String name) throws NotEnoughActionsException {
+        HttpResponse<String> response = httpClient.put("/http/discardArtifact", name);
+
+        if (response.statusCode() == 400) throw new NotEnoughActionsException();
+    }
+
 
     /** Cache Supplier Methods */
     
@@ -147,7 +202,7 @@ public class Client {
     }
    
     private String gamePhaseSupplier() {
-        HttpResponse<String> response = httpClient.get("/http/gamePhase");
+        HttpResponse<String> response = httpClient.get("/http/game/phase");
         if (response.statusCode() == 200) 
             return (String)response.body();
         
