@@ -9,6 +9,7 @@ import java.util.HashMap;
 import domain.TheAlchemistGame;
 import enums.BroadcastAction;
 import interfaces.IDynamicTypeValue;
+import net.util.BroadcastPackage;
 import net.util.DynamicTypeValue;
 
 public class ClientHandler  {

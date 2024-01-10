@@ -18,8 +18,8 @@ import enums.Avatar;
 import enums.BroadcastAction;
 import enums.GamePhase;
 import error.NotEnoughActionsException;
-import net.BroadcastPackage;
 import net.ClientHandler;
+import net.util.BroadcastPackage;
 import net.util.JON;
 
 

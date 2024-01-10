@@ -7,6 +7,7 @@ import java.net.Socket;
 import domain.TheAlchemistGame;
 import enums.BroadcastAction;
 import net.http.HTTPServer;
+import net.util.BroadcastPackage;
 
 public class Server {
     private ServerSocket serverSocket;

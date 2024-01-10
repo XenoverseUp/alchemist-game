@@ -20,6 +20,7 @@ import error.ServerSideException;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
 import net.http.HTTPClient;
+import net.util.BroadcastPackage;
 import net.util.Cache;
 import net.util.DynamicTypeValue;
 import net.util.JON;
