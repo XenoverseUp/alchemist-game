@@ -46,6 +46,7 @@ public class AssetLoader {
     private BufferedImage BCardDeckBackground;
     private BufferedImage BArtifactShopBackground;
     private BufferedImage BInventoryBackground;
+    private BufferedImage BBlurredBoard;
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
@@ -116,6 +117,7 @@ public class AssetLoader {
             BCardDeckBackground =  ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
             BArtifactShopBackground =  ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
             BInventoryBackground = ImageIO.read(new File("./src/resources/image/inventoryBg.png"));
+            BBlurredBoard = ImageIO.read(new File("./src/resources/image/notTurnBackground.png"));
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             BTitle = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
@@ -247,6 +249,7 @@ public class AssetLoader {
     public BufferedImage getOldFabric() { return BOldFabric;  }
     public BufferedImage getSelectionStripe() { return BSelectionStripe;  }
     public BufferedImage getLeftArrow() { return BLeftArrow;  }
+    public BufferedImage getBlurredBoard() { return BBlurredBoard;  }
 
     private Image scale(BufferedImage i, double scale) { 
         return i.getScaledInstance((int)(i.getWidth() * scale), (int)(i.getHeight() * scale), Image.SCALE_SMOOTH); 
