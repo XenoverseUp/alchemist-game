@@ -1,11 +1,13 @@
 package ui;
 
 import javax.swing.JLabel;
+
+import domain.Game;
 import domain.TheAlchemistGame;
 import ui.framework.VComponent;
 
 public class VPause extends VComponent {
-    public VPause(TheAlchemistGame game) {
+    public VPause(Game game) {
         super(game);
     }
 

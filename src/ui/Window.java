@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
+import domain.Game;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
@@ -22,9 +23,9 @@ public class Window {
     private JPanel modalLayer;
     public static JPanel mainPanel;
     private Router router;
-    private TheAlchemistGame game;
+    private Game game;
 
-    public Window(String title, int width, int height, TheAlchemistGame game) {
+    public Window(String title, int width, int height, Game game) {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./src/resources/font/Itim-Regular.ttf")));
@@ -107,9 +108,9 @@ public class Window {
                 
                 // NOTICE: Development Cheat Code
                 if (ke.getKeyCode() == KeyEvent.VK_ENTER && router.getCurrentView() == View.Start) {
-                    game.createUser("Can", Avatar.Celestial);
-                    game.createUser("Ata", Avatar.Serene);
-                    game.initializeGame();
+                    game.getLocalRegister().createUser("Can", Avatar.Celestial);
+                    game.getLocalRegister().createUser("Ata", Avatar.Serene);
+                    game.getLocalRegister().initializeGame();
                     router.to(View.Board);
                 }
 

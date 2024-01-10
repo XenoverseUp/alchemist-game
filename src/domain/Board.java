@@ -5,7 +5,6 @@ import error.NotEnoughActionsException;
 import error.WrongGameRoundException;
 
 public class Board {
-	
 	private Auth auth;
 	public IngredientCardDeck ingredientCardDeck;
 	public ArtifactCardDeck artifactCardDeck;

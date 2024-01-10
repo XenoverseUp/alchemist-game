@@ -2,7 +2,6 @@ package domain;
 
 import java.util.ArrayList;
 import enums.Avatar;
-import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
 import interfaces.ICurrentUserListener;
 

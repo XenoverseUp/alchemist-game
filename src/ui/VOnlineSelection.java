@@ -28,6 +28,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 
+import domain.Game;
 import domain.TheAlchemistGame;
 import enums.View;
 import ui.framework.VComponent;
@@ -36,7 +37,7 @@ import ui.util.RotatedLabel;
 import ui.util.RotatedLabel.Direction;
 
 public class VOnlineSelection extends VComponent {
-    public VOnlineSelection(TheAlchemistGame game) { super(game); }
+    public VOnlineSelection(Game game) { super(game); }
 
     private enum FormState {
         Host,

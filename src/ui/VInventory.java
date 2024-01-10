@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import domain.ArtifactCard;
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.View;
 import error.NotEnoughActionsException;
 import ui.framework.VComponent;
@@ -39,7 +39,7 @@ public class VInventory extends VComponent {
     private BufferedImage BDiscardArtifactCard;
 
 
-    public VInventory(TheAlchemistGame game) {
+    public VInventory(Game game) {
         super(game);
     }
 
@@ -103,7 +103,7 @@ public class VInventory extends VComponent {
         this.scrollPosition = scrollPane.getVerticalScrollBar().getValue();
         scrollPane.setViewportView(null);
 
-        this.titleText.setText(String.format("%s's Inventory", game.online.getCurrentUser().get("name")));
+        this.titleText.setText(String.format("%s's Inventory", game.getRegister().getCurrentPlayerName()));
 
         JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER, 24, 24));
         cards.setOpaque(false);
@@ -120,48 +120,29 @@ public class VInventory extends VComponent {
         cards.add(artifactsTitle);
 
 
-        if (game.isOnline()) {
-            if (game.online.getCurrentPlayerArtifacts().size() > 0)
-                game.online
-                    .getCurrentPlayerArtifacts()
+        game.getRegister()
+            .getCurrentPlayerArtifacts()
+            .stream()
+            .map(name -> {
+                System.out.println(name);
+                ArtifactCard card = game.getRegister().getArtifactCardDeck()
                     .stream()
-                    .map(name -> {
-                        System.out.println(name);
-                        ArtifactCard card = game.getArtifactCardDeck()
-                            .stream()
-                            .filter(c -> c.getName().equals(name))
-                            .findFirst()
-                            .get();
+                    .filter(c -> c.getName().equals(name))
+                    .findFirst()
+                    .get();
 
-                        return this.generateArtifactCard(card.getName(), card.getDescription(), card.getPrice(), card.getVictoryPoints());
-                    })
-                    .forEach(cards::add);
-        } else {
-            if (game.getCurrentUser().inventory.getArtifactCards().size() > 0)
-                game.getCurrentUser()
-                    .inventory
-                    .getArtifactCards()
-                    .stream()
-                    .map(card -> card.getName())
-                    .map(name -> {
-                        ArtifactCard card = game.getArtifactCardDeck()
-                            .stream()
-                            .filter(c -> c.getName().equals(name))
-                            .findFirst()
-                            .get();
-
-                        return this.generateArtifactCard(card.getName(), card.getDescription(), card.getPrice(), card.getVictoryPoints());
-                    })
-                    .forEach(cards::add);
-        }
+                return this.generateArtifactCard(card.getName(), card.getDescription(), card.getPrice(), card.getVictoryPoints());
+            })
+            .forEach(cards::add);
 
 
-        if ((game.isOnline() ? game.online.getCurrentPlayerArtifacts() : game.getCurrentUser().inventory.getArtifactCards()).size() == 0) {
-            JLabel emptyIngredientsText = new JLabel("You don't have any artifact cards. Visit the card deck to buy.", SwingConstants.CENTER);
-            emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
-            emptyIngredientsText.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
-            emptyIngredientsText.setForeground(Color.WHITE);
-            cards.add(emptyIngredientsText);
+
+        if (game.getRegister().getCurrentPlayerArtifacts().size() == 0) {
+            JLabel emptyArtifactsText = new JLabel("You don't have any artifact cards. Visit the card deck to buy.", SwingConstants.CENTER);
+            emptyArtifactsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
+            emptyArtifactsText.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
+            emptyArtifactsText.setForeground(Color.WHITE);
+            cards.add(emptyArtifactsText);
         }
         
 
@@ -172,25 +153,13 @@ public class VInventory extends VComponent {
         cards.add(ingredientsTitle);
 
 
-        if (game.isOnline()) {
-            if (game.online.getCurrentPlayerIngredients().size() > 0)
-                game.online
-                    .getCurrentPlayerIngredients()
-                    .stream()
-                    .map(name -> this.generateIngredientCard(name))
-                    .forEach(cards::add);
-        } else {
-            if (game.getCurrentUser().inventory.getIngredientCards().size() > 0)
-                game.getCurrentUser()
-                    .inventory
-                    .getIngredientCards()
-                    .stream()
-                    .map(card -> card.getName())
-                    .map(name -> this.generateIngredientCard(name))
-                    .forEach(cards::add);
-        }
+        game.getRegister()
+            .getCurrentPlayerIngredients()
+            .stream()
+            .map(name -> this.generateIngredientCard(name))
+            .forEach(cards::add);
 
-        if ((game.isOnline() ? game.online.getCurrentPlayerIngredients() :game.getCurrentUser().inventory.getIngredientCards()).size() == 0) {
+        if (game.getRegister().getCurrentPlayerIngredients().size() == 0) {
              JLabel emptyIngredientsText = new JLabel("You don't have any ingredient cards. Visit the card deck to forage.", SwingConstants.CENTER);
             emptyIngredientsText.setFont(new Font("Itim-Regular", Font.PLAIN, 18));
             emptyIngredientsText.setPreferredSize(new Dimension(windowDimension.getWidth() - 100, 100));
@@ -228,8 +197,7 @@ public class VInventory extends VComponent {
         transmuteButton.setFocusable(false);
         transmuteButton.addActionListener(event -> {
             try {
-                if (game.isOnline()) game.online.transmuteIngredient(name);
-                else game.transmuteIngredient(name);
+                game.getRegister().transmuteIngredient(name);
                 this.update();
             } catch (NotEnoughActionsException e) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
@@ -283,8 +251,7 @@ public class VInventory extends VComponent {
 
         discard.addActionListener(event -> {
             try {
-                if (game.isOnline()) game.online.discardArtifact(name);
-                else game.discardArtifact(name);
+                game.getRegister().discardArtifact(name);
                 this.update();  
             } catch (NotEnoughActionsException e) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");

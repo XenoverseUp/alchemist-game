@@ -13,12 +13,13 @@ public class Server {
     private ServerSocket serverSocket;
     private TheAlchemistGame game;
 
-    public Server(ServerSocket ss, TheAlchemistGame game) {
+    public Server(ServerSocket ss) {
         this.serverSocket = ss;
-        this.game = game;
+        this.game = new TheAlchemistGame();
+
         System.out.println(String.format("Game Server is up and running on http://localhost:%d...", serverSocket.getLocalPort()));
         try {
-            new HTTPServer(game);
+            new HTTPServer(this.game);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +36,7 @@ public class Server {
                             System.out.println("Server: Host is connected.");
                         else System.out.println(String.format("Server: Client #%s is connected.", ClientHandler.clientHandlers.size()));
                         
-                        new ClientHandler(clientSocket, game);
+                        new ClientHandler(clientSocket);
                     }
 
                     System.out.println("Game Server: Everyone is ready. Starting the game session.");

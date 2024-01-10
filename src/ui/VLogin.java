@@ -21,7 +21,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.Avatar;
 import enums.View;
 import ui.framework.VComponent;
@@ -30,7 +30,7 @@ public class VLogin extends VComponent {
     private boolean isFirstPlayerReady = false;
     private boolean isSecondPlayerReady = false;
 
-    public VLogin(TheAlchemistGame game) { super(game); }
+    public VLogin(Game game) { super(game); }
 
     @Override
     protected void render() {
@@ -149,7 +149,7 @@ public class VLogin extends VComponent {
                 }
             }
 
-            int result = game.createUser(playerName, playerAvatar);
+            int result = game.getRegister().createUser(playerName, playerAvatar);
 
             switch (result) {
                 case 0: {
@@ -180,7 +180,7 @@ public class VLogin extends VComponent {
             }
 
             if (isFirstPlayerReady && isSecondPlayerReady) { 
-                game.initializeGame();
+                game.getRegister().initializeGame();
                 router.to(View.Board);
             }
 
