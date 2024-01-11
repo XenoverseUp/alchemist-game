@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
 
-import enums.ApplicationType;
 import error.HostDoesNotExistsException;
 import interfaces.IBroadcastListener;
 import interfaces.IGameRegister;
@@ -15,6 +14,11 @@ public class Game {
     private IGameRegister register = new TheAlchemistGame();
     private ApplicationType type = ApplicationType.Local; 
     private Client client = null;
+
+    private enum ApplicationType {
+        Local,
+        Online
+    }    
 
     public void setType(ApplicationType type) {
         this.type = type;

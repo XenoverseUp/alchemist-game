@@ -1,7 +1,6 @@
 package ui.util;
 
 import domain.Game;
-import domain.TheAlchemistGame;
 import ui.Window;
 
 public class WindowBuilder {

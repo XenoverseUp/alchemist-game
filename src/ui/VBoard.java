@@ -3,7 +3,6 @@ package ui;
 import java.awt.Cursor;
 
 import domain.Game;
-import domain.TheAlchemistGame;
 import ui.framework.VComponent;
 
 public class VBoard extends VComponent {

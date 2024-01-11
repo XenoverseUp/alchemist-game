@@ -106,7 +106,11 @@ public class TheAlchemistGame implements IGameRegister {
         return this.gameBoard.drawMysteryCard();
     }
 
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+    public Potion makeExperiment(
+        String ingredientName1, 
+        String ingredientName2, 
+        String testOn
+    ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
 

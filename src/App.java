@@ -1,5 +1,4 @@
 import domain.Game;
-import domain.TheAlchemistGame;
 import ui.Window;
 import ui.util.WindowBuilder;
 

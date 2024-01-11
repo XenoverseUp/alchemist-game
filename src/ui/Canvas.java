@@ -142,7 +142,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
         g.setPaint(new Color(25, 25, 25));
         g.fillRect(windowDimension.getWidth() - sidebarWidth, 0, sidebarWidth, windowDimension.getHeight());
 
-        g.drawImage(verticalStrip, null, windowDimension.getWidth() - sidebarWidth, 0);
+        g.drawImage(verticalStrip, null, windowDimension.getWidth() - sidebarWidth - 3, 0);
 
         g.setPaint(Color.white);
         g.setFont(new Font("Itim-Regular", Font.BOLD, 18));

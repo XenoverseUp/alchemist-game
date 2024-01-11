@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 
 import domain.Game;
-import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.View;
 import ui.framework.ModalController;
@@ -52,9 +51,10 @@ public class Window {
         mainPanel.setBounds(0, 0, width, height);
 
         modalLayer.add(mainPanel);
+        
         frame.add(modalLayer);
         frame.pack();
-
+ 
     
 
         mainPanel.setFont(new Font("Itim-Regular", Font.PLAIN, 12));

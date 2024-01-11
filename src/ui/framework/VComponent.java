@@ -4,7 +4,6 @@ import java.awt.Color;
 import javax.swing.JPanel;
 
 import domain.Game;
-import domain.TheAlchemistGame;
 import interfaces.IRenderable;
 import ui.framework.ModalController.Modal;
 

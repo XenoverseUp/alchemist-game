@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import enums.View;
 import ui.framework.VComponent;
 import domain.Game;
-import domain.TheAlchemistGame;
 
 public class VPublicationArea extends VComponent {
 
