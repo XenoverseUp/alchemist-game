@@ -13,7 +13,7 @@ import net.Client;
 
 public class TheAlchemistGameOnline implements IGameRegister {
     private Client client;
-    private Board staticBoard;
+    private Board staticBoard = new Board(null);
 
     public TheAlchemistGameOnline(Client client) {
         this.client = client;
