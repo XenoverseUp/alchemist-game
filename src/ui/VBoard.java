@@ -2,12 +2,12 @@ package ui;
 
 import java.awt.Cursor;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import ui.framework.VComponent;
 
 public class VBoard extends VComponent {
     private Canvas canvas;
-    public VBoard(TheAlchemistGame game) { super(game); }
+    public VBoard(Game game) { super(game); }
 
     @Override
     protected void mounted() {

@@ -42,13 +42,13 @@ public class HTTPHandler implements HttpHandler {
         endpoints.put("GET", new HashMap<String, Consumer<HttpExchange>>() {{
             put("/http/currentPlayer", (HttpExchange) -> {
                 HashMap<String, String> currentPlayer = new HashMap<>() {{
-                    put("id", String.valueOf(game.getCurrentUser().id));
-                    put("name", game.getCurrentUser().name);
-                    put("avatar", game.getCurrentUser().avatar.toString());
-                    put("left-actions", String.valueOf(game.getCurrentUser().leftActions));
-                    put("gold", String.valueOf(game.getCurrentUser().inventory.getGold()));
-                    put("sickness", String.valueOf(game.getCurrentUser().getSickness()));
-                    put("reputation", String.valueOf(game.getCurrentUser().getReputation()));
+                    put("id", String.valueOf(game.getCurrentPlayer().id));
+                    put("name", game.getCurrentPlayer().name);
+                    put("avatar", game.getCurrentPlayer().avatar.toString());
+                    put("left-actions", String.valueOf(game.getCurrentPlayer().leftActions));
+                    put("gold", String.valueOf(game.getCurrentPlayer().inventory.getGold()));
+                    put("sickness", String.valueOf(game.getCurrentPlayer().getSickness()));
+                    put("reputation", String.valueOf(game.getCurrentPlayer().getReputation()));
                 }};
 
                 try {
@@ -90,7 +90,7 @@ public class HTTPHandler implements HttpHandler {
                 }
             });
             put("/http/inventory/artifact", (HttpExchange exchange) -> {
-                List<ArtifactCard> cards = game.getCurrentUser().inventory.getArtifactCards();
+                List<ArtifactCard> cards = game.getCurrentPlayer().inventory.getArtifactCards();
                 String responseBody = JON.build(cards.stream().map(c -> c.getName()).toList());
 
                 try {
@@ -101,9 +101,18 @@ public class HTTPHandler implements HttpHandler {
                
             });
             put("/http/inventory/ingredient", (HttpExchange exchange) -> {
-                List<IngredientCard> cards = game.getCurrentUser().inventory.getIngredientCards();
+                List<IngredientCard> cards = game.getCurrentPlayer().inventory.getIngredientCards();
                 String responseBody = JON.build(cards.stream().map(c -> c.getName()).toList());
 
+                try {
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            put("/http/deductionBoard/table", (HttpExchange exchange) -> {
+                int [][] deductionTable = game.getDeductionTable();
+                String responseBody = JON.build(deductionTable);
                 try {
                     sendResponse(exchange, 200, responseBody);
                 } catch (IOException e) {
@@ -176,7 +185,7 @@ public class HTTPHandler implements HttpHandler {
                 try {
                     game.forageIngredient();
                     try {
-                        sendResponse(exchange, 200, "Foraged ingredient for client #" + String.valueOf(game.getCurrentUser().id) + ".");
+                        sendResponse(exchange, 200, "Foraged ingredient for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -193,7 +202,7 @@ public class HTTPHandler implements HttpHandler {
                     int result = game.drawMysteryCard();
 
                     if (result == 0) {
-                        sendResponse(exchange, 200, "Drawed a mystery card for client #" + String.valueOf(game.getCurrentUser().id) + ".");
+                        sendResponse(exchange, 200, "Drawed a mystery card for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                     } else sendResponse(exchange, 409, String.valueOf(result));
                     
                     
@@ -213,7 +222,7 @@ public class HTTPHandler implements HttpHandler {
                     int result = game.buyArtifact(body);
 
                     if (result == 0) {
-                        sendResponse(exchange, 200, "Drawed an artifact card for client #" + String.valueOf(game.getCurrentUser().id) + ".");
+                        sendResponse(exchange, 200, "Drawed an artifact card for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                     } else sendResponse(exchange, 409, String.valueOf(result));
                     
                     
@@ -232,7 +241,7 @@ public class HTTPHandler implements HttpHandler {
                     String ingredient = getRequestString(exchange);
                     game.transmuteIngredient(ingredient);
 
-                    sendResponse(exchange, 200, "Transmuted an ingredient card for client #" + String.valueOf(game.getCurrentUser().id) + ".");
+                    sendResponse(exchange, 200, "Transmuted an ingredient card for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                 } catch (NotEnoughActionsException e) {
                     try {
                         sendResponse(exchange, 400, "Not enough actions.");
@@ -248,7 +257,7 @@ public class HTTPHandler implements HttpHandler {
                     String artifact = getRequestString(exchange);
                     game.discardArtifact(artifact);
 
-                    sendResponse(exchange, 200, "Discarded an artifact card for client #" + String.valueOf(game.getCurrentUser().id) + ".");
+                    sendResponse(exchange, 200, "Discarded an artifact card for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                 } catch (NotEnoughActionsException e) {
                     try {
                         sendResponse(exchange, 400, "Not enough actions.");

@@ -19,17 +19,17 @@ import error.NotEnoughActionsException;
 import error.ServerSideException;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
-import net.http.HTTPClient;
 import net.util.BroadcastPackage;
 import net.util.Cache;
 import net.util.DynamicTypeValue;
+import net.util.HTTPClient;
 import net.util.JON;
 
 public class Client {
     private int id;
     private Socket socket;
     private ObjectInputStream in;
-    private HTTPClient httpClient;
+    private HTTPClient request;
     private ArrayList<IBroadcastListener> broadcastListeners = new ArrayList<IBroadcastListener>();
     private Cache cache = new Cache();
 
@@ -38,7 +38,7 @@ public class Client {
         try {
             this.socket = new Socket("localhost", port);
             this.in = new ObjectInputStream(socket.getInputStream());
-            this.httpClient = HTTPClient.getInstance();
+            this.request = HTTPClient.getInstance();
             setupCache();
         } catch (IOException e) {
             shutdown();
@@ -51,8 +51,8 @@ public class Client {
         try {
             this.socket = new Socket(host, port);
             this.in = new ObjectInputStream(socket.getInputStream());
-            this.httpClient = HTTPClient.getInstance();
-            this.httpClient.setHost(host);
+            this.request = HTTPClient.getInstance();
+            this.request.setHost(host);
             setupCache();
         } catch (IOException e) {
             shutdown();
@@ -75,21 +75,21 @@ public class Client {
             put("avatar", avatar.toString());
         }});
 
-        HttpResponse<String> response = httpClient.post("/http/createPlayer", body);
+        HttpResponse<String> response = request.post("/http/createPlayer", body);
 
         if (response.statusCode() == 200) return 0;
         else return Integer.parseInt((String)response.body());
     }
 
     public Map<String, String> getPlayerNames() {
-        HttpResponse<String> response = httpClient.get("/http/game/players");
+        HttpResponse<String> response = request.get("/http/game/players");
         Map<String, String> data = JON.parseMap((String)response.body());
         
         return data;
     }
 
     public Avatar getAvatar(int id) {
-        HttpResponse<String> response = httpClient.get(String.format("/http/playerAvatar/%d", id));
+        HttpResponse<String> response = request.get(String.format("/http/playerAvatar/%d", id));
 
         if (response.statusCode() == 200) return Avatar.valueOf((String)response.body());
         return null;
@@ -100,7 +100,7 @@ public class Client {
             put("id", String.valueOf(id));
         }});
 
-        HttpResponse<String> response = httpClient.put("/http/startGame", body);
+        HttpResponse<String> response = request.put("/http/startGame", body);
 
         if (response.statusCode() != 200) throw new ServerSideException();
     }
@@ -134,18 +134,18 @@ public class Client {
     }
 
     public void toggleCurrentUser() throws ServerSideException {
-        HttpResponse<String> response = httpClient.put("/http/togglePlayer");
+        HttpResponse<String> response = request.put("/http/togglePlayer");
         if (response.statusCode() != 200) throw new ServerSideException();
     }
 
     public void forageIngredient() throws NotEnoughActionsException   {
-        HttpResponse<String> response = httpClient.put("/http/forageIngredient");
+        HttpResponse<String> response = request.put("/http/forageIngredient");
 
         if (response.statusCode() == 400) throw new NotEnoughActionsException();
     }
 
     public int drawMysteryCard() throws NotEnoughActionsException {
-        HttpResponse<String> response = httpClient.put("/http/drawMysteryCard");
+        HttpResponse<String> response = request.put("/http/drawMysteryCard");
         
         if (response.statusCode() == 400) throw new NotEnoughActionsException();
         else if (response.statusCode() == 200) return 0;
@@ -154,7 +154,7 @@ public class Client {
 
 
     public int buyArtifact(String name) throws NotEnoughActionsException {
-        HttpResponse<String> response = httpClient.put("/http/buyArtifact", name);
+        HttpResponse<String> response = request.put("/http/buyArtifact", name);
 
         if (response.statusCode() == 400) throw new NotEnoughActionsException();
         else if (response.statusCode() == 200) return 0;
@@ -162,7 +162,7 @@ public class Client {
     }
 
     public List<String> getCurrentPlayerArtifacts() {
-        HttpResponse<String> response = httpClient.get("/http/inventory/artifact");
+        HttpResponse<String> response = request.get("/http/inventory/artifact");
 
         if (response.statusCode() == 200)
             return JON.parseList((String)response.body());
@@ -171,7 +171,7 @@ public class Client {
     }
     
     public List<String> getCurrentPlayerIngredients() {
-        HttpResponse<String> response = httpClient.get("/http/inventory/ingredient");
+        HttpResponse<String> response = request.get("/http/inventory/ingredient");
 
         if (response.statusCode() == 200)
             return JON.parseList((String)response.body());
@@ -180,22 +180,33 @@ public class Client {
     }
     
     public void transmuteIngredient(String name) throws NotEnoughActionsException {
-        HttpResponse<String> response = httpClient.put("/http/transmuteIngredient", name);
+        HttpResponse<String> response = request.put("/http/transmuteIngredient", name);
 
         if (response.statusCode() == 400) throw new NotEnoughActionsException();
     }
 
     public void discardArtifact(String name) throws NotEnoughActionsException {
-        HttpResponse<String> response = httpClient.put("/http/discardArtifact", name);
+        HttpResponse<String> response = request.put("/http/discardArtifact", name);
 
         if (response.statusCode() == 400) throw new NotEnoughActionsException();
+    }
+
+    public int[][] getCurrentPlayerDeduction() {
+        HttpResponse<String> response = request.get("/http/deductionBoard/table");
+
+        return JON.parseMatrix((String)response.body());
+    }
+
+    public int[][] getCurrentPlayerDeductionTokens() {
+        HttpResponse<String> response = request.get("/http/deductionBoard/token");
+        return null;
     }
 
 
     /** Cache Supplier Methods */
     
     private String currentPlayerSupplier() {
-        HttpResponse<String> response = httpClient.get("/http/currentPlayer");
+        HttpResponse<String> response = request.get("/http/currentPlayer");
         if (response.statusCode() == 200) 
             return (String)response.body();
         
@@ -203,7 +214,7 @@ public class Client {
     }
    
     private String gamePhaseSupplier() {
-        HttpResponse<String> response = httpClient.get("/http/game/phase");
+        HttpResponse<String> response = request.get("/http/game/phase");
         if (response.statusCode() == 200) 
             return (String)response.body();
         
@@ -228,6 +239,8 @@ public class Client {
                                 break;
                             case CLIENT_CONNECTED:
                                 id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
+                                break;
+                            default:
                                 break;
                         }
 
@@ -278,4 +291,6 @@ public class Client {
         for (var l : this.broadcastListeners) 
             l.onBroadcast(action, payload);
     }
+
+    
 }

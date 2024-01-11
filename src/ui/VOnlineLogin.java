@@ -18,13 +18,13 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.Avatar;
 import enums.View;
 import ui.framework.VComponent;
 
 public class VOnlineLogin extends VComponent {
-    public VOnlineLogin(TheAlchemistGame game) { super(game); }
+    public VOnlineLogin(Game game) { super(game); }
 
     @Override
     protected void render() {
@@ -137,7 +137,7 @@ public class VOnlineLogin extends VComponent {
                 }
             }
 
-            int result = game.online.createUser(game.online.getId(), playerName, playerAvatar);
+            int result = game.getRegister().createUser(playerName, playerAvatar);
 
             switch (result) {
                 case 0: {

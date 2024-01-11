@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.View;
 import ui.framework.VComponent;
 import ui.util.LimitedDocument;
@@ -31,7 +31,7 @@ import ui.util.RotatedLabel;
 import ui.util.RotatedLabel.Direction;
 
 public class VOnlineSelection extends VComponent {
-    public VOnlineSelection(TheAlchemistGame game) { super(game); }
+    public VOnlineSelection(Game game) { super(game); }
 
     private enum FormState {
         Host,

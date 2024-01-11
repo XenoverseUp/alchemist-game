@@ -6,7 +6,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import domain.TheAlchemistGame;
 import enums.BroadcastAction;
 import interfaces.IDynamicTypeValue;
 import net.util.BroadcastPackage;
@@ -16,12 +15,10 @@ public class ClientHandler  {
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<ClientHandler>();
     private Socket socket;
     private ObjectOutputStream out;
-    private TheAlchemistGame game;
     private final int id;
 
-    public ClientHandler(Socket socket, TheAlchemistGame game) {
+    public ClientHandler(Socket socket) {
         this.socket = socket;
-        this.game = game;
         
         try {
             this.out = new ObjectOutputStream(socket.getOutputStream());

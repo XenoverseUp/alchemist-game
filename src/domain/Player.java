@@ -3,7 +3,6 @@ import java.io.Serializable;
 
 import enums.Avatar;
 import enums.Potion;
-import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
 
 public class Player implements Serializable {
