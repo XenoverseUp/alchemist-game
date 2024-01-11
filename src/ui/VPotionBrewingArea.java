@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,9 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import domain.Game;
+import enums.BroadcastAction;
 import enums.View;
 import error.NotEnoughActionsException;
 import error.WrongGameRoundException;
+import interfaces.IBroadcastListener;
+import interfaces.IDynamicTypeValue;
 
 public class VPotionBrewingArea extends VComponent {
     private ArrayList<String> selectedIngredients = new ArrayList<String>() {{
@@ -228,7 +232,7 @@ public class VPotionBrewingArea extends VComponent {
 
         String testOn = testingMethod == 0 ? "student" : testingMethod == 1 ? "self" : "sell";
         try{
-            game.getLocalRegister().makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
+            game.getRegister().makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
             router.to(View.DeductionBoard);
         } 
         catch(WrongGameRoundException e){
@@ -243,5 +247,4 @@ public class VPotionBrewingArea extends VComponent {
             else if (e.getMessage().equals("enough-gold-sell")) modal.info("You little poor!", "To sell a potion you have to have at least two golds. But don't forget, you can still have a positive trade.");
         }
     }
-
 }

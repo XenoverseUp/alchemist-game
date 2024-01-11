@@ -106,6 +106,7 @@ public class TheAlchemistGame implements IGameRegister {
         return this.gameBoard.drawMysteryCard();
     }
 
+    @Override
     public Potion makeExperiment(
         String ingredientName1, 
         String ingredientName2, 

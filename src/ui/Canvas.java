@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import enums.Avatar;
 import enums.BoardHover;
 import enums.BroadcastAction;
 import enums.GamePhase;

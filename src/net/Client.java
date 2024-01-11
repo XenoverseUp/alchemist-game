@@ -14,9 +14,11 @@ import java.util.Map;
 import enums.Avatar;
 import enums.BroadcastAction;
 import enums.GamePhase;
+import enums.Potion;
 import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
 import error.ServerSideException;
+import error.WrongGameRoundException;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
 import net.util.BroadcastPackage;
@@ -199,6 +201,28 @@ public class Client {
 
     public int[][] getCurrentPlayerDeductionTokens() {
         HttpResponse<String> response = request.get("/http/deductionBoard/token");
+        return null;
+    }
+
+    public Potion makeExperiment(
+        String ingredientName1, 
+        String ingredientName2, 
+        String testOn
+    ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+        HashMap<String, String> data = new HashMap<>() {{
+            put("ingredient1", ingredientName1);
+            put("ingredient2", ingredientName2);
+            put("testOn", testOn);
+        }};
+        String body = JON.build(data);
+        HttpResponse<String> response = request.put("/http/makeExperiment", body);
+
+        if (response.statusCode() == 200) {
+            return Potion.valueOf(((String)response.body()));
+        } else if (response.statusCode() == 400) throw new NotEnoughActionsException();
+        else if (response.statusCode() == 401) throw new WrongGameRoundException();
+        else if (response.statusCode() == 402) throw new Exception((String)response.body());
+        
         return null;
     }
 
