@@ -170,5 +170,10 @@ public class TheAlchemistGameOnline implements IGameRegister {
         return client.getCurrentPlayerDeduction();
     }
 
+    @Override
+    public void toggleDeductionTable(String name, int tableIndex) {
+        client.toggleDeductionTable(name, tableIndex);
+    }
+
  
 }

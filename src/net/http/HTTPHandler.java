@@ -268,6 +268,16 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+            put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
+                try {
+                    Map<String, String> arguments = JON.parseMap(exchange.getRequestBody().toString());
+                    game.toggleDeductionTable(arguments.get("ingredient-name"), Integer.parseInt(arguments.get("table-index")));
+            
+                    sendResponse(exchange, 200, "Toggled deduction table for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }});
     }
 

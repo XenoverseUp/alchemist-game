@@ -202,6 +202,14 @@ public class Client {
         return null;
     }
 
+    public void toggleDeductionTable(String name, int tableIndex) {
+       String body = JON.build(new HashMap<String, String>() {{
+            put("ingredient-name", name);
+            put("table-index", String.valueOf(tableIndex));
+        }});
+       HttpResponse<String> response = request.put("/http/toggleDeductionTable", body);
+    }
+
 
     /** Cache Supplier Methods */
     
@@ -291,6 +299,8 @@ public class Client {
         for (var l : this.broadcastListeners) 
             l.onBroadcast(action, payload);
     }
+
+    
 
     
 }

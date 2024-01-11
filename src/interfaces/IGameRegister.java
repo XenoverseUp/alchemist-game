@@ -31,4 +31,5 @@ public interface IGameRegister {
     public GamePhase getPhase();
     public void toggleCurrentUser();
     public int[][] getDeductionTable();
+    public void toggleDeductionTable(String name, int tableIndex);
 }

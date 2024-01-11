@@ -129,7 +129,7 @@ public class VDeductionBoard extends VComponent {
 
                 toggleButton.addActionListener(event -> {
                     String name = assetLoader.ingredientNames.get(nameIndex);
-                    game.getLocalRegister().toggleDeductionTable(name, tableIndex);
+                    game.getRegister().toggleDeductionTable(name, tableIndex);
                     this.update();
                 });
 
@@ -178,9 +178,9 @@ public class VDeductionBoard extends VComponent {
         //     put(new String[]{"raven's feather", "fern"}, DeductionToken.RedPlus);
         // }};
 
-        for (int i = 0; i < game.getLocalRegister().getDeductionTable().length; i++)
-            for (int j = 0; j < game.getLocalRegister().getDeductionTable()[0].length; j++) {
-                if (game.getLocalRegister().getDeductionTable()[j][i] == 0) continue;
+        for (int i = 0; i < game.getRegister().getDeductionTable().length; i++)
+            for (int j = 0; j < game.getRegister().getDeductionTable()[0].length; j++) {
+                if (game.getRegister().getDeductionTable()[j][i] == 0) continue;
 
                 JLabel marker = new JLabel(new ImageIcon(deductionMarker));
                 marker.setBounds(i * 75 + 7, j * 92 + 7, deductionMarker.getWidth(), deductionMarker.getHeight());
