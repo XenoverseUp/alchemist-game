@@ -13,6 +13,7 @@ import java.util.Map;
 
 import enums.Avatar;
 import enums.BroadcastAction;
+import enums.DeductionToken;
 import enums.GamePhase;
 import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
@@ -197,9 +198,10 @@ public class Client {
         return JON.parseMatrix((String)response.body());
     }
 
-    public int[][] getCurrentPlayerDeductionTokens() {
+    public HashMap<String[], DeductionToken> getDeductionTokens() {
         HttpResponse<String> response = request.get("/http/deductionBoard/token");
-        return null;
+        
+        return JON.parseMapStringArrayDeductionToken((String)response.body());
     }
 
     public void toggleDeductionTable(String name, int tableIndex) {
@@ -207,6 +209,7 @@ public class Client {
             put("ingredient-name", name);
             put("table-index", String.valueOf(tableIndex));
         }});
+
        HttpResponse<String> response = request.put("/http/toggleDeductionTable", body);
     }
 

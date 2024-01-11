@@ -17,6 +17,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import domain.DeductionBoard;
 import domain.Game;
 import enums.View;
 import ui.framework.VComponent;
@@ -115,8 +116,10 @@ public class VDeductionBoard extends VComponent {
         markerButtons.removeAll();
         markerButtons.setLayout(null);
 
-        for (int i = 0; i < game.getRegister().getDeductionTable().length; i++)
-            for (int j = 0; j < game.getRegister().getDeductionTable()[0].length; j++) {
+        int [][] deductionTableCopy = game.getRegister().getDeductionTable();
+
+        for (int i = 0; i < deductionTableCopy.length; i++)
+            for (int j = 0; j <deductionTableCopy[0].length; j++) {
                 JButton toggleButton = new JButton("");
                 toggleButton.setBounds(i * 75, j * 92, 72, 72);
                 toggleButton.setOpaque(false);
@@ -178,9 +181,11 @@ public class VDeductionBoard extends VComponent {
         //     put(new String[]{"raven's feather", "fern"}, DeductionToken.RedPlus);
         // }};
 
-        for (int i = 0; i < game.getRegister().getDeductionTable().length; i++)
-            for (int j = 0; j < game.getRegister().getDeductionTable()[0].length; j++) {
-                if (game.getRegister().getDeductionTable()[j][i] == 0) continue;
+        int [][] deductionTableCopy = game.getRegister().getDeductionTable();
+        
+        for (int i = 0; i < deductionTableCopy .length; i++)
+            for (int j = 0; j < deductionTableCopy [0].length; j++) {
+                if (deductionTableCopy [j][i] == 0) continue;
 
                 JLabel marker = new JLabel(new ImageIcon(deductionMarker));
                 marker.setBounds(i * 75 + 7, j * 92 + 7, deductionMarker.getWidth(), deductionMarker.getHeight());
@@ -189,7 +194,7 @@ public class VDeductionBoard extends VComponent {
             }
 
 
-        game.getLocalRegister().getDeductionTokens().forEach((k, v) -> {
+        game.getRegister().getDeductionTokens().forEach((k, v) -> {
             Point tokenLocation = getDeductionTokenLocation(k[0], k[1]);
             JLabel token = null;
 

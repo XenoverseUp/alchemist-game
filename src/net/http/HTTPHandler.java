@@ -16,6 +16,7 @@ import domain.IngredientCard;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.BroadcastAction;
+import enums.DeductionToken;
 import enums.GamePhase;
 import error.NotEnoughActionsException;
 import net.ClientHandler;
@@ -113,6 +114,16 @@ public class HTTPHandler implements HttpHandler {
             put("/http/deductionBoard/table", (HttpExchange exchange) -> {
                 int [][] deductionTable = game.getDeductionTable();
                 String responseBody = JON.build(deductionTable);
+                try {
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            put("/http/deductionBoard/token", (HttpExchange exchange) -> {
+                HashMap<String[], DeductionToken> deductionTokens = game.getDeductionTokens();
+                String responseBody = JON.build(deductionTokens);
                 try {
                     sendResponse(exchange, 200, responseBody);
                 } catch (IOException e) {
@@ -269,8 +280,9 @@ public class HTTPHandler implements HttpHandler {
                 }
             });
             put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
+                
                 try {
-                    Map<String, String> arguments = JON.parseMap(exchange.getRequestBody().toString());
+                    Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
                     game.toggleDeductionTable(arguments.get("ingredient-name"), Integer.parseInt(arguments.get("table-index")));
             
                     sendResponse(exchange, 200, "Toggled deduction table for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");

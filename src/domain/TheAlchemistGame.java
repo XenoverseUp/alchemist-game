@@ -122,7 +122,7 @@ public class TheAlchemistGame implements IGameRegister {
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
     }
-    
+    @Override
     public HashMap<String[], DeductionToken> getDeductionTokens() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
     }
