@@ -159,4 +159,9 @@ public class TheAlchemistGameOnline implements IGameRegister {
     public int getCurrentPlayerSickness() {
         return Integer.parseInt(this.getCurrentUser(true).get("sickness"));
     }
+
+    @Override
+    public int[][] getDeductionTable() {
+        return client.getCurrentPlayerDeduction();
+    }
 }

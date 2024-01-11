@@ -29,4 +29,5 @@ public interface IGameRegister {
     public List<String> getCurrentPlayerIngredients();
     public GamePhase getPhase();
     public void toggleCurrentUser();
+    public int[][] getDeductionTable();
 }

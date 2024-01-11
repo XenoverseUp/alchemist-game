@@ -115,8 +115,8 @@ public class VDeductionBoard extends VComponent {
         markerButtons.removeAll();
         markerButtons.setLayout(null);
 
-        for (int i = 0; i < game.getLocalRegister().getDeductionTable().length; i++)
-            for (int j = 0; j < game.getLocalRegister().getDeductionTable()[0].length; j++) {
+        for (int i = 0; i < game.getRegister().getDeductionTable().length; i++)
+            for (int j = 0; j < game.getRegister().getDeductionTable()[0].length; j++) {
                 JButton toggleButton = new JButton("");
                 toggleButton.setBounds(i * 75, j * 92, 72, 72);
                 toggleButton.setOpaque(false);

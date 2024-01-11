@@ -191,6 +191,17 @@ public class Client {
         if (response.statusCode() == 400) throw new NotEnoughActionsException();
     }
 
+    public int[][] getCurrentPlayerDeduction() {
+        HttpResponse<String> response = request.get("/http/deductionBoard/table");
+
+        return JON.parseMatrix((String)response.body());
+    }
+
+    public int[][] getCurrentPlayerDeductionTokens() {
+        HttpResponse<String> response = request.get("/http/deductionBoard/token");
+        return null;
+    }
+
 
     /** Cache Supplier Methods */
     
@@ -280,4 +291,6 @@ public class Client {
         for (var l : this.broadcastListeners) 
             l.onBroadcast(action, payload);
     }
+
+    
 }

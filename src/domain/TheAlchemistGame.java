@@ -118,6 +118,7 @@ public class TheAlchemistGame implements IGameRegister {
         gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, coordinate);
     }
 
+    @Override
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
     }

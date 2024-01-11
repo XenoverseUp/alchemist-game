@@ -110,6 +110,15 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+            put("/http/deductionBoard/table", (HttpExchange exchange) -> {
+                int [][] deductionTable = game.getDeductionTable();
+                String responseBody = JON.build(deductionTable);
+                try {
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }});
 
 
