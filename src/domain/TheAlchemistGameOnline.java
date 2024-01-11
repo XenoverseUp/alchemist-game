@@ -161,7 +161,14 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
     @Override
+    public Avatar getCurrentPlayerAvatar() {
+        return Avatar.valueOf(this.getCurrentUser(true).get("avatar"));
+    }
+
+    @Override
     public int[][] getDeductionTable() {
         return client.getCurrentPlayerDeduction();
     }
+
+ 
 }

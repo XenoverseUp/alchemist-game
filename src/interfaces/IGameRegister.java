@@ -22,6 +22,7 @@ public interface IGameRegister {
     public void discardArtifact(String name) throws NotEnoughActionsException;
     public String getCurrentPlayerName();
     public int getCurrentPlayerActions();
+    public Avatar getCurrentPlayerAvatar();
     public int getCurrentPlayerGold();
     public int getCurrentPlayerReputation();
     public int getCurrentPlayerSickness();

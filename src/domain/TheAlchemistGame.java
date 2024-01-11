@@ -172,4 +172,9 @@ public class TheAlchemistGame implements IGameRegister {
     public int getCurrentPlayerSickness() {
         return this.getCurrentPlayer().getSickness();
     }
+
+    @Override
+    public Avatar getCurrentPlayerAvatar() {
+        return this.getCurrentPlayer().avatar;
+    }
 }

@@ -120,19 +120,19 @@ public class Canvas extends JPanel implements IBroadcastListener {
             
             g.setPaint(Color.ORANGE);
             g.fillOval(x, y, 130, 130);
-            g.drawImage(assetLoader.getAvatarImage(Avatar.valueOf(game.online.getCurrentUser(true).get("avatar"))), null, x, y);
+            g.drawImage(assetLoader.getAvatarImage(game.getRegister().getCurrentPlayerAvatar()), null, x, y);
             
             g.setPaint(Color.WHITE);
             drawCenteredString(
                 g, 
-                String.format("It's %s's turn.", game.online.getCurrentUser(true).get("name")), 
+                String.format("It's %s's turn.", game.getRegister().getCurrentPlayerName()), 
                 new Rectangle(0, 300, windowDimension.getWidth(), 100), 
                 new Font("Crimson Pro", Font.BOLD, 32)
             );
             
             drawCenteredString(
                 g, 
-                String.format("Wait till all players pass their turns.", game.online.getCurrentUser(true).get("name")), 
+                String.format("Wait till all players pass their turns.", game.getRegister().getCurrentPlayerName()), 
                 new Rectangle(0, 370, windowDimension.getWidth(), 30), 
                 new Font("Crimson Pro", Font.PLAIN, 16)
             );
@@ -248,7 +248,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
     private class MouseEvents extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            if (game.isOnline() && Integer.parseInt(game.online.getCurrentUser(true).get("id")) != game.online.getId()) return;
+            if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) return;
 
             Point p = e.getPoint();
 
@@ -274,7 +274,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (game.isOnline() && Integer.parseInt(game.online.getCurrentUser(true).get("id")) != game.online.getId()) return;
+            if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) return;
 
 
             Point p = e.getPoint();
@@ -289,7 +289,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (game.isOnline() && Integer.parseInt(game.online.getCurrentUser(true).get("id")) != game.online.getId()) return;
+            if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) return;
 
             Point p = e.getPoint();
 
