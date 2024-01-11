@@ -40,42 +40,47 @@ public class Board {
 	}
 	
 	public void forageIngredient() throws NotEnoughActionsException {
-		auth.decreaseLeftActionsOfCurrentPlayer();
+		auth.checkLeftActionsOfCurrentPlayer();
 		IngredientCard icard = this.ingredientCardDeck.drawCard();
 		auth.addIngredientCardToCurrentPlayer(icard);
+		auth.decreaseLeftActionsOfCurrentPlayer();
 	}
 	
 	public void transmuteIngredient(String name) throws NotEnoughActionsException {
-		auth.decreaseLeftActionsOfCurrentPlayer();
+		auth.checkLeftActionsOfCurrentPlayer();
 		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(name);
 		this.auth.addGoldToCurrentUser(1);
 		this.ingredientCardDeck.addCard(iCard);
 		this.ingredientCardDeck.shuffle();
+		auth.decreaseLeftActionsOfCurrentPlayer();
 	}
 	
 	public int buyArtifact(String name) throws NotEnoughActionsException {
-		auth.decreaseLeftActionsOfCurrentPlayer();
+		auth.checkLeftActionsOfCurrentPlayer();
 		ArtifactCard card = this.artifactCardDeck.get(name);
 		if (this.auth.getCurrentPlayer().inventory.getGold() >= card.getPrice()) {
 			this.auth.addArtifactCardToCurrentPlayer(card);
 			this.auth.removeGoldFromCurrentUser(card.getPrice());
+			auth.decreaseLeftActionsOfCurrentPlayer();
 			return 0;
 		} else return 1;
 	}
 
 
 	public int drawMysteryCard() throws NotEnoughActionsException {
-		auth.decreaseLeftActionsOfCurrentPlayer();
+		auth.checkLeftActionsOfCurrentPlayer();
 		if (this.auth.getCurrentPlayer().inventory.getGold() < 5) return 1; 
 		ArtifactCard card = this.artifactCardDeck.drawMysteryCard();
 		this.auth.getCurrentPlayer().inventory.spendGold(5);
 		this.auth.getCurrentPlayer().inventory.addArtifactCard(card);
+		auth.decreaseLeftActionsOfCurrentPlayer();
 		return 0;
 	}
 
 	public void discardArtifact(String name) throws NotEnoughActionsException{
-		auth.decreaseLeftActionsOfCurrentPlayer();
+		auth.checkLeftActionsOfCurrentPlayer();
 		auth.getCurrentPlayer().inventory.discardArtifactCard(name);
+		auth.decreaseLeftActionsOfCurrentPlayer();
 	}
 	
 	public Auth getAuth() {
@@ -88,7 +93,8 @@ public class Board {
 				throw new WrongGameRoundException();
 			}
 		}
-		auth.decreaseLeftActionsOfCurrentPlayer();
+		auth.checkLeftActionsOfCurrentPlayer();
+		
 		if (testOn.equals("sell") && auth.getCurrentPlayer().inventory.getGold() < 2){
 			throw new Exception("enough-gold-sell");
 		}
@@ -114,6 +120,7 @@ public class Board {
 				System.out.println(e);
 			}
 		}
+		auth.decreaseLeftActionsOfCurrentPlayer();
 		return potion;
 	}
 
