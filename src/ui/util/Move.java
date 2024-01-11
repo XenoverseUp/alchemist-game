@@ -63,7 +63,7 @@ public class Move {
             public void run() {
                 int range =  from.y - to.y;
 
-                 for (int i = 0; i < range; i += 2) {
+                 for (int i = 0; i < range; i += 3) {
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException ex) {
