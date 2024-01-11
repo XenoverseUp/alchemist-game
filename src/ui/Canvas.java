@@ -116,11 +116,6 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
         if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) {
             g.drawImage(assetLoader.getBlurredBoard(), null, 0, 0);
-
-            
-            g.setPaint(Color.ORANGE);
-            g.fillOval(x, y, 130, 130);
-            g.drawImage(assetLoader.getAvatarImage(game.getRegister().getCurrentPlayerAvatar()), null, x, y);
             
             g.setPaint(Color.WHITE);
             drawCenteredString(
@@ -137,6 +132,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
                 new Font("Crimson Pro", Font.PLAIN, 16)
             );
 
+            g.drawImage(assetLoader.getAvatarImage(game.getRegister().getCurrentPlayerAvatar()), null, x, y);
             g.dispose();
 
             return;
@@ -224,9 +220,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
         }
         
 
-        g.setPaint(Color.ORANGE);
-        g.fillOval(x, y, 130, 130);
-        g.drawImage(assetLoader.getAvatarImage(Avatar.Serene), null, x, y);
+        g.drawImage(assetLoader.getAvatarImage(game.getRegister().getCurrentPlayerAvatar()), null, x, y);
 
         g.dispose();
 
