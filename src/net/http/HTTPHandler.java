@@ -148,7 +148,7 @@ public class HTTPHandler implements HttpHandler {
                             avatar = a;
                             break;
                         }
-
+                        
                     int result = game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
 
                     if (result == 0) {

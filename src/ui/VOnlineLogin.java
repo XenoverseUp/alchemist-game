@@ -6,6 +6,7 @@ import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,15 +29,9 @@ public class VOnlineLogin extends VComponent {
 
     @Override
     protected void render() {
-        JPanel firstUserForm = createUserForm("First Alchemist", 0);
+        JLabel background = new JLabel(new ImageIcon(assetLoader.getBackground(View.OnlineLogin)));
+        background.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
 
-        firstUserForm.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
-
-        this.panel.add(firstUserForm);
-    }
-
-
-      private JPanel createUserForm(String title, int userIndex) {
         JPanel form = new JPanel();
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setOpaque(false);
@@ -44,7 +39,7 @@ public class VOnlineLogin extends VComponent {
 
     	// a text to inform user
         JLabel enterUsername = new JLabel();
-        enterUsername.setText(title);
+        enterUsername.setText("Pick Your Alchemist");
         enterUsername.setFont(new Font("Itim-Regular", Font.BOLD, 18));
         enterUsername.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -92,7 +87,6 @@ public class VOnlineLogin extends VComponent {
 
         // button to pass to the next page
         JButton nextButton = new JButton("Next");
-        nextButton.setForeground(new Color(255,50,50));
         nextButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // add information text and name text box to the page
@@ -137,6 +131,12 @@ public class VOnlineLogin extends VComponent {
                 }
             }
 
+            if (playerName.equals("") || playerName == null) {
+                info.setText("Name cannot be empty.");
+                info.setForeground(Color.red);
+                return;
+            }
+
             int result = game.getRegister().createUser(playerName, playerAvatar);
 
             switch (result) {
@@ -168,8 +168,10 @@ public class VOnlineLogin extends VComponent {
         form.add(nextButton);
         form.add(Box.createVerticalGlue());
 
-        return form;
+        form.setBounds(windowDimension.getWidth() / 4, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        
+
+        panel.add(form);
+        panel.add(background);
     }
-
-
 }

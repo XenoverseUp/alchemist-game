@@ -76,6 +76,7 @@ public class Client {
             put("avatar", avatar.toString());
         }});
 
+
         HttpResponse<String> response = request.post("/http/createPlayer", body);
 
         if (response.statusCode() == 200) return 0;

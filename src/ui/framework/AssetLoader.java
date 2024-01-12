@@ -47,6 +47,7 @@ public class AssetLoader {
     private BufferedImage BArtifactShopBackground;
     private BufferedImage BInventoryBackground;
     private BufferedImage BBlurredBoard;
+    private BufferedImage BOnlineBackground;
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
@@ -118,6 +119,7 @@ public class AssetLoader {
             BArtifactShopBackground =  ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
             BInventoryBackground = ImageIO.read(new File("./src/resources/image/inventoryBg.png"));
             BBlurredBoard = ImageIO.read(new File("./src/resources/image/notTurnBackground.png"));
+            BOnlineBackground = ImageIO.read(new File("./src/resources/image/onlineLoginBackground.png"));
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             BTitle = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
@@ -238,6 +240,8 @@ public class AssetLoader {
                 return BArtifactShopBackground;
             case Inventory:
                 return BInventoryBackground;
+            case OnlineLogin:
+                return BOnlineBackground;
             default:
                 return null;
         }
