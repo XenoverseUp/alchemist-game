@@ -28,7 +28,7 @@ import ui.framework.AssetLoader;
 import ui.framework.Router;
 import ui.framework.WindowDimension;
 
-public class Canvas extends JPanel implements IBroadcastListener {
+public class Canvas extends JPanel {
     private Router router = Router.getInstance();
     private WindowDimension windowDimension = WindowDimension.getInstance();
     private AssetLoader assetLoader = AssetLoader.getInstance();
@@ -274,7 +274,8 @@ public class Canvas extends JPanel implements IBroadcastListener {
             Point p = e.getPoint();
 
             if (new Rectangle(1250, 675,175, 50).contains(p)) { 
-                game.getRegister().toggleCurrentUser();
+                if (game.isOnline()) game.getOnlineRegister().finishGame();
+                else game.getRegister().toggleCurrentUser();
             }
             
             Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -310,12 +311,10 @@ public class Canvas extends JPanel implements IBroadcastListener {
     }
 
     public void start() {
-        if (game.isOnline()) game.addBroadcastListener(this);
         this.timer.start();
     }
     
     public void stop() {
-        if (game.isOnline()) game.removeBroadcastListener(this);
         this.timer.stop();
     }
 
@@ -360,8 +359,12 @@ public class Canvas extends JPanel implements IBroadcastListener {
         
     }
 
-    @Override
-    public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
-        if (action == BroadcastAction.PLAYER_TOGGLED) game.getOnlineRegister().revalidateCache();
+    public void togglePlayer() {
+        game.getOnlineRegister().revalidateCache();
     }
+
+    public void gameFinished() {
+        router.to(View.FinalScore);
+    }
+
 }

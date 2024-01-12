@@ -56,6 +56,10 @@ public class TheAlchemistGameOnline implements IGameRegister {
         return 0;
     }
 
+    public void finishGame() {
+        client.finishGame();
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public ArrayList<ArtifactCard> getArtifactCardDeck() {

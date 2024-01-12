@@ -15,5 +15,6 @@ public enum View {
     ArtifactShop,
     OnlineSelection,
     Lobby,
-    OnlineLogin
+    OnlineLogin,
+    FinalScore
 }

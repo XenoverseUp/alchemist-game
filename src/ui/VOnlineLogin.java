@@ -174,4 +174,9 @@ public class VOnlineLogin extends VComponent {
         panel.add(form);
         panel.add(background);
     }
+
+    @Override
+    protected void mounted() {
+        router.activateListeners();
+    }
 }

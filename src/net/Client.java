@@ -211,7 +211,11 @@ public class Client {
             put("table-index", String.valueOf(tableIndex));
         }});
 
-       HttpResponse<String> response = request.put("/http/toggleDeductionTable", body);
+       request.put("/http/toggleDeductionTable", body);
+    }
+
+    public void finishGame() {
+        request.put("/http/finishGame");
     }
 
 
@@ -245,18 +249,12 @@ public class Client {
                         BroadcastPackage incoming = ((BroadcastPackage)in.readObject());
                         BroadcastAction action = incoming.getAction();
 
-
-                        switch (action) {
-                            case PLAYER_CREATED:
-                                break;
-                            case CLIENT_CONNECTED:
-                                id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
-                                break;
-                            default:
-                                break;
+                        if (action == BroadcastAction.CLIENT_CONNECTED) {
+                            id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
                         }
 
                         publishBroadcastListener(action, incoming.getPayload());
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         shutdown();

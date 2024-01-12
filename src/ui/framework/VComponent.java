@@ -62,6 +62,8 @@ public abstract class VComponent implements IRenderable {
      */
     protected void unmounted() {}
 
+    protected void listenBroadcast() {}
+
     @Override
     public JPanel getContentPane() {
         return this.panel;
