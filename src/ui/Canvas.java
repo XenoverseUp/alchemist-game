@@ -206,6 +206,7 @@ public class Canvas extends JPanel {
 
 
         // Fill Sidebar
+        // TODO
 
         if (nextButtonPressed) {
             g.setPaint(new Color(200, 200, 200));
@@ -274,8 +275,14 @@ public class Canvas extends JPanel {
             Point p = e.getPoint();
 
             if (new Rectangle(1250, 675,175, 50).contains(p)) { 
+                // TODO: Conditionally call finish game
                 if (game.isOnline()) game.getOnlineRegister().finishGame();
                 else game.getRegister().toggleCurrentUser();
+
+                // if(lastRound) 
+                //     if (online) game.getOnlineRegister().finishGame();
+                //     else router.to(View.FinalScore)
+                // else game.getRegister().toggleCurrentUser();
             }
             
             Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
