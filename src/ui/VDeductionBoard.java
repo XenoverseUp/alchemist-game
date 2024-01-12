@@ -116,10 +116,10 @@ public class VDeductionBoard extends VComponent {
         markerButtons.removeAll();
         markerButtons.setLayout(null);
 
-        int [][] deductionTableCopy = game.getRegister().getDeductionTable();
+        int [][] deductionTable = game.getRegister().getDeductionTable();
 
-        for (int i = 0; i < deductionTableCopy.length; i++)
-            for (int j = 0; j <deductionTableCopy[0].length; j++) {
+        for (int i = 0; i < deductionTable.length; i++)
+            for (int j = 0; j < deductionTable[0].length; j++) {
                 JButton toggleButton = new JButton("");
                 toggleButton.setBounds(i * 75, j * 92, 72, 72);
                 toggleButton.setOpaque(false);
@@ -181,11 +181,11 @@ public class VDeductionBoard extends VComponent {
         //     put(new String[]{"raven's feather", "fern"}, DeductionToken.RedPlus);
         // }};
 
-        int [][] deductionTableCopy = game.getRegister().getDeductionTable();
+        int [][] deductionTable = game.getRegister().getDeductionTable();
         
-        for (int i = 0; i < deductionTableCopy .length; i++)
-            for (int j = 0; j < deductionTableCopy [0].length; j++) {
-                if (deductionTableCopy [j][i] == 0) continue;
+        for (int i = 0; i < deductionTable .length; i++)
+            for (int j = 0; j < deductionTable[0].length; j++) {
+                if (deductionTable[j][i] == 0) continue;
 
                 JLabel marker = new JLabel(new ImageIcon(deductionMarker));
                 marker.setBounds(i * 75 + 7, j * 92 + 7, deductionMarker.getWidth(), deductionMarker.getHeight());
