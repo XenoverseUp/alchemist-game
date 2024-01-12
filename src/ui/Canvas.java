@@ -206,18 +206,21 @@ public class Canvas extends JPanel {
 
 
         // Fill Sidebar
-        // TODO
+        String buttonText = null;
+        if (game.getRegister().getPhase() == GamePhase.FinalScoring){
+            buttonText = "Finish Game";
+        } else buttonText = "Next Turn";
 
         if (nextButtonPressed) {
             g.setPaint(new Color(200, 200, 200));
             BufferedImage scaledButton = getScaledImage(buttonPressedSprite, 175, 50);
             g.drawImage(scaledButton, null, 1250, 675);
-            drawCenteredString(g, "Next Turn", new Rectangle(1250, 678, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+            drawCenteredString(g, buttonText, new Rectangle(1250, 678, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
         } else {
             g.setPaint(Color.WHITE);
             BufferedImage scaledButton = getScaledImage(buttonSprite, 175, 50);
             g.drawImage(scaledButton, null, 1250, 675);
-            drawCenteredString(g, "Next Turn", new Rectangle(1250, 670, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+            drawCenteredString(g, buttonText, new Rectangle(1250, 670, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
         }
         
 
@@ -275,14 +278,15 @@ public class Canvas extends JPanel {
             Point p = e.getPoint();
 
             if (new Rectangle(1250, 675,175, 50).contains(p)) { 
-                // TODO: Conditionally call finish game
-                if (game.isOnline()) game.getOnlineRegister().finishGame();
-                else game.getRegister().toggleCurrentUser();
-
-                // if(lastRound) 
-                //     if (online) game.getOnlineRegister().finishGame();
-                //     else router.to(View.FinalScore)
-                // else game.getRegister().toggleCurrentUser();
+                if(game.getRegister().getPhase() == GamePhase.FinalScoring){
+                    if(game.isOnline()){
+                        game.getOnlineRegister().finishGame();
+                    } else {
+                        router.to(View.FinalScore);
+                    }
+                } else{
+                    game.getRegister().toggleCurrentUser();
+                }
             }
             
             Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

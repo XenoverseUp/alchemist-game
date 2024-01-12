@@ -40,6 +40,15 @@ public class AssetLoader {
     private BufferedImage BEnigmatic;
     private BufferedImage BSerene;
 
+    private BufferedImage BThunderousBig;
+    private BufferedImage BMysticalBig;
+    private BufferedImage BCelestialBig;
+    private BufferedImage BCrimsonBig;
+    private BufferedImage BLuminousBig;
+    private BufferedImage BGalacticBig;
+    private BufferedImage BEnigmaticBig;
+    private BufferedImage BSereneBig;
+
     private BufferedImage BPotionBrewingAreaBackground;
     private BufferedImage BOnlineSelectionBackground;
     private BufferedImage BLobbyBackground;
@@ -58,6 +67,8 @@ public class AssetLoader {
     private BufferedImage BLeftArrow;
     private BufferedImage BStartButton;
     private BufferedImage BStartButtonPressed;
+    private BufferedImage BFinishButton;
+    private BufferedImage BFinishButtonPressed;
     private BufferedImage BNameRibbonYellow;
     private BufferedImage BNameRibbonGreen;
     private BufferedImage BNameRibbonRed;
@@ -113,6 +124,15 @@ public class AssetLoader {
             BEnigmatic = ImageIO.read(new File("./src/resources/image/avatars/Enigmatic.png"));
             BSerene = ImageIO.read(new File("./src/resources/image/avatars/Serene.png"));
             
+            BThunderousBig = ImageIO.read(new File("./src/resources/image/avatars/ThunderousBig.png"));
+            BMysticalBig = ImageIO.read(new File("./src/resources/image/avatars/MysticalBig.png"));
+            BCelestialBig = ImageIO.read(new File("./src/resources/image/avatars/CelestialBig.png"));
+            BCrimsonBig = ImageIO.read(new File("./src/resources/image/avatars/CrimsonBig.png"));
+            BLuminousBig = ImageIO.read(new File("./src/resources/image/avatars/LuminousBig.png"));
+            BGalacticBig = ImageIO.read(new File("./src/resources/image/avatars/GalacticBig.png"));
+            BEnigmaticBig = ImageIO.read(new File("./src/resources/image/avatars/EnigmaticBig.png"));
+            BSereneBig = ImageIO.read(new File("./src/resources/image/avatars/SereneBig.png"));
+
             BPotionBrewingAreaBackground =  ImageIO.read(new File("./src/resources/image/pbaBackground.png"));
             BOnlineSelectionBackground =  ImageIO.read(new File("./src/resources/image/onlineSelectionBackground.png"));
             BLobbyBackground =  ImageIO.read(new File("./src/resources/image/lobbyBackground.png"));
@@ -132,6 +152,8 @@ public class AssetLoader {
 
             BStartButton = ImageIO.read(new File("./src/resources/image/HUD/startButton.png"));
             BStartButtonPressed = ImageIO.read(new File("./src/resources/image/HUD/startButtonPressed.png"));
+            BFinishButton = ImageIO.read(new File("./src/resources/image/HUD/finalButton.png"));
+            BFinishButtonPressed = ImageIO.read(new File("./src/resources/image/HUD/finalButtonPressed.png"));
             BNameRibbonYellow = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonYellow.png"));
             BNameRibbonGreen = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonGreen.png"));
             BNameRibbonRed = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonRed.png"));
@@ -206,6 +228,29 @@ public class AssetLoader {
         return BThunderous;
     }
 
+    public BufferedImage getAvatarImageBig(Avatar avatar) {
+        switch (avatar) {
+            case Thunderous:
+                return BThunderousBig;
+            case Mystical:
+                return BMysticalBig;
+            case Celestial:
+                return BCelestialBig;
+            case Crimson:
+                return BCrimsonBig;
+            case Luminous:
+                return BLuminousBig;
+            case Galactic:
+                return BGalacticBig;
+            case Enigmatic:
+                return BEnigmaticBig;
+            case Serene:
+                return BSereneBig;
+        }
+
+        return BThunderousBig;
+    }
+
     public BufferedImage getNameRibbon(int i) {
         switch (i) {
             case 1: return BNameRibbonBlue;
@@ -227,6 +272,12 @@ public class AssetLoader {
     public BufferedImage getStartButton(boolean pressed) {
         return !pressed ? BStartButton : BStartButtonPressed;
     }
+
+    public BufferedImage getFinishButton(boolean pressed) {
+        return !pressed ? BFinishButton : BFinishButtonPressed;
+    }
+
+    
 
     public BufferedImage getBackground(View view) {
         switch (view) {

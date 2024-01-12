@@ -123,6 +123,7 @@ public class Auth {
 
     public ArrayList<Player> calculateWinner(){
         ArrayList<Player> winners = new ArrayList<>();
+        ArrayList<Player> others = new ArrayList<>();
         Player candidateWinner = null;
         int[] candidateScore = null;
         for (Player player: this.players){
@@ -136,16 +137,25 @@ public class Auth {
                     candidateWinner = player;
                     candidateScore = score;
                     if (winners.size() > 0){
+                        for(Player notWinner: winners){
+                            others.add(notWinner);
+                        }
                         winners.clear();
                     }
                 }
                 else if (score[0] == candidateScore[0] && score[1] == candidateScore[1]){
                     winners.add(player);
                 }
+                else{
+                    others.add(player);
+                }
                 
             }
         }
         winners.add(candidateWinner);
+        
+        
+        
         return winners;
     }
 }
