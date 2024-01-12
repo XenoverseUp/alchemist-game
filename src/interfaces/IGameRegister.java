@@ -1,11 +1,13 @@
 package interfaces;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import domain.ArtifactCard;
 import enums.Avatar;
+import enums.DeductionToken;
 import enums.GamePhase;
 import error.NotEnoughActionsException;
 
@@ -31,4 +33,6 @@ public interface IGameRegister {
     public GamePhase getPhase();
     public void toggleCurrentUser();
     public int[][] getDeductionTable();
+    public void toggleDeductionTable(String name, int tableIndex);
+    public HashMap<String[], DeductionToken> getDeductionTokens();
 }

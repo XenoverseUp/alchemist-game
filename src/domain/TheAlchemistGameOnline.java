@@ -1,10 +1,12 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import enums.Avatar;
+import enums.DeductionToken;
 import enums.GamePhase;
 import error.NotEnoughActionsException;
 import error.ServerSideException;
@@ -168,6 +170,16 @@ public class TheAlchemistGameOnline implements IGameRegister {
     @Override
     public int[][] getDeductionTable() {
         return client.getCurrentPlayerDeduction();
+    }
+
+    @Override
+    public void toggleDeductionTable(String name, int tableIndex) {
+        client.toggleDeductionTable(name, tableIndex);
+    }
+
+    @Override
+    public HashMap<String[], DeductionToken> getDeductionTokens() {
+        return client.getDeductionTokens();
     }
 
  

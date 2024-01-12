@@ -113,7 +113,7 @@ public class TheAlchemistGame implements IGameRegister {
     ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
-
+    @Override
     public void toggleDeductionTable(String ingredient, int coordinate){
         gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, coordinate);
     }
@@ -122,7 +122,7 @@ public class TheAlchemistGame implements IGameRegister {
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
     }
-
+    @Override
     public HashMap<String[], DeductionToken> getDeductionTokens() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
     }

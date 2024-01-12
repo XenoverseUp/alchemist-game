@@ -92,6 +92,9 @@ public class Auth {
     	return getCurrentPlayer().inventory.getIngredient(name);
     }
 
+    public void checkLeftActionsOfCurrentPlayer() throws NotEnoughActionsException{
+        getCurrentPlayer().checkLeftActions();
+    }
     public void decreaseLeftActionsOfCurrentPlayer() throws NotEnoughActionsException {
         getCurrentPlayer().decreaseLeftActions();
     }
