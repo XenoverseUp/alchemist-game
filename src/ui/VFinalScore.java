@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -25,12 +26,21 @@ public class VFinalScore extends VComponent {
 
     @Override
     public void mounted(){
+        ArrayList<Integer> winnerIds = game.getRegister().calculateWinner();
         Map<String, String> playerNames = game.getRegister().getPlayerNames();
+
+        int winnerId = winnerIds.get(0);
+        Avatar winnerAvatar = game.getRegister().getPlayerAvatar(winnerId);
+        BufferedImage BAvatarWinner = assetLoader.getAvatarImage(winnerAvatar);
+        JLabel winnerAvatarImage = new JLabel(new ImageIcon(BAvatarWinner));
+
+
         
 
         playerNames.forEach((i, name) -> {
             int id = Integer.parseInt(i);
-            Avatar avatar = game.getRegister().getPlayerAvatar(id); 
+            Avatar avatar = game.getRegister().getPlayerAvatar(id);
+            //int finalScore = game.getRegister().getPlayerScore(id);
 
             BufferedImage BAvatar = assetLoader.getAvatarImage(avatar);
             JLabel avatarImage = new JLabel(new ImageIcon(BAvatar));
@@ -40,42 +50,49 @@ public class VFinalScore extends VComponent {
             JLabel nameRibbon = new JLabel(new ImageIcon(BRibbon));
             nameRibbon.setBounds(72 + id * (BRibbon.getWidth() + 30), 169, BRibbon.getWidth(), BRibbon.getHeight());
             
-            JLabel nameLabel = new JLabel(name, SwingConstants.CENTER);
+            JLabel nameLabel = new JLabel(name + ": " /*finalScore*/, SwingConstants.CENTER);
             nameLabel.setBounds(72 + id * (BRibbon.getWidth() + 30), 168, BRibbon.getWidth(), BRibbon.getHeight() - 6);
             nameLabel.setFont(new Font("Crimson Pro", Font.BOLD, 18));
             nameLabel.setForeground(assetLoader.getNameRibbonColor(id));
 
+            if(winnerIds.contains(id)){
+                BufferedImage BCrown = assetLoader.getCrown();
+                JLabel crown = new JLabel(new ImageIcon(BCrown));
+                crown.setBounds(105 + id * (BCrown.getWidth() + 95), 3, BCrown.getWidth(), BCrown.getHeight());
+                controls.add(crown);
+            }
+
             controls.add(nameLabel);
             controls.add(nameRibbon);
             controls.add(avatarImage);
-
-            if ((game.isOnline() && game.getOnlineRegister().isHost()) || (!game.isOnline())){
-                BufferedImage BButton = assetLoader.getFinishButton(false);
-                JButton finishButton = new JButton(new ImageIcon(BButton));
-                finishButton.setContentAreaFilled(false);
-                finishButton.setOpaque(false);
-                finishButton.setBorderPainted(false);
-                finishButton.setFocusable(false);
-                finishButton.setBounds(1089, 44, BButton.getWidth(), BButton.getHeight());
-                finishButton.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) { 
-                        //TODO
-                    }
-    
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        finishButton.setIcon(new ImageIcon(assetLoader.getFinishButton(true)));
-                    }
-                        
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-                        finishButton.setIcon(new ImageIcon(assetLoader.getFinishButton(false)));
-                    }
-                });
-                controls.add(finishButton);
-            }
         });
+
+        if ((game.isOnline() && game.getOnlineRegister().isHost()) || (!game.isOnline())){
+            BufferedImage BButton = assetLoader.getFinishButton(false);
+            JButton finishButton = new JButton(new ImageIcon(BButton));
+            finishButton.setContentAreaFilled(false);
+            finishButton.setOpaque(false);
+            finishButton.setBorderPainted(false);
+            finishButton.setFocusable(false);
+            finishButton.setBounds(1089, 44, BButton.getWidth(), BButton.getHeight());
+            finishButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) { 
+                    //TODO
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    finishButton.setIcon(new ImageIcon(assetLoader.getFinishButton(true)));
+                }
+                    
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    finishButton.setIcon(new ImageIcon(assetLoader.getFinishButton(false)));
+                }
+            });
+            controls.add(finishButton);
+        }
     }
 
     @Override

@@ -37,6 +37,10 @@ public class JON {
         return body.toString();
     }
 
+    public static String build(ArrayList<Integer> data){
+        return data.toString();
+    }
+
     public static String build(HashMap<String[], DeductionToken> data){
         StringBuilder body = new StringBuilder();
          data.forEach((k, v) -> body.append(String.format("%s,%s:%s\n", k[0], k[1], v.toString())));
@@ -72,6 +76,18 @@ public class JON {
         List<String> parsed = new ArrayList<>();
         for (String token : requestBody.split(":"))
             if (!token.equals("")) parsed.add(token);
+
+        return parsed;
+    }
+
+    public static ArrayList<Integer> parseListInt(String requestBody) {
+        System.out.println(requestBody);
+        requestBody = requestBody.replace("[", "");
+        requestBody = requestBody.replace("]", "");
+        requestBody.trim();
+        ArrayList<Integer> parsed = new ArrayList<>();
+        for (String token : requestBody.split(","))
+            if (!token.equals("")) parsed.add(Integer.parseInt(token.trim()));
 
         return parsed;
     }

@@ -74,6 +74,8 @@ public class AssetLoader {
     private BufferedImage BNameRibbonRed;
     private BufferedImage BNameRibbonBlue;
 
+    private BufferedImage BCrown;
+
     public ArrayList<String> ingredientNames = new ArrayList<String>() {{
         add("mushroom");
         add("fern");
@@ -158,6 +160,8 @@ public class AssetLoader {
             BNameRibbonGreen = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonGreen.png"));
             BNameRibbonRed = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonRed.png"));
             BNameRibbonBlue = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonBlue.png"));
+
+            BCrown = ImageIO.read(new File("./src/resources/image/HUD/Crown.png"));
 
         } catch (IOException e) {
             System.out.println(e);
@@ -300,6 +304,10 @@ public class AssetLoader {
             default:
                 return null;
         }
+    }
+
+    public BufferedImage getCrown(){
+        return BCrown;
     }
 
     public Image getClose() { return this.scale(BClose, 60, 60); }

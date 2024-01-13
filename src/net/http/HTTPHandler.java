@@ -311,6 +311,20 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+
+            put("/http/calculateWinner", (HttpExchange exchange) -> {
+                
+                try {
+                    ArrayList<Integer> winnerIds = game.calculateWinner();
+                    String responseBody = JON.build(winnerIds);
+            
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+
         }});
     }
 

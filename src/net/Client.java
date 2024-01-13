@@ -218,6 +218,12 @@ public class Client {
         request.put("/http/finishGame");
     }
 
+    public ArrayList<Integer> calculateWinner(){
+        HttpResponse<String> response = request.put("/http/calculateWinner");
+
+        return JON.parseListInt((String)response.body());
+    }
+
 
     /** Cache Supplier Methods */
     

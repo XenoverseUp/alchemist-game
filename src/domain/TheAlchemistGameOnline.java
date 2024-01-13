@@ -186,5 +186,10 @@ public class TheAlchemistGameOnline implements IGameRegister {
         return client.getDeductionTokens();
     }
 
+    @Override
+    public ArrayList<Integer> calculateWinner() {
+        return client.calculateWinner();
+    }
+
  
 }
