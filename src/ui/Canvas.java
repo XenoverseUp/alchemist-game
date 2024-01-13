@@ -1,10 +1,9 @@
 package ui;
 
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,13 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import enums.ApplicationType;
 import enums.Avatar;
 import enums.BoardHover;
 import enums.BroadcastAction;
 import enums.GamePhase;
 import enums.View;
-import error.ServerSideException;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
 import ui.framework.AssetLoader;
@@ -38,10 +35,8 @@ public class Canvas extends JPanel implements IBroadcastListener {
     
     private Timer timer;
     private int FPS = 80;
-    private TheAlchemistGame game;
+    private Game game;
     private BoardHover boardHover = BoardHover.None;
-    
-
     
     private int x = 0;
     private int y = 0;
@@ -75,7 +70,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
     private Rectangle publicationArea = new Rectangle(620, 180, 200, 190);
 
 
-    public Canvas(TheAlchemistGame game) {
+    public Canvas(Game game) {
         this.game = game;
 
         setOpaque(false);
@@ -119,16 +114,25 @@ public class Canvas extends JPanel implements IBroadcastListener {
         super.paintComponent(graphics);
         Graphics2D g = (Graphics2D) graphics;
 
-        if (game.isOnline() && Integer.parseInt(game.online.getCurrentUser(true).get("id")) != game.online.getId()) {
-            g.drawRect(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
+        if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) {
+            g.drawImage(assetLoader.getBlurredBoard(), null, 0, 0);
             
-            g.setPaint(Color.ORANGE);
-            g.fillOval(x, y, 130, 130);
-            g.drawImage(assetLoader.getAvatarImage(Avatar.Celestial), null, x, y);
+            g.setPaint(Color.WHITE);
+            drawCenteredString(
+                g, 
+                String.format("It's %s's turn.", game.getRegister().getCurrentPlayerName()), 
+                new Rectangle(0, 300, windowDimension.getWidth(), 100), 
+                new Font("Crimson Pro", Font.BOLD, 32)
+            );
+            
+            drawCenteredString(
+                g, 
+                String.format("Wait till all players pass their turns.", game.getRegister().getCurrentPlayerName()), 
+                new Rectangle(0, 370, windowDimension.getWidth(), 30), 
+                new Font("Crimson Pro", Font.PLAIN, 16)
+            );
 
-            g.setFont(new Font("Itim-Regular", Font.PLAIN, 32));
-            g.drawString("Not your turn.", 528, 333);
-
+            g.drawImage(assetLoader.getAvatarImage(game.getRegister().getCurrentPlayerAvatar()), null, x, y);
             g.dispose();
 
             return;
@@ -140,39 +144,30 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
         // Draw sidebar
         int sidebarWidth = 220;
-        // 1233
+
         g.setPaint(new Color(25, 25, 25));
         g.fillRect(windowDimension.getWidth() - sidebarWidth, 0, sidebarWidth, windowDimension.getHeight());
 
-        g.drawImage(verticalStrip, null, windowDimension.getWidth() - sidebarWidth, 0);
+        g.drawImage(verticalStrip, null, windowDimension.getWidth() - sidebarWidth - 3, 0);
 
         g.setPaint(Color.white);
         g.setFont(new Font("Itim-Regular", Font.BOLD, 18));
 
-        if (!game.isOnline())
-            g.drawString(game.getCurrentUser().name, 1248, 35);
-        else 
-            g.drawString(game.online.getCurrentUser(true).get("name"), 1248, 35);
+        g.drawString(game.getRegister().getCurrentPlayerName(), 1248, 35);
+
+        
         
         g.setFont(new Font("Itim-Regular", Font.PLAIN, 14));
 
-        if (!game.isOnline()) {
-            g.drawString(Integer.toString(game.getCurrentUser().leftActions) + " left actions", 1248, 65);
-            g.drawString(Integer.toString(game.getCurrentUser().inventory.getGold()) + " golds", 1248, 85);
-            g.drawString(Integer.toString(game.getCurrentUser().getReputation()) + " reputations", 1248, 105);
-            g.drawString(Integer.toString(game.getCurrentUser().getSickness()) + " sickness", 1248, 125);
-        } else {
-            g.drawString(game.online.getCurrentUser(true).get("left-actions") + " left actions", 1248, 65);
-            g.drawString(game.online.getCurrentUser(true).get("gold") + " golds", 1248, 85);
-            g.drawString(game.online.getCurrentUser(true).get("reputation") + " reputations", 1248, 105);
-            g.drawString(game.online.getCurrentUser(true).get("sickness") + " sickness", 1248, 125);
-        }
         
+        g.drawString(Integer.toString(game.getRegister().getCurrentPlayerActions()) + " left actions", 1248, 65);
+        g.drawString(Integer.toString(game.getRegister().getCurrentPlayerGold()) + " golds", 1248, 85);
+        g.drawString(Integer.toString(game.getRegister().getCurrentPlayerReputation()) + " reputations", 1248, 105);
+        g.drawString(Integer.toString(game.getRegister().getCurrentPlayerSickness()) + " sickness", 1248, 125);
 
 
         // Draw title
-        if (game.isOnline()) setCurrentPlayer(g, game.online.getCurrentUser(true).get("name"));
-        else setCurrentPlayer(g, game.getCurrentUser().name);
+        setCurrentPlayer(g, game.getRegister().getCurrentPlayerName());
         
         // Draw outlines
         g.setPaint(Color.BLACK);
@@ -189,7 +184,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
             g.drawImage(deductionOutlineHover, null, 227, 381);
         
 
-        if((game.isOnline() ? game.online.getPhase(true) : game.getPhase()) != GamePhase.FirstRound){
+        if(game.getRegister().getPhase() != GamePhase.FirstRound){
             g.drawImage(pbaOutline, null, 799, 294);
             g.drawString("Potion Brewing Area", 863, 311);
             if (boardHover == BoardHover.PotionBrewingArea) 
@@ -202,7 +197,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
         if (boardHover == BoardHover.CardDeck) 
             g.drawImage(cardDeckOutlineHover, null, -36, 606);
         
-        if((game.isOnline() ? game.online.getPhase(true) : game.getPhase())  != GamePhase.FirstRound){
+        if(game.getRegister().getPhase() != GamePhase.FirstRound){
             g.drawImage(publicationAreaOutline, null, 520, 175);
             g.drawString("Publication Area", 532, 192);
             if (boardHover == BoardHover.PublicationArea) 
@@ -225,9 +220,7 @@ public class Canvas extends JPanel implements IBroadcastListener {
         }
         
 
-        g.setPaint(Color.ORANGE);
-        g.fillOval(x, y, 130, 130);
-        g.drawImage(assetLoader.getAvatarImage(Avatar.Serene), null, x, y);
+        g.drawImage(assetLoader.getAvatarImage(game.getRegister().getCurrentPlayerAvatar()), null, x, y);
 
         g.dispose();
 
@@ -249,13 +242,15 @@ public class Canvas extends JPanel implements IBroadcastListener {
     private class MouseEvents extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
+            if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) return;
+
             Point p = e.getPoint();
 
             if (publicationArea.contains(p)) {
-                if ((game.isOnline() ? game.online.getPhase(true) : game.getPhase())  != GamePhase.FirstRound) 
+                if (game.getRegister().getPhase() != GamePhase.FirstRound) 
                     router.to(View.PublicationArea);
             } else if (potionBrewingArea.contains(p)) {
-                if ((game.isOnline() ? game.online.getPhase(true) : game.getPhase())  != GamePhase.FirstRound) 
+                if (game.getRegister().getPhase() != GamePhase.FirstRound) 
                     router.to(View.PotionBrewingArea);
             } else if (inventoryArea.contains(p)) 
                 router.to(View.Inventory);
@@ -273,13 +268,13 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) return;
+
+
             Point p = e.getPoint();
 
             if (new Rectangle(1250, 675,175, 50).contains(p)) { 
-                if (game.isOnline()) {
-                    try { game.online.toggleCurrentUser(); } 
-                    catch (ServerSideException e1) { e1.printStackTrace(); }
-                } else game.toggleCurrentUser();
+                game.getRegister().toggleCurrentUser();
             }
             
             Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -288,12 +283,14 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
         @Override
         public void mouseMoved(MouseEvent e) {
+            if (game.isOnline() && !game.getOnlineRegister().isYourTurn()) return;
+
             Point p = e.getPoint();
 
-            if (publicationArea.contains(p) && (game.isOnline() ? game.online.getPhase(true) : game.getPhase()) != GamePhase.FirstRound) {
+            if (publicationArea.contains(p) && game.getRegister().getPhase() != GamePhase.FirstRound) {
                 Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 boardHover = BoardHover.PublicationArea;
-            } else if (potionBrewingArea.contains(p) && (game.isOnline() ? game.online.getPhase(true) : game.getPhase()) != GamePhase.FirstRound) {
+            } else if (potionBrewingArea.contains(p) && game.getRegister().getPhase() != GamePhase.FirstRound) {
                 Window.frame.getContentPane().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 boardHover = BoardHover.PotionBrewingArea;
             } else if (inventoryArea.contains(p)) {
@@ -365,6 +362,6 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
     @Override
     public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
-        if (action == BroadcastAction.PLAYER_TOGGLED) game.online.revalidateCache();
+        if (action == BroadcastAction.PLAYER_TOGGLED) game.getOnlineRegister().revalidateCache();
     }
 }

@@ -8,9 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,11 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.View;
 import ui.framework.VComponent;
 import ui.util.LimitedDocument;
@@ -36,7 +31,7 @@ import ui.util.RotatedLabel;
 import ui.util.RotatedLabel.Direction;
 
 public class VOnlineSelection extends VComponent {
-    public VOnlineSelection(TheAlchemistGame game) { super(game); }
+    public VOnlineSelection(Game game) { super(game); }
 
     private enum FormState {
         Host,
@@ -255,7 +250,7 @@ public class VOnlineSelection extends VComponent {
                     return;
                 }
 
-                int result = game.connectToServer(i.getText(), Integer.parseInt(p.getText()));
+                int result = game.connectToServer(i.getText().trim(), Integer.parseInt(p.getText()));
                 if (result == 0) {
                     router.to(View.OnlineLogin);
                     return;
@@ -287,6 +282,8 @@ public class VOnlineSelection extends VComponent {
 
 
     private boolean isValidIPAddress(String ipAddress) {
+        if (ipAddress.trim().equals("localhost")) return true;
+
         String ipPattern = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +

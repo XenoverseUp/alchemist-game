@@ -8,25 +8,22 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.Avatar;
 import enums.BroadcastAction;
 import enums.View;
-import error.ServerSideException;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
 import ui.framework.VComponent;
 
 public class VLobby extends VComponent implements IBroadcastListener {
-    public VLobby(TheAlchemistGame game) { 
+    public VLobby(Game game) { 
         super(game);
     }
     private JPanel controls = new JPanel(null);
@@ -96,11 +93,11 @@ public class VLobby extends VComponent implements IBroadcastListener {
         controls.removeAll();
         controls.setLayout(null);
 
-        Map<String, String> playerNames = game.online.getPlayerNames();
+        Map<String, String> playerNames = game.getRegister().getPlayerNames();
 
         playerNames.forEach((i, name) -> {
             int id = Integer.parseInt(i);
-            Avatar avatar = game.online.getAvatar(id); 
+            Avatar avatar = game.getRegister().getPlayerAvatar(id); 
 
             BufferedImage BAvatar = assetLoader.getAvatarImage(avatar);
             JLabel avatarImage = new JLabel(new ImageIcon(BAvatar));
@@ -121,7 +118,7 @@ public class VLobby extends VComponent implements IBroadcastListener {
             controls.add(avatarImage);
         });
 
-        if (game.online.isHost() && playerNames.keySet().size() > 1) {
+        if (game.isOnline() && game.getOnlineRegister().isHost() && playerNames.keySet().size() > 1) {
             BufferedImage BButton = assetLoader.getStartButton(false);
             
             JButton startButton = new JButton(new ImageIcon(BButton));
@@ -134,11 +131,10 @@ public class VLobby extends VComponent implements IBroadcastListener {
             startButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) { 
-                    try {
-                        game.online.startGame();
-                    } catch (ServerSideException e1) {
+                    int result = game.getRegister().initializeGame();
+                    
+                    if (result == 1) 
                         modal.info("Server is on fire!", "Quick, bring some water over there. (We have no idea what happened just now. Maybe wait and try again.)");
-                    } 
                 }
 
                 @Override

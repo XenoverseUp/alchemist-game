@@ -3,7 +3,6 @@ import java.io.Serializable;
 
 import enums.Avatar;
 import enums.Potion;
-import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
 
 public class Player implements Serializable {
@@ -65,6 +64,13 @@ public class Player implements Serializable {
     private void setExtraActions(int extraActions) {
         this.extraActions = extraActions;
     }
+
+    public void checkLeftActions() throws NotEnoughActionsException {
+        if (this.leftActions < 1){
+            throw new NotEnoughActionsException();
+        }
+    }
+    
 
     public void decreaseLeftActions() throws NotEnoughActionsException{
         if (this.leftActions > 0){
@@ -169,4 +175,6 @@ public class Player implements Serializable {
         int[] score =  {finalPoints, leftoverGold};
         return score;
     }
+
+    
 }

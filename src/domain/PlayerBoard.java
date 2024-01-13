@@ -15,8 +15,8 @@ public class PlayerBoard {
 		discoveredPotions.add(po);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected HashSet<Potion> getDiscoveredPotions(){
-		
 		return (HashSet<Potion>) discoveredPotions.clone();
 	}
 	

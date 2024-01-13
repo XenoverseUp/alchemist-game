@@ -1,10 +1,11 @@
-import domain.TheAlchemistGame;
+import domain.Game;
 import ui.Window;
 import ui.util.WindowBuilder;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        TheAlchemistGame game = new TheAlchemistGame();
+        Game game = new Game();
+        
         Window window = new WindowBuilder()
                                 .width(1440)
                                 .height(768)

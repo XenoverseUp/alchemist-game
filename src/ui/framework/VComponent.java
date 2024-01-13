@@ -3,7 +3,7 @@ package ui.framework;
 import java.awt.Color;
 import javax.swing.JPanel;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import interfaces.IRenderable;
 import ui.framework.ModalController.Modal;
 
@@ -30,7 +30,7 @@ import ui.framework.ModalController.Modal;
  */
 public abstract class VComponent implements IRenderable {
     protected JPanel panel = new JPanel();
-    protected TheAlchemistGame game = null;
+    protected Game game = null;
     protected Router router = Router.getInstance();
     protected WindowDimension windowDimension = WindowDimension.getInstance();
     protected Modal modal = ModalController.getModalInstance();
@@ -41,7 +41,7 @@ public abstract class VComponent implements IRenderable {
         panel.setLayout(null);
     }
 
-    protected VComponent(TheAlchemistGame game) {
+    protected VComponent(Game game) {
         panel.setBackground(Color.WHITE);
         panel.setLayout(null);
         this.game = game;

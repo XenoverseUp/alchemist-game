@@ -1,41 +1,29 @@
 package domain;
 
-import java.io.IOException;
-import java.net.BindException;
-import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
-import enums.ApplicationType;
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
-import error.HostDoesNotExistsException;
-import interfaces.IBroadcastListener;
 import error.NotEnoughActionsException;
-import error.ServerSideException;
 import error.WrongGameRoundException;
-import interfaces.ICurrentUserListener;
-import net.Client;
-import net.Server;
-import net.util.JON;
+import interfaces.IGameRegister;
 
-public class TheAlchemistGame {
+public class TheAlchemistGame implements IGameRegister {
     private Auth auth;
     private Board gameBoard;
-    private ApplicationType applicationType = ApplicationType.Local;
-    private ServerSocket serverSocket = null;
-    private Client client = null;
-    public OnlineRegister online;
 
     public TheAlchemistGame() {
         auth = new Auth();
         gameBoard = new Board(auth);
     }
 
+    @Override
     public int createUser(String userName, Avatar a) {
         return auth.createUser(userName, a);
 
@@ -50,50 +38,82 @@ public class TheAlchemistGame {
 
     }
 
+    @Override
+    public String getCurrentPlayerName() {
+        return auth.getCurrentPlayer().name;
+    }
+
+    @Override
+    public List<String> getCurrentPlayerArtifacts() {
+        return auth.getCurrentPlayer().inventory.getArtifactCards().stream().map(c -> c.getName()).toList();
+    }
+
+    @Override
+    public List<String> getCurrentPlayerIngredients() {
+        return auth.getCurrentPlayer().inventory.getIngredientCards().stream().map(c -> c.getName()).toList();
+    }
+
+    @Override
+    public Map<String, String> getPlayerNames() {
+        Map<String, String> names = new HashMap<String, String>();
+
+        this.auth.players.forEach(p -> names.put(String.valueOf(p.id), p.name));
+
+        return names;
+    }
+
+    @Override
     public void toggleCurrentUser() {
         gameBoard.toggleCurrentUser();
     }
 
-    public Player getCurrentUser() {
-        return auth.getCurrentPlayer();
-    }
-
-    public void setApplicationType(ApplicationType applicationType) {
-        this.applicationType = applicationType;
-    }
-
-    public void initializeGame() {
+    @Override
+    public int initializeGame() {
         gameBoard.ingredientCardDeck.shuffle();
         gameBoard.dealCards();
         gameBoard.artifactCardDeck.shuffle();
         gameBoard.dealGolds();
+
+        return 0;
     }
 
-    public void forageIngredient() throws NotEnoughActionsException   {
+    @Override
+    public void forageIngredient() throws NotEnoughActionsException {
         gameBoard.forageIngredient();
     }
 
+    @Override
     public void transmuteIngredient(String ingredientName) throws NotEnoughActionsException {
         gameBoard.transmuteIngredient(ingredientName);
     }
 
+    @Override
     public int buyArtifact(String name) throws NotEnoughActionsException {
         return gameBoard.buyArtifact(name);
     }
 
+    @Override
     public void discardArtifact(String name) throws NotEnoughActionsException {
         gameBoard.discardArtifact(name);
     }
 
 
+
     public ArrayList<ArtifactCard> getArtifactCardDeck(){
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public ArrayList<ArtifactCard> getArtifactCardDeck() {
+
 		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
 	}
 
+    @Override
     public int drawMysteryCard() throws NotEnoughActionsException {
         return this.gameBoard.drawMysteryCard();
 
     }
+
 
     public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
@@ -126,17 +146,25 @@ public class TheAlchemistGame {
     }
 
     public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+
+    public Potion makeExperiment(
+        String ingredientName1, 
+        String ingredientName2, 
+        String testOn
+    ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
-
+    @Override
     public void toggleDeductionTable(String ingredient, int coordinate){
         gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, coordinate);
     }
 
+    @Override
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
     }
-
+    @Override
     public HashMap<String[], DeductionToken> getDeductionTokens() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
     }
@@ -145,16 +173,17 @@ public class TheAlchemistGame {
         return this.gameBoard.getAuth().calculateWinner();
     }
 
+    @Override
     public GamePhase getPhase() {
         return gameBoard.getPhase();
     }
   
+    public Player getCurrentPlayer() {
+        return this.auth.getCurrentPlayer();
+    }
+
 
     // NEW
-
-    public boolean isOnline() {
-        return this.applicationType == ApplicationType.Online;
-    }
 
     public HashMap<String, String> getPlayers() {
         HashMap<String, String> players = new HashMap<String, String>();
@@ -166,61 +195,31 @@ public class TheAlchemistGame {
         return this.auth.getPlayerAvatar(id);
     }
 
-    /** NETWORKING */
-
-    public ApplicationType getApplicationType() {
-        return applicationType;
+    @Override
+    public int getCurrentPlayerActions() {
+        return this.getCurrentPlayer().leftActions;
     }
 
-    public int createServer(int port) {
-        try {
-            this.serverSocket = new ServerSocket(port);
-            Server server = new Server(serverSocket, this);
-            server.start();
-            this.connectToServer(port);
-        } catch (BindException e) {
-            return 1;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        return 0;
+    @Override
+    public int getCurrentPlayerGold() {
+        return this.getCurrentPlayer().inventory.getGold();
     }
 
-    public int connectToServer(int port) {
-        try {
-            client = new Client(port);
-            client.listen();
-            setApplicationType(ApplicationType.Online);
-            online = new OnlineRegister();
-        } catch (HostDoesNotExistsException e) {
-            return 1;
-        }
-
-        return 0;
+    @Override
+    public int getCurrentPlayerReputation() {
+        return this.getCurrentPlayer().getReputation();
     }
 
-    public int connectToServer(String host, int port) {
-        try {
-            client = new Client(host, port);
-            client.listen();
-            setApplicationType(ApplicationType.Online);
-            online = new OnlineRegister();
-        } catch (HostDoesNotExistsException e) {
-            return 1;
-        }
-
-        return 0;
+    @Override
+    public int getCurrentPlayerSickness() {
+        return this.getCurrentPlayer().getSickness();
     }
 
-    public void addBroadcastListener(IBroadcastListener component) {
-        if (this.applicationType == ApplicationType.Online && client != null)
-            client.addBroadcastListener(component);
+    @Override
+    public Avatar getCurrentPlayerAvatar() {
+        return this.getCurrentPlayer().avatar;
     }
 
-    public void removeBroadcastListener(IBroadcastListener component) {
-        client.removeBroadcastListener(component);
-    }
 
 
     public class OnlineRegister {
@@ -275,6 +274,5 @@ public class TheAlchemistGame {
         }
 
     }
-
 
 }

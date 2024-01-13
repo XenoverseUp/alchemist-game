@@ -2,7 +2,6 @@ package domain;
 
 import java.util.ArrayList;
 import enums.Avatar;
-import error.HostDoesNotExistsException;
 import error.NotEnoughActionsException;
 import interfaces.ICurrentUserListener;
 
@@ -46,6 +45,7 @@ public class Auth {
             if (p.avatar == avatar) return 3;
             if (p.id == id) return 4;
         }
+
         
         Player player = new Player(id, name, avatar);
 
@@ -92,6 +92,9 @@ public class Auth {
     	return getCurrentPlayer().inventory.getIngredient(name);
     }
 
+    public void checkLeftActionsOfCurrentPlayer() throws NotEnoughActionsException{
+        getCurrentPlayer().checkLeftActions();
+    }
     public void decreaseLeftActionsOfCurrentPlayer() throws NotEnoughActionsException {
         getCurrentPlayer().decreaseLeftActions();
     }

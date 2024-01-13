@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.View;
 import error.NotEnoughActionsException;
 import ui.framework.VComponent;
@@ -31,7 +31,7 @@ public class VArtifactShop extends VComponent {
     private BufferedImage BMysteryCard = null;
     private BufferedImage BArtifactCardTemplate = null;
 
-    public VArtifactShop(TheAlchemistGame game) { super(game); }
+    public VArtifactShop(Game game) { super(game); }
 
     @Override
     protected void render() {
@@ -109,7 +109,7 @@ public class VArtifactShop extends VComponent {
         drawMysteryButton.addActionListener(e -> {
             int result;
             try {
-                result = game.drawMysteryCard();
+                result =  game.getRegister().drawMysteryCard();
                 if (result == 0) router.to(View.Inventory);
                 else modal.info("Not enough money!", "Fuck you bitch.");
             } catch (NotEnoughActionsException e1) {
@@ -146,7 +146,7 @@ public class VArtifactShop extends VComponent {
         title.setPreferredSize(new Dimension(windowDimension.getWidth() - 664, 100));
         container.add(title);
 
-        game.getArtifactCardDeck()
+        game.getRegister().getArtifactCardDeck()
             .stream()
             .map(card -> this.generateArtifactCard(card.getName(), card.getDescription(), card.getPrice(), card.getVictoryPoints()))
             .forEach(container::add);
@@ -228,7 +228,7 @@ public class VArtifactShop extends VComponent {
         activateButton.addActionListener(event -> {
             int result;
             try {
-                result = game.buyArtifact(name);
+                result = game.getRegister().buyArtifact(name);
                 if (result == 0) router.to(View.Inventory);
                 else modal.info("Not enough money!", "Fuck you bitch.");
             } catch (NotEnoughActionsException e) {

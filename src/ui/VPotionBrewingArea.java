@@ -19,7 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.View;
 import error.NotEnoughActionsException;
 import error.WrongGameRoundException;
@@ -40,7 +40,7 @@ public class VPotionBrewingArea extends VComponent {
 
     private int testingMethod = -1;
 
-    public VPotionBrewingArea(TheAlchemistGame game) {
+    public VPotionBrewingArea(Game game) {
         super(game);
     }
 
@@ -135,7 +135,7 @@ public class VPotionBrewingArea extends VComponent {
         selectionPanel.setOpaque(false);
 
         JLabel info = new JLabel(
-            String.format("<html><div style='text-align: center'>%s</div><html>", game.getCurrentUser().inventory.isEmpty() 
+            String.format("<html><div style='text-align: center'>%s</div><html>", game.getLocalRegister().getCurrentPlayer().inventory.isEmpty() 
                 ? "Forage some ingredients to make experiments on and improve your insights." 
                 : "Pick 2 ingredients to make an experiment."), 
             SwingConstants.CENTER
@@ -151,7 +151,7 @@ public class VPotionBrewingArea extends VComponent {
         cards.setOpaque(false);
 
         assetLoader.ingredientNames.forEach(name -> {
-            if (!game.getCurrentUser().inventory.hasIngredient(name)) return;
+            if (!game.getLocalRegister().getCurrentPlayer().inventory.hasIngredient(name)) return;
 
             Image cardImage = assetLoader.getIngredientCard(name, 0.45);
            
@@ -185,7 +185,7 @@ public class VPotionBrewingArea extends VComponent {
         
         selectionPanel.add(Box.createVerticalGlue());
         selectionPanel.add(info);
-        if (!game.getCurrentUser().inventory.isEmpty()) selectionPanel.add(Box.createVerticalStrut(24));
+        if (!game.getLocalRegister().getCurrentPlayer().inventory.isEmpty()) selectionPanel.add(Box.createVerticalStrut(24));
         selectionPanel.add(cards);
         selectionPanel.add(Box.createVerticalGlue());
     }
@@ -228,7 +228,7 @@ public class VPotionBrewingArea extends VComponent {
 
         String testOn = testingMethod == 0 ? "student" : testingMethod == 1 ? "self" : "sell";
         try{
-            game.makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
+            game.getLocalRegister().makeExperiment(selectedIngredients.get(0), selectedIngredients.get(1), testOn);
             router.to(View.DeductionBoard);
         } 
         catch(WrongGameRoundException e){

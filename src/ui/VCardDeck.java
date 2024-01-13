@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -21,11 +20,11 @@ import javax.swing.SwingConstants;
 import enums.View;
 import error.NotEnoughActionsException;
 import ui.framework.VComponent;
-import domain.TheAlchemistGame;
+import domain.Game;
 
 public class VCardDeck extends VComponent {
 
-    public VCardDeck(TheAlchemistGame game) {
+    public VCardDeck(Game game) {
         super(game);
     }
     
@@ -103,7 +102,7 @@ public class VCardDeck extends VComponent {
         button.addActionListener(event -> {
             if (type == "ingredient") {
                 try {
-                    game.forageIngredient();
+                    game.getRegister().forageIngredient();
                     router.to(View.Inventory);
                 } catch (NotEnoughActionsException e) {
                    modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");

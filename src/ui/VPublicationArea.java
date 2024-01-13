@@ -17,12 +17,12 @@ import javax.swing.SwingUtilities;
 
 import enums.View;
 import ui.framework.VComponent;
-import domain.TheAlchemistGame;
+import domain.Game;
 
 public class VPublicationArea extends VComponent {
     JPanel publicationPanel;
 
-    public VPublicationArea(TheAlchemistGame game) {
+    public VPublicationArea(Game game) {
         super(game);
     }
 
