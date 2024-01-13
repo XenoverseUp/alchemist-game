@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.GamePhase;
@@ -28,11 +27,11 @@ public class TheAlchemistGame implements IGameRegister {
         return auth.createUser(userName, a);
 
     }
-   
+
     public int createUser(int id, String name, Avatar avatar) {
         return auth.createUser(id, name, avatar);
     }
-  
+
     public String getPlayerName(int id) {
         return this.auth.players.get(id).name;
 
@@ -97,23 +96,18 @@ public class TheAlchemistGame implements IGameRegister {
         gameBoard.discardArtifact(name);
     }
 
-
-
-    public ArrayList<ArtifactCard> getArtifactCardDeck(){
-
     @Override
     @SuppressWarnings("unchecked")
     public ArrayList<ArtifactCard> getArtifactCardDeck() {
 
-		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
-	}
+        return (ArrayList<ArtifactCard>) this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
+    }
 
     @Override
     public int drawMysteryCard() throws NotEnoughActionsException {
         return this.gameBoard.drawMysteryCard();
 
     }
-
 
     public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
@@ -145,18 +139,16 @@ public class TheAlchemistGame implements IGameRegister {
 
     }
 
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
-
     public Potion makeExperiment(
-        String ingredientName1, 
-        String ingredientName2, 
-        String testOn
-    ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+            String ingredientName1,
+            String ingredientName2,
+            String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
 
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
+
     @Override
-    public void toggleDeductionTable(String ingredient, int coordinate){
+    public void toggleDeductionTable(String ingredient, int coordinate) {
         gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, coordinate);
     }
 
@@ -164,12 +156,13 @@ public class TheAlchemistGame implements IGameRegister {
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
     }
+
     @Override
     public HashMap<String[], DeductionToken> getDeductionTokens() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
     }
 
-    public ArrayList<Player> calculateWinner(){
+    public ArrayList<Player> calculateWinner() {
         return this.gameBoard.getAuth().calculateWinner();
     }
 
@@ -177,11 +170,10 @@ public class TheAlchemistGame implements IGameRegister {
     public GamePhase getPhase() {
         return gameBoard.getPhase();
     }
-  
+
     public Player getCurrentPlayer() {
         return this.auth.getCurrentPlayer();
     }
-
 
     // NEW
 
@@ -220,12 +212,11 @@ public class TheAlchemistGame implements IGameRegister {
         return this.getCurrentPlayer().avatar;
     }
 
-
-
     public class OnlineRegister {
 
         public int getId() {
-            if (client != null) return client.getId();
+            if (client != null)
+                return client.getId();
             return 0;
         }
 
@@ -248,11 +239,11 @@ public class TheAlchemistGame implements IGameRegister {
         public void startGame() throws ServerSideException {
             client.startGame();
         }
-        
+
         public Map<String, String> getCurrentUser(boolean cached) {
             return client.getCurrentUser(cached);
         }
-       
+
         public Map<String, String> getCurrentUser() {
             return client.getCurrentUser();
         }
