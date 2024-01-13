@@ -19,13 +19,14 @@ public class TheAlchemistGame implements IGameRegister {
     private Board gameBoard;
 
     public TheAlchemistGame() {
-    	auth = new Auth();
+        auth = new Auth();
         gameBoard = new Board(auth);
     }
 
     @Override
     public int createUser(String userName, Avatar a) {
         return auth.createUser(userName, a);
+
     }
    
     public int createUser(int id, String name, Avatar avatar) {
@@ -34,6 +35,7 @@ public class TheAlchemistGame implements IGameRegister {
   
     public String getPlayerName(int id) {
         return this.auth.players.get(id).name;
+
     }
 
     @Override
@@ -95,22 +97,62 @@ public class TheAlchemistGame implements IGameRegister {
         gameBoard.discardArtifact(name);
     }
 
+
+
+    public ArrayList<ArtifactCard> getArtifactCardDeck(){
+
     @Override
     @SuppressWarnings("unchecked")
     public ArrayList<ArtifactCard> getArtifactCardDeck() {
+
 		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
 	}
 
     @Override
     public int drawMysteryCard() throws NotEnoughActionsException {
         return this.gameBoard.drawMysteryCard();
+
     }
+
+
+    public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
+        gameBoard.getAuth().addCurrentUserListener(currentUserListener);
+    }
+
+    public void publishTheory() {
+        gameBoard.publishTheory();
+    }
+
+    public void debunkTheory() {
+        gameBoard.debunkTheory();
+    }
+
+    public void setMarker(int id) {
+        gameBoard.alchemyMarkerDeck.setChosen(id);
+    }
+
+    public void setCard(int id) {
+        gameBoard.publicationCardDeck.setChosen(id);
+    }
+
+    public String getMarkerImagePath(int id) {
+        AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
+        if (marker != null) {
+            return marker.getImagePath();
+        } else {
+            return "";
+        }
+
+    }
+
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
 
     public Potion makeExperiment(
         String ingredientName1, 
         String ingredientName2, 
         String testOn
     ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
     @Override
@@ -177,4 +219,60 @@ public class TheAlchemistGame implements IGameRegister {
     public Avatar getCurrentPlayerAvatar() {
         return this.getCurrentPlayer().avatar;
     }
+
+
+
+    public class OnlineRegister {
+
+        public int getId() {
+            if (client != null) return client.getId();
+            return 0;
+        }
+
+        public boolean isHost() {
+            return getId() == 0;
+        }
+
+        public int createUser(int id, String name, Avatar avatar) {
+            return client.createUser(id, name, avatar);
+        }
+
+        public Map<String, String> getPlayerNames() {
+            return client.getPlayerNames();
+        }
+
+        public Avatar getAvatar(int id) {
+            return client.getAvatar(id);
+        }
+
+        public void startGame() throws ServerSideException {
+            client.startGame();
+        }
+        
+        public Map<String, String> getCurrentUser(boolean cached) {
+            return client.getCurrentUser(cached);
+        }
+       
+        public Map<String, String> getCurrentUser() {
+            return client.getCurrentUser();
+        }
+
+        public GamePhase getPhase(boolean cached) {
+            return client.getPhase(cached);
+        }
+
+        public GamePhase getPhase() {
+            return client.getPhase();
+        }
+
+        public void toggleCurrentUser() throws ServerSideException {
+            client.toggleCurrentUser();
+        }
+
+        public void revalidateCache() {
+            client.getCache().revalidateAll();
+        }
+
+    }
+
 }
