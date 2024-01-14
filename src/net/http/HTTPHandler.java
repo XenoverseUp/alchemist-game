@@ -148,7 +148,7 @@ public class HTTPHandler implements HttpHandler {
                             avatar = a;
                             break;
                         }
-
+                        
                     int result = game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
 
                     if (result == 0) {
@@ -190,6 +190,27 @@ public class HTTPHandler implements HttpHandler {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+                }
+            });
+            put("/http/restartGame", (HttpExchange exchange) -> {
+                // game.reset();
+                try {
+                    sendResponse(exchange, 200, "Game is started by the host.");
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
+                } catch (IOException e) {
+                    try {
+                        sendResponse(exchange, 500, "Internal Server Error");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+            put("/http/finishGame", (HttpExchange exchange) -> {
+                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_FINISHED));
+                try {
+                    sendResponse(exchange, 200, "Game session has ended.");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             });
             put("/http/forageIngredient", (HttpExchange exchange) -> {
@@ -290,6 +311,20 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+
+            put("/http/calculateWinner", (HttpExchange exchange) -> {
+                
+                try {
+                    ArrayList<Integer> winnerIds = game.calculateWinner();
+                    String responseBody = JON.build(winnerIds);
+            
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+
         }});
     }
 

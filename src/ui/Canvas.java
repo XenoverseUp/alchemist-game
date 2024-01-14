@@ -15,20 +15,15 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
-import enums.Avatar;
 import enums.BoardHover;
-import enums.BroadcastAction;
 import enums.GamePhase;
 import enums.View;
-import interfaces.IBroadcastListener;
-import interfaces.IDynamicTypeValue;
 import ui.framework.AssetLoader;
 import ui.framework.Router;
 import ui.framework.WindowDimension;
 
-public class Canvas extends JPanel implements IBroadcastListener {
+public class Canvas extends JPanel {
     private Router router = Router.getInstance();
     private WindowDimension windowDimension = WindowDimension.getInstance();
     private AssetLoader assetLoader = AssetLoader.getInstance();
@@ -206,17 +201,21 @@ public class Canvas extends JPanel implements IBroadcastListener {
 
 
         // Fill Sidebar
+        String buttonText = null;
+        if (game.getRegister().getPhase() == GamePhase.FinalScoring){
+            buttonText = "Finish Game";
+        } else buttonText = "Next Turn";
 
         if (nextButtonPressed) {
             g.setPaint(new Color(200, 200, 200));
             BufferedImage scaledButton = getScaledImage(buttonPressedSprite, 175, 50);
             g.drawImage(scaledButton, null, 1250, 675);
-            drawCenteredString(g, "Next Turn", new Rectangle(1250, 678, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+            drawCenteredString(g, buttonText, new Rectangle(1250, 678, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
         } else {
             g.setPaint(Color.WHITE);
             BufferedImage scaledButton = getScaledImage(buttonSprite, 175, 50);
             g.drawImage(scaledButton, null, 1250, 675);
-            drawCenteredString(g, "Next Turn", new Rectangle(1250, 670, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
+            drawCenteredString(g, buttonText, new Rectangle(1250, 670, 175, 50), new Font("Itim-Regular", Font.BOLD, 18));
         }
         
 
@@ -274,7 +273,15 @@ public class Canvas extends JPanel implements IBroadcastListener {
             Point p = e.getPoint();
 
             if (new Rectangle(1250, 675,175, 50).contains(p)) { 
-                game.getRegister().toggleCurrentUser();
+                if(game.getRegister().getPhase() == GamePhase.FinalScoring){
+                    if(game.isOnline()){
+                        game.getOnlineRegister().finishGame();
+                    } else {
+                        router.to(View.FinalScore);
+                    }
+                } else{
+                    game.getRegister().toggleCurrentUser();
+                }
             }
             
             Window.frame.getContentPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -310,12 +317,10 @@ public class Canvas extends JPanel implements IBroadcastListener {
     }
 
     public void start() {
-        if (game.isOnline()) game.addBroadcastListener(this);
         this.timer.start();
     }
     
     public void stop() {
-        if (game.isOnline()) game.removeBroadcastListener(this);
         this.timer.stop();
     }
 
@@ -360,8 +365,12 @@ public class Canvas extends JPanel implements IBroadcastListener {
         
     }
 
-    @Override
-    public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
-        if (action == BroadcastAction.PLAYER_TOGGLED) game.getOnlineRegister().revalidateCache();
+    public void togglePlayer() {
+        game.getOnlineRegister().revalidateCache();
     }
+
+    public void gameFinished() {
+        router.to(View.FinalScore);
+    }
+
 }

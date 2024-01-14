@@ -17,7 +17,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-import domain.DeductionBoard;
 import domain.Game;
 import enums.View;
 import ui.framework.VComponent;

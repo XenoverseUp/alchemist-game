@@ -56,6 +56,10 @@ public class TheAlchemistGameOnline implements IGameRegister {
         return 0;
     }
 
+    public void finishGame() {
+        client.finishGame();
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public ArrayList<ArtifactCard> getArtifactCardDeck() {
@@ -180,6 +184,11 @@ public class TheAlchemistGameOnline implements IGameRegister {
     @Override
     public HashMap<String[], DeductionToken> getDeductionTokens() {
         return client.getDeductionTokens();
+    }
+
+    @Override
+    public ArrayList<Integer> calculateWinner() {
+        return client.calculateWinner();
     }
 
  
