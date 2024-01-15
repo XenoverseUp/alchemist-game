@@ -5,6 +5,9 @@ import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
 import error.WrongGameRoundException;
+
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -151,10 +154,17 @@ public class Board {
 
 	public void publishTheory() throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
+
 		if (!alchemyMarkerDeck.getChosen().checkAvailability()) {
+			if (getAuth().getCurrentPlayer().inventory.getGold() > 0) {
+
 			if (this.publicationCardDeck.getChosen().getAlchemyMarker() == null) {
 				auth.getCurrentPlayer().increaseReputation(1);
-				auth.removeGoldFromCurrentUser(1);
+				
+				if(getAuth().getCurrentPlayer().inventory.hasArtifactCard("Printing Press").equals(false)) {
+					auth.removeGoldFromCurrentUser(1);
+				}
+
 				this.publicationCardDeck.getChosen().setAlchemyMarker(alchemyMarkerDeck.getChosen());
 				alchemyMarkerDeck.getChosen().associate();
 				publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
@@ -163,7 +173,7 @@ public class Board {
 							"Success!", JOptionPane.PLAIN_MESSAGE);
 				});
 			}
-		}
+		}}
 	}
 
 	// chooses a publication card, states the published theory is wrong, doesn't
