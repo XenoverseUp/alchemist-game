@@ -129,13 +129,9 @@ public class TheAlchemistGame implements IGameRegister {
         gameBoard.publicationCardDeck.setChosen(id);
     }
 
-    public String getMarkerImagePath(int id) {
+    public int getMarkerID(int id) {
         AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
-        if (marker != null) {
-            return marker.getImagePath();
-        } else {
-            return "";
-        }
+        return marker.getId();
 
     }
 
