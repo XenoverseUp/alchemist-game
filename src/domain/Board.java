@@ -20,8 +20,6 @@ public class Board {
 	protected GamePhase phase;
 	protected int numberOfTurns;
 
-	
-
 	public Board(Auth auth) {
 		this.auth = auth;
 		this.alchemyMarkerDeck = new AlchemyMarkerDeck();
@@ -29,7 +27,6 @@ public class Board {
 		this.artifactCardDeck = new ArtifactCardDeck();
 
 		this.publicationCardDeck = new PublicationCardDeck(this.ingredientCardDeck.getDeck());
-		
 
 		this.phase = GamePhase.FirstRound;
 		this.numberOfTurns = 0;
@@ -37,7 +34,7 @@ public class Board {
 	}
 
 	public void dealCards() {
-		for (Player player: auth.players) {
+		for (Player player : auth.players) {
 			for (int i = 0; i < 2; i++) {
 				IngredientCard iCard = this.ingredientCardDeck.drawCard();
 				player.inventory.addIngredientCard(iCard);
@@ -45,10 +42,9 @@ public class Board {
 		}
 	}
 
-
 	public void dealGolds() {
-		for (Player p: auth.players) 
-    		p.inventory.addGold(10);
+		for (Player p : auth.players)
+			p.inventory.addGold(10);
 
 	}
 
@@ -58,18 +54,16 @@ public class Board {
 		updatePhase();
 	}
 
-	
 	public void forageIngredient() throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
 		IngredientCard icard = this.ingredientCardDeck.drawCard();
 		auth.addIngredientCardToCurrentPlayer(icard);
 		auth.decreaseLeftActionsOfCurrentPlayer();
 	}
-	
+
 	public void transmuteIngredient(String name) throws NotEnoughActionsException {
 
 		auth.decreaseLeftActionsOfCurrentPlayer();
-
 
 		auth.checkLeftActionsOfCurrentPlayer();
 
@@ -80,7 +74,6 @@ public class Board {
 		auth.decreaseLeftActionsOfCurrentPlayer();
 	}
 
-	
 	public int buyArtifact(String name) throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
 		ArtifactCard card = this.artifactCardDeck.get(name);
@@ -89,13 +82,14 @@ public class Board {
 			this.auth.removeGoldFromCurrentUser(card.getPrice());
 			auth.decreaseLeftActionsOfCurrentPlayer();
 			return 0;
-		} else return 1;
+		} else
+			return 1;
 	}
-
 
 	public int drawMysteryCard() throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
-		if (this.auth.getCurrentPlayer().inventory.getGold() < 5) return 1; 
+		if (this.auth.getCurrentPlayer().inventory.getGold() < 5)
+			return 1;
 		ArtifactCard card = this.artifactCardDeck.drawMysteryCard();
 		this.auth.getCurrentPlayer().inventory.spendGold(5);
 		this.auth.getCurrentPlayer().inventory.addArtifactCard(card);
@@ -103,30 +97,28 @@ public class Board {
 		return 0;
 	}
 
-	public void discardArtifact(String name) throws NotEnoughActionsException{
+	public void discardArtifact(String name) throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
 		auth.getCurrentPlayer().inventory.discardArtifactCard(name);
 		auth.decreaseLeftActionsOfCurrentPlayer();
 	}
 
-	
-
 	public Auth getAuth() {
 		return auth;
 	}
 
-	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
-		if(testOn.equals("sell")){
-			if (this.phase == GamePhase.FirstRound){
+	public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn)
+			throws WrongGameRoundException, NotEnoughActionsException, Exception {
+		if (testOn.equals("sell")) {
+			if (this.phase == GamePhase.FirstRound) {
 				throw new WrongGameRoundException();
 			}
 		}
 		auth.checkLeftActionsOfCurrentPlayer();
-		
-		if (testOn.equals("sell") && auth.getCurrentPlayer().inventory.getGold() < 2){
+
+		if (testOn.equals("sell") && auth.getCurrentPlayer().inventory.getGold() < 2) {
 			throw new Exception("enough-gold-sell");
-		}
-		else if (testOn.equals("student") && auth.getCurrentPlayer().inventory.getGold() < 1){
+		} else if (testOn.equals("student") && auth.getCurrentPlayer().inventory.getGold() < 1) {
 			throw new Exception("enough-gold-student");
 		}
 
@@ -135,22 +127,19 @@ public class Board {
 
 		Potion potion = PotionBrewingArea.combine(ingredient1, ingredient2);
 
-
 		try {
 			auth.getCurrentPlayer().use(potion, testOn);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 
-
 		auth.getCurrentPlayer().deductionBoard.addExperimentResult(ingredientName1, ingredientName2, potion);
 		auth.getCurrentPlayer().playerBoard.addDiscoveredPotion(potion);
 
-		if(testOn.equals("sell")){
+		if (testOn.equals("sell")) {
 			auth.getCurrentPlayer().sell(potion);
-		}
-		else{
-			try{
+		} else {
+			try {
 				auth.getCurrentPlayer().use(potion, testOn);
 			} catch (Exception e) {
 				System.out.println(e);
@@ -160,8 +149,8 @@ public class Board {
 		return potion;
 	}
 
-
-	public void publishTheory() {
+	public void publishTheory() throws NotEnoughActionsException {
+		auth.checkLeftActionsOfCurrentPlayer();
 		if (!alchemyMarkerDeck.getChosen().checkAvailability()) {
 			if (this.publicationCardDeck.getChosen().getAlchemyMarker() == null) {
 				auth.getCurrentPlayer().increaseReputation(1);
@@ -179,7 +168,8 @@ public class Board {
 
 	// chooses a publication card, states the published theory is wrong, doesn't
 	// need to state the correct theory
-	public void debunkTheory() {
+	public void debunkTheory() throws NotEnoughActionsException {
+		auth.checkLeftActionsOfCurrentPlayer();
 		if (this.publicationCardDeck.getChosen().getAlchemyMarker() != null) {
 			Molecule m = this.publicationCardDeck.getChosen().getIngredient().getMolecule();
 			if (this.publicationCardDeck.getChosen().getAlchemyMarker().getMolecule().equals(m)) {
@@ -188,6 +178,7 @@ public class Board {
 					JOptionPane.showMessageDialog(null, "Published Theory Was Correct.\n Reputation: -1",
 							"Failed!", JOptionPane.PLAIN_MESSAGE);
 				});
+				auth.decreaseLeftActionsOfCurrentPlayer();
 			} else {
 				this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
 				AlchemyMarker marker = null;
@@ -204,31 +195,31 @@ public class Board {
 					JOptionPane.showMessageDialog(null, "Debunked Theory Successfully!\n Reputation: +2",
 							"Success!", JOptionPane.PLAIN_MESSAGE);
 				});
+				auth.decreaseLeftActionsOfCurrentPlayer();
 			}
 		}
 	}
 
-	public void updatePhase(){
-		if (numberOfTurns == 3 * auth.getNumOfPlayers()){
+	public void updatePhase() {
+		if (numberOfTurns == 3 * auth.getNumOfPlayers()) {
 			this.phase = GamePhase.SecondRound;
-		}
-		else if(numberOfTurns == 6 * auth.getNumOfPlayers()){
+		} else if (numberOfTurns == 6 * auth.getNumOfPlayers()) {
 			this.phase = GamePhase.FinalRound;
-		}
-		else if(numberOfTurns == 9 * auth.getNumOfPlayers()){
+		} else if (numberOfTurns == 9 * auth.getNumOfPlayers()) {
 			this.phase = GamePhase.FinalScoring;
 		}
 	}
 
-	public int getCurrentLeftActions(){
+	public int getCurrentLeftActions() {
 		return auth.getLeftActionsOfCurrentPlayer();
 	}
 
-	public GamePhase getPhase(){
+	public GamePhase getPhase() {
 		return this.phase;
 
 	}
+
+	public void activateArtifact(String name) {
+		auth.getCurrentPlayer().inventory.activateArtifact(name);
+	}
 }
-
-
-

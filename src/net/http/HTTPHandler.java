@@ -350,6 +350,9 @@ public class HTTPHandler implements HttpHandler {
                                 "Published theory for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                     } catch (IOException e) {
                         e.printStackTrace();
+                    } catch (NotEnoughActionsException e) {
+
+                        e.printStackTrace();
                     }
                 });
                 put("/http/debunkTheory", (HttpExchange exchange) -> {
@@ -359,6 +362,21 @@ public class HTTPHandler implements HttpHandler {
 
                         sendResponse(exchange, 200,
                                 "Debunked theory for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (NotEnoughActionsException e) {
+
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/activateArtifact", (HttpExchange exchange) -> {
+
+                    try {
+                        String name = getRequestString(exchange);
+                        game.activateArtifact(name);
+
+                        sendResponse(exchange, 200,
+                                "Activated artifact for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

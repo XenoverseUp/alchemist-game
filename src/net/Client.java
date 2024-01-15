@@ -355,4 +355,10 @@ public class Client {
         return Integer.parseInt((String) response.body());
     }
 
+    public void activateArtifact(String name) throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/activateArtifact");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
 }

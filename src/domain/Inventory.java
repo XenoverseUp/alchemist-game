@@ -2,17 +2,15 @@ package domain;
 
 import java.util.ArrayList;
 
-
 public class Inventory {
 	private int gold = 0;
 	private ArrayList<ArtifactCard> artifactCards = new ArrayList<>();
 	private ArrayList<IngredientCard> ingredientCards = new ArrayList<>();
-	
-	
+
 	public void addIngredientCard(IngredientCard ingredient) {
 		this.ingredientCards.add(ingredient);
 	}
-	
+
 	public void addArtifactCard(ArtifactCard artifact) {
 		this.artifactCards.add(artifact);
 	}
@@ -25,25 +23,25 @@ public class Inventory {
 	 */
 	public void discardArtifactCard(String name) {
 		ArtifactCard card = this.artifactCards
-								.stream()
-								.filter(c -> c.getName().equals(name))
-								.findFirst()
-								.get();
+				.stream()
+				.filter(c -> c.getName().equals(name))
+				.findFirst()
+				.get();
 
-		this.gold += (int)(card.getPrice() / 2);
+		this.gold += (int) (card.getPrice() / 2);
 		this.artifactCards.remove(card);
 	}
 
 	public boolean isEmpty() {
 		return this.ingredientCards.size() == 0;
-    }
-	
-	public void addGold (int amount) {
+	}
+
+	public void addGold(int amount) {
 		this.gold += amount;
 	}
-	
+
 	public void spendGold(int amount) {
-		if(amount <= this.gold){
+		if (amount <= this.gold) {
 			this.gold -= amount;
 		}
 	}
@@ -51,34 +49,47 @@ public class Inventory {
 	public ArrayList<IngredientCard> getIngredientCards() {
 		return ingredientCards;
 	}
-	
+
 	public ArrayList<ArtifactCard> getArtifactCards() {
 		return artifactCards;
 	}
 
 	public IngredientCard getIngredient(String name) {
-		for (int i = 0; i < ingredientCards.size(); i++) 
-			if (ingredientCards.get(i).getName().equals(name)) 
+		for (int i = 0; i < ingredientCards.size(); i++)
+			if (ingredientCards.get(i).getName().equals(name))
 				return ingredientCards.remove(i);
-		
+
 		return null;
 	}
 
 	public Boolean hasIngredient(String name) {
-		for (int i = 0; i < ingredientCards.size(); i++) 
-			if (ingredientCards.get(i).getName().equals(name)) 
+		for (int i = 0; i < ingredientCards.size(); i++)
+			if (ingredientCards.get(i).getName().equals(name))
 				return true;
-		
+
 		return false;
 	}
-
-
 
 	public int getGold() {
 		return gold;
 	}
 
-	public void setGold(int amount){
+	public void setGold(int amount) {
 		this.gold = amount;
+	}
+
+	public void activateArtifact(String name) {
+		ArtifactCard card = this.artifactCards
+				.stream()
+				.filter(c -> c.getName().equals(name))
+				.findFirst()
+				.get();
+
+		if (card.getActivation() == 1) {
+			card.setActivation(0);
+		}
+		if (card.getActivation() == 0) {
+			card.setActivation(1);
+		}
 	}
 }

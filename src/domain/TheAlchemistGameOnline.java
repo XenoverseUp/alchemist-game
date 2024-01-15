@@ -230,16 +230,21 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
     @Override
-    public int getMarkerID(int id) {
+    public int getMarkerID(int CardId) {
 
         try {
-            return client.getMarkerId(id);
+            return client.getMarkerId(CardId);
         } catch (ServerSideException e) {
 
             e.printStackTrace();
         }
         return (Integer) null;
 
+    }
+
+    @Override
+    public void activateArtifact(String name) {
+        client.activateArtifact(name);
     }
 
 }

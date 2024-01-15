@@ -62,9 +62,11 @@ public interface IGameRegister {
 
     public void setMarker(int i);
 
-    public void publishTheory();
+    public void publishTheory() throws NotEnoughActionsException;
 
-    public void debunkTheory();
+    public void debunkTheory() throws NotEnoughActionsException;
 
     public int getMarkerID(int id);
+
+    public void activateArtifact(String name);
 }

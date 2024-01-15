@@ -113,12 +113,16 @@ public class TheAlchemistGame implements IGameRegister {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
-    public void publishTheory() {
+    public void publishTheory() throws NotEnoughActionsException {
         gameBoard.publishTheory();
     }
 
-    public void debunkTheory() {
+    public void debunkTheory() throws NotEnoughActionsException {
         gameBoard.debunkTheory();
+    }
+
+    public void activateArtifact(String name) {
+        gameBoard.activateArtifact(name);
     }
 
     public void setMarker(int id) {
