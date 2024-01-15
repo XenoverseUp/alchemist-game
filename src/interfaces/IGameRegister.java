@@ -10,6 +10,7 @@ import enums.Avatar;
 import enums.DeductionToken;
 import enums.GamePhase;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
 
 public interface IGameRegister {
     public int createUser(String userName, Avatar a);
@@ -68,5 +69,5 @@ public interface IGameRegister {
 
     public int getMarkerID(int id);
 
-    public void activateArtifact(String name);
+    public void activateArtifact(String name) throws ServerSideException;
 }

@@ -243,7 +243,7 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
     @Override
-    public void activateArtifact(String name) {
+    public void activateArtifact(String name) throws ServerSideException {
         client.activateArtifact(name);
     }
 

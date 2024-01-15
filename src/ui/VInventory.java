@@ -23,6 +23,7 @@ import domain.ArtifactCard;
 import domain.Game;
 import enums.View;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
 import ui.framework.VComponent;
 import ui.util.WrapLayout;
 
@@ -286,7 +287,12 @@ public class VInventory extends VComponent {
         activateButton.setBorderPainted(false);
 
         activateButton.addActionListener(event -> {
-            game.getRegister().activateArtifact(name);
+            try {
+                game.getRegister().activateArtifact(name);
+            } catch (ServerSideException e) {
+
+                e.printStackTrace();
+            }
             this.update();
         });
 
