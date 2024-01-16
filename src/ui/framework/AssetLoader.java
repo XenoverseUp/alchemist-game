@@ -40,6 +40,15 @@ public class AssetLoader {
     private BufferedImage BEnigmatic;
     private BufferedImage BSerene;
 
+    private BufferedImage BThunderousBig;
+    private BufferedImage BMysticalBig;
+    private BufferedImage BCelestialBig;
+    private BufferedImage BCrimsonBig;
+    private BufferedImage BLuminousBig;
+    private BufferedImage BGalacticBig;
+    private BufferedImage BEnigmaticBig;
+    private BufferedImage BSereneBig;
+
     private BufferedImage BPotionBrewingAreaBackground;
     private BufferedImage BOnlineSelectionBackground;
     private BufferedImage BLobbyBackground;
@@ -47,6 +56,10 @@ public class AssetLoader {
     private BufferedImage BArtifactShopBackground;
     private BufferedImage BInventoryBackground;
     private BufferedImage BBlurredBoard;
+    private BufferedImage BOnlineLoginBackground;
+    private BufferedImage BLoginBackground;
+    private BufferedImage BFinalBackground;
+    private BufferedImage pbAreaBackground;
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
@@ -56,12 +69,15 @@ public class AssetLoader {
     private BufferedImage BLeftArrow;
     private BufferedImage BStartButton;
     private BufferedImage BStartButtonPressed;
+    private BufferedImage BFinishButton;
+    private BufferedImage BFinishButtonPressed;
     private BufferedImage BNameRibbonYellow;
     private BufferedImage BNameRibbonGreen;
     private BufferedImage BNameRibbonRed;
     private BufferedImage BNameRibbonBlue;
 
-    private BufferedImage pbAreaBackground;
+
+    private BufferedImage BCrown;
 
     private BufferedImage BMarker0;
     private BufferedImage BMarker1;
@@ -122,6 +138,15 @@ public class AssetLoader {
             BEnigmatic = ImageIO.read(new File("./src/resources/image/avatars/Enigmatic.png"));
             BSerene = ImageIO.read(new File("./src/resources/image/avatars/Serene.png"));
             
+            BThunderousBig = ImageIO.read(new File("./src/resources/image/avatars/ThunderousBig.png"));
+            BMysticalBig = ImageIO.read(new File("./src/resources/image/avatars/MysticalBig.png"));
+            BCelestialBig = ImageIO.read(new File("./src/resources/image/avatars/CelestialBig.png"));
+            BCrimsonBig = ImageIO.read(new File("./src/resources/image/avatars/CrimsonBig.png"));
+            BLuminousBig = ImageIO.read(new File("./src/resources/image/avatars/LuminousBig.png"));
+            BGalacticBig = ImageIO.read(new File("./src/resources/image/avatars/GalacticBig.png"));
+            BEnigmaticBig = ImageIO.read(new File("./src/resources/image/avatars/EnigmaticBig.png"));
+            BSereneBig = ImageIO.read(new File("./src/resources/image/avatars/SereneBig.png"));
+
             BPotionBrewingAreaBackground =  ImageIO.read(new File("./src/resources/image/pbaBackground.png"));
             BOnlineSelectionBackground =  ImageIO.read(new File("./src/resources/image/onlineSelectionBackground.png"));
             BLobbyBackground =  ImageIO.read(new File("./src/resources/image/lobbyBackground.png"));
@@ -129,6 +154,9 @@ public class AssetLoader {
             BArtifactShopBackground =  ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
             BInventoryBackground = ImageIO.read(new File("./src/resources/image/inventoryBg.png"));
             BBlurredBoard = ImageIO.read(new File("./src/resources/image/notTurnBackground.png"));
+            BOnlineLoginBackground = ImageIO.read(new File("./src/resources/image/onlineLoginBackground.png"));
+            BLoginBackground = ImageIO.read(new File("./src/resources/image/loginBackground.png"));
+            BFinalBackground =  ImageIO.read(new File("./src/resources/image/finalBackground.png"));
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
             BTitle = ImageIO.read(new File("./src/resources/image/HUD/title_large.png"));
@@ -139,10 +167,15 @@ public class AssetLoader {
 
             BStartButton = ImageIO.read(new File("./src/resources/image/HUD/startButton.png"));
             BStartButtonPressed = ImageIO.read(new File("./src/resources/image/HUD/startButtonPressed.png"));
+            BFinishButton = ImageIO.read(new File("./src/resources/image/HUD/finalButton.png"));
+            BFinishButtonPressed = ImageIO.read(new File("./src/resources/image/HUD/finalButtonPressed.png"));
             BNameRibbonYellow = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonYellow.png"));
             BNameRibbonGreen = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonGreen.png"));
             BNameRibbonRed = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonRed.png"));
             BNameRibbonBlue = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonBlue.png"));
+
+
+            BCrown = ImageIO.read(new File("./src/resources/image/HUD/Crown.png"));
             
             BMarker0 = ImageIO.read(new File("src/resources/image/marker0.png"));
             BMarker1 = ImageIO.read(new File("src/resources/image/marker1.png"));
@@ -154,6 +187,7 @@ public class AssetLoader {
             BMarker7 = ImageIO.read(new File("src/resources/image/marker7.png"));
             
             pbAreaBackground = ImageIO.read(new File("src/resources/image/publication-area-bg.png"));
+
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -240,6 +274,29 @@ public class AssetLoader {
         return BThunderous;
     }
 
+    public BufferedImage getAvatarImageBig(Avatar avatar) {
+        switch (avatar) {
+            case Thunderous:
+                return BThunderousBig;
+            case Mystical:
+                return BMysticalBig;
+            case Celestial:
+                return BCelestialBig;
+            case Crimson:
+                return BCrimsonBig;
+            case Luminous:
+                return BLuminousBig;
+            case Galactic:
+                return BGalacticBig;
+            case Enigmatic:
+                return BEnigmaticBig;
+            case Serene:
+                return BSereneBig;
+        }
+
+        return BThunderousBig;
+    }
+
     public BufferedImage getNameRibbon(int i) {
         switch (i) {
             case 1: return BNameRibbonBlue;
@@ -262,6 +319,12 @@ public class AssetLoader {
         return !pressed ? BStartButton : BStartButtonPressed;
     }
 
+    public BufferedImage getFinishButton(boolean pressed) {
+        return !pressed ? BFinishButton : BFinishButtonPressed;
+    }
+
+    
+
     public BufferedImage getBackground(View view) {
         switch (view) {
             case PotionBrewingArea:
@@ -276,9 +339,19 @@ public class AssetLoader {
                 return BArtifactShopBackground;
             case Inventory:
                 return BInventoryBackground;
+            case OnlineLogin:
+                return BOnlineLoginBackground;
+            case Login:
+                return BLoginBackground;
+            case FinalScore:
+                return BFinalBackground;
             default:
                 return null;
         }
+    }
+
+    public BufferedImage getCrown(){
+        return BCrown;
     }
 
     public Image getClose() { return this.scale(BClose, 60, 60); }

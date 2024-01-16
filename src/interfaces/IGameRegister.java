@@ -59,6 +59,7 @@ public interface IGameRegister {
 
     public HashMap<String[], DeductionToken> getDeductionTokens();
 
+
     public void setCard(int i);
 
     public void setMarker(int i);
@@ -74,4 +75,7 @@ public interface IGameRegister {
     public void removeArtifactCardAfterUsing(String string) throws ServerSideException;
 
     public void paralyseEveryone() throws ServerSideException;
+
+    public ArrayList<Integer> calculateWinner();
+ 
 }

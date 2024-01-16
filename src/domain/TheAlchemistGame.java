@@ -179,7 +179,7 @@ public class TheAlchemistGame implements IGameRegister {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
     }
 
-    public ArrayList<Player> calculateWinner() {
+    public ArrayList<Integer> calculateWinner(){
         return this.gameBoard.getAuth().calculateWinner();
     }
 

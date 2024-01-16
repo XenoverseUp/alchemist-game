@@ -83,6 +83,7 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
 
+
                 });
                 put("/http/game/phase", (HttpExchange exchange) -> {
                     GamePhase currentPhase = game.getPhase();
@@ -96,6 +97,15 @@ public class HTTPHandler implements HttpHandler {
                 put("/http/inventory/artifact", (HttpExchange exchange) -> {
                     List<ArtifactCard> cards = game.getCurrentPlayer().inventory.getArtifactCards();
                     String responseBody = JON.build(cards.stream().map(c -> c.getName()).toList());
+
+                    for (Avatar a : Avatar.values())
+                        if (a.toString().equals(parsed.get("avatar"))){
+                            avatar = a;
+                            break;
+                        }
+                        
+                    int result = game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
+
 
                     try {
                         sendResponse(exchange, 200, responseBody);
@@ -212,8 +222,34 @@ public class HTTPHandler implements HttpHandler {
                             e1.printStackTrace();
                         }
                     }
-                });
-                put("/http/forageIngredient", (HttpExchange exchange) -> {
+
+                
+            });
+            put("/http/restartGame", (HttpExchange exchange) -> {
+                // game.reset();
+                try {
+                    sendResponse(exchange, 200, "Game is started by the host.");
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
+                } catch (IOException e) {
+                    try {
+                        sendResponse(exchange, 500, "Internal Server Error");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+            put("/http/finishGame", (HttpExchange exchange) -> {
+                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_FINISHED));
+                try {
+                    sendResponse(exchange, 200, "Game session has ended.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            put("/http/forageIngredient", (HttpExchange exchange) -> {
+                try {
+                    game.forageIngredient();
+
                     try {
                         game.forageIngredient();
                         try {
@@ -404,9 +440,38 @@ public class HTTPHandler implements HttpHandler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                });
-            }
-        });
+
+                 catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
+                
+                try {
+                    Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
+                    game.toggleDeductionTable(arguments.get("ingredient-name"), Integer.parseInt(arguments.get("table-index")));
+            
+                    sendResponse(exchange, 200, "Toggled deduction table for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            put("/http/calculateWinner", (HttpExchange exchange) -> {
+                
+                try {
+                    ArrayList<Integer> winnerIds = game.calculateWinner();
+                    String responseBody = JON.build(winnerIds);
+            
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+
+        }});
+
     }
 
     @Override

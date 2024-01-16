@@ -23,7 +23,9 @@ public class Router {
 
     public void populate(Map<View, VComponent> views) {
         this.views = views;
-        this.views.forEach((k, v) -> v.render());
+        this.views.forEach((k, v) -> {
+            v.render();
+        });
     }
 
     public void to(View nextView) {
@@ -59,5 +61,9 @@ public class Router {
     public View getCurrentView() { return this.currentView; }
     public View getPreviousView() { return this.history.peek(); }
     public boolean hasPreviousView() { return !history.isEmpty(); }
+
+    public void activateListeners() {
+        this.views.forEach((k, v) -> v.listenBroadcast());
+    }
 
 }
