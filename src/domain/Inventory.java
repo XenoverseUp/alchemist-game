@@ -76,14 +76,15 @@ public class Inventory {
 		boolean isCardFound = false;
 		int cardActivated = 0;
 		for (ArtifactCard card : artifactCards) {
-    		if (card.getName().equalsIgnoreCase(cardToFind)) {
-        		isCardFound = true;
-        		cardActivated = card.getActivation();
-				if (cardActivated == 1){
+			if (card.getName().equalsIgnoreCase(cardToFind)) {
+				isCardFound = true;
+				cardActivated = card.getActivation();
+				if (cardActivated == 1) {
 					return true;
 				}
-			}}
-		return false;	
+			}
+		}
+		return false;
 	}
 
 	public int getGold() {
@@ -107,5 +108,15 @@ public class Inventory {
 		if (card.getActivation() == 0) {
 			card.setActivation(1);
 		}
+	}
+
+	public void removeArtifactCardAfterUsing(String name) {
+		ArtifactCard card = this.artifactCards
+				.stream()
+				.filter(c -> c.getName().equals(name))
+				.findFirst()
+				.get();
+
+		this.artifactCards.remove(card);
 	}
 }

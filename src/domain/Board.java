@@ -239,6 +239,10 @@ public class Board {
 		auth.getCurrentPlayer().inventory.activateArtifact(name);
 	}
 
+	public void removeArtifactCardAfterUsing(String name) {
+		auth.getCurrentPlayer().inventory.removeArtifactCardAfterUsing(name);
+	}
+
 	public void paralyseEveryone() {
 		int a = auth.players.size();
 		for (int i = 0; i < a; i++) {

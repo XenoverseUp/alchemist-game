@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import enums.View;
+import error.NotEnoughActionsException;
 import ui.framework.VComponent;
 import domain.Game;
 
@@ -239,7 +240,11 @@ public class VPublicationArea extends VComponent {
 
         publishTheory.setFont(new Font("CrimsonPro", Font.BOLD, 18));
         publishTheory.addActionListener(e -> {
-            game.getRegister().publishTheory();
+            try {
+                game.getRegister().publishTheory();
+            } catch (NotEnoughActionsException e1) {
+                e1.printStackTrace();
+            }
             SwingUtilities.invokeLater(() -> {
                 update();
             });
@@ -253,7 +258,11 @@ public class VPublicationArea extends VComponent {
         JButton debunkTheory = new JButton("Debunk Theory");
         debunkTheory.setFont(new Font("CrimsonPro", Font.BOLD, 18));
         debunkTheory.addActionListener(e -> {
-            game.getRegister().debunkTheory();
+            try {
+                game.getRegister().debunkTheory();
+            } catch (NotEnoughActionsException e1) {
+                e1.printStackTrace();
+            }
             SwingUtilities.invokeLater(() -> {
                 update();
             });

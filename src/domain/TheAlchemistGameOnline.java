@@ -247,4 +247,14 @@ public class TheAlchemistGameOnline implements IGameRegister {
         client.activateArtifact(name);
     }
 
+    @Override
+    public void removeArtifactCardAfterUsing(String name) throws ServerSideException {
+        client.removeArtifactCardAfterUsing(name);
+    }
+
+    @Override
+    public void paralyseEveryone() throws ServerSideException {
+        client.paralyseEveryone();
+    }
+
 }

@@ -361,4 +361,16 @@ public class Client {
             throw new ServerSideException();
     }
 
+    public void removeArtifactCardAfterUsing(String name) throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/removeArtifactCardAfterUsing");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public void paralyseEveryone() throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/paralyseEveryone");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
 }

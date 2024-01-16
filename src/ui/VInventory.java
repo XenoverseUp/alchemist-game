@@ -288,7 +288,13 @@ public class VInventory extends VComponent {
 
         activateButton.addActionListener(event -> {
             try {
-                game.getRegister().activateArtifact(name);
+
+                if (name.equals("Stanley Parable")) {
+                    game.getRegister().paralyseEveryone();
+                    game.getRegister().removeArtifactCardAfterUsing("Stanley Parable");
+                } else {
+                    game.getRegister().activateArtifact(name);
+                }
             } catch (ServerSideException e) {
 
                 e.printStackTrace();

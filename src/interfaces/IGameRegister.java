@@ -70,4 +70,8 @@ public interface IGameRegister {
     public int getMarkerID(int id);
 
     public void activateArtifact(String name) throws ServerSideException;
+
+    public void removeArtifactCardAfterUsing(String string) throws ServerSideException;
+
+    public void paralyseEveryone() throws ServerSideException;
 }

@@ -10,6 +10,7 @@ import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
 import error.WrongGameRoundException;
 import interfaces.IGameRegister;
 
@@ -123,6 +124,14 @@ public class TheAlchemistGame implements IGameRegister {
 
     public void activateArtifact(String name) {
         gameBoard.activateArtifact(name);
+    }
+
+    public void removeArtifactCardAfterUsing(String name) {
+        gameBoard.removeArtifactCardAfterUsing(name);
+    }
+
+    public void paralyseEveryone() {
+        gameBoard.paralyseEveryone();
     }
 
     public void setMarker(int id) {

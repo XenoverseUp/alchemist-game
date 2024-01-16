@@ -19,6 +19,7 @@ import enums.BroadcastAction;
 import enums.DeductionToken;
 import enums.GamePhase;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
 import net.ClientHandler;
 import net.util.BroadcastPackage;
 import net.util.JON;
@@ -378,6 +379,31 @@ public class HTTPHandler implements HttpHandler {
                         sendResponse(exchange, 200,
                                 "Activated artifact for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/removeArtifactCardAfterUsing", (HttpExchange exchange) -> {
+
+                    try {
+                        String name = getRequestString(exchange);
+                        game.removeArtifactCardAfterUsing(name);
+
+                        sendResponse(exchange, 200,
+                                "Removed artifact for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/paralyseEveryone", (HttpExchange exchange) -> {
+
+                    try {
+                        game.paralyseEveryone();
+
+                        sendResponse(exchange, 200,
+                                "Paralysed everyone for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ServerSideException e) {
                         e.printStackTrace();
                     }
                 });
