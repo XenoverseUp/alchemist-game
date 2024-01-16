@@ -176,6 +176,7 @@ public class Board {
 								"Published Theory Successfully!\n Reputation: +1\n Gold: -1",
 								"Success!", JOptionPane.PLAIN_MESSAGE);
 					});
+					auth.decreaseLeftActionsOfCurrentPlayer();
 				}
 			}
 		}
