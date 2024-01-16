@@ -127,6 +127,9 @@ public class Board {
 
 		IngredientCard ingredient1 = auth.getIngredientCardFromCurrentPlayer(ingredientName1);
 		IngredientCard ingredient2 = auth.getIngredientCardFromCurrentPlayer(ingredientName2);
+		if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Magic Mortar").equals(true)) {
+			auth.addIngredientCardToCurrentPlayer(ingredient1);
+		}
 
 		Potion potion = PotionBrewingArea.combine(ingredient1, ingredient2);
 
@@ -158,22 +161,24 @@ public class Board {
 		if (!alchemyMarkerDeck.getChosen().checkAvailability()) {
 			if (getAuth().getCurrentPlayer().inventory.getGold() > 0) {
 
-			if (this.publicationCardDeck.getChosen().getAlchemyMarker() == null) {
-				auth.getCurrentPlayer().increaseReputation(1);
-				
-				if(getAuth().getCurrentPlayer().inventory.hasArtifactCard("Printing Press").equals(false)) {
-					auth.removeGoldFromCurrentUser(1);
-				}
+				if (this.publicationCardDeck.getChosen().getAlchemyMarker() == null) {
+					auth.getCurrentPlayer().increaseReputation(1);
 
-				this.publicationCardDeck.getChosen().setAlchemyMarker(alchemyMarkerDeck.getChosen());
-				alchemyMarkerDeck.getChosen().associate();
-				publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
-				SwingUtilities.invokeLater(() -> {
-					JOptionPane.showMessageDialog(null, "Published Theory Successfully!\n Reputation: +1\n Gold: -1",
-							"Success!", JOptionPane.PLAIN_MESSAGE);
-				});
+					if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Printing Press").equals(false)) {
+						auth.removeGoldFromCurrentUser(1);
+					}
+
+					this.publicationCardDeck.getChosen().setAlchemyMarker(alchemyMarkerDeck.getChosen());
+					alchemyMarkerDeck.getChosen().associate();
+					publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
+					SwingUtilities.invokeLater(() -> {
+						JOptionPane.showMessageDialog(null,
+								"Published Theory Successfully!\n Reputation: +1\n Gold: -1",
+								"Success!", JOptionPane.PLAIN_MESSAGE);
+					});
+				}
 			}
-		}}
+		}
 	}
 
 	// chooses a publication card, states the published theory is wrong, doesn't
@@ -231,5 +236,12 @@ public class Board {
 
 	public void activateArtifact(String name) {
 		auth.getCurrentPlayer().inventory.activateArtifact(name);
+	}
+
+	public void paralyseEveryone() {
+		int a = auth.players.size();
+		for (int i = 0; i < a; i++) {
+			toggleCurrentUser();
+		}
 	}
 }
