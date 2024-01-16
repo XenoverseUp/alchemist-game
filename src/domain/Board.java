@@ -72,6 +72,9 @@ public class Board {
 
 		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(name);
 		this.auth.addGoldToCurrentUser(1);
+		if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Trader's Touch").equals(true)) {
+			this.auth.addGoldToCurrentUser(1);
+		}
 		this.ingredientCardDeck.addCard(iCard);
 		this.ingredientCardDeck.shuffle();
 		auth.decreaseLeftActionsOfCurrentPlayer();
@@ -163,6 +166,9 @@ public class Board {
 
 				if (this.publicationCardDeck.getChosen().getAlchemyMarker() == null) {
 					auth.getCurrentPlayer().increaseReputation(1);
+					if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Robe of Respect").equals(true)) {
+						auth.getCurrentPlayer().increaseReputation(1);
+					}
 
 					if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Printing Press").equals(false)) {
 						auth.removeGoldFromCurrentUser(1);
@@ -199,7 +205,13 @@ public class Board {
 				this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
 				AlchemyMarker marker = null;
 				auth.getCurrentPlayer().increaseReputation(2);
-				this.publicationCardDeck.getChosen().getPlayer().decreaseReputation(2);
+				if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Robe of Respect").equals(true)) {
+					auth.getCurrentPlayer().increaseReputation(1);
+				}
+				if (this.publicationCardDeck.getChosen().getPlayer().inventory.hasArtifactCard("Wisdom Idol")
+						.equals(false)) {
+					this.publicationCardDeck.getChosen().getPlayer().decreaseReputation(2);
+				}
 				for (int i = 0; i < this.ingredientCardDeck.getDeck().size(); i++) {
 					if (this.ingredientCardDeck.getDeck().get(i).getMolecule()
 							.equals(this.alchemyMarkerDeck.getMarker(i).getMolecule())) {
