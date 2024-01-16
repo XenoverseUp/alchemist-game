@@ -74,4 +74,6 @@ public interface IGameRegister {
     public void removeArtifactCardAfterUsing(String string) throws ServerSideException;
 
     public void paralyseEveryone() throws ServerSideException;
+
+    public boolean hasArtifactCard(String string) throws ServerSideException;
 }

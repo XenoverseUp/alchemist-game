@@ -146,6 +146,18 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 });
+                put("/http/hasArtifactCard", (HttpExchange exchange) -> {
+                    String handle = HTTPRequestParser.parsePath(exchange.getRequestURI().getPath(), paths);
+                    String name = HTTPRequestParser.parseParameter(exchange.getRequestURI().getPath(), handle);
+                    try {
+                        if (name == null)
+                            sendResponse(exchange, 400, "Cannot parse the passed parameter.");
+
+                        sendResponse(exchange, 200, String.valueOf(game.hasArtifactCard(name)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         });
 

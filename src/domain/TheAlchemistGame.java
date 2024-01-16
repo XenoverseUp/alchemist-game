@@ -134,6 +134,10 @@ public class TheAlchemistGame implements IGameRegister {
         gameBoard.removeArtifactCardAfterUsing(name);
     }
 
+    public boolean hasArtifactCard(String name) {
+        return gameBoard.hasArtifactCard(name);
+    }
+
     @Override
     public void paralyseEveryone() {
         gameBoard.paralyseEveryone();

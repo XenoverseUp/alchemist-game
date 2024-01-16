@@ -373,4 +373,11 @@ public class Client {
             throw new ServerSideException();
     }
 
+    public boolean hasArtifactCard(String name) throws ServerSideException {
+        HttpResponse<String> response = request.get("/http/hasArtifactCard");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+        return Boolean.parseBoolean((String) response.body());
+    }
+
 }

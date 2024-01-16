@@ -257,4 +257,9 @@ public class TheAlchemistGameOnline implements IGameRegister {
         client.paralyseEveryone();
     }
 
+    @Override
+    public boolean hasArtifactCard(String name) throws ServerSideException {
+        return client.hasArtifactCard(name);
+    }
+
 }

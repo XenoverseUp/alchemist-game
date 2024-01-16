@@ -229,7 +229,7 @@ public class VPublicationArea extends VComponent {
         publicationPanel.setOpaque(false);
 
         JButton back = new JButton("Back");
-        back.setBounds(480, 690, 150, 30);
+        back.setBounds(480, 650, 150, 30);
         back.addActionListener(event -> router.to(View.Board));
         back.setForeground(customColor);
         panel.add(back);

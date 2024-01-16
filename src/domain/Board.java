@@ -261,4 +261,8 @@ public class Board {
 			toggleCurrentUser();
 		}
 	}
+
+	public boolean hasArtifactCard(String name) {
+		return auth.getCurrentPlayer().inventory.hasArtifactCard(name);
+	}
 }
