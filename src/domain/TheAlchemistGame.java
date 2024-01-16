@@ -114,34 +114,42 @@ public class TheAlchemistGame implements IGameRegister {
         gameBoard.getAuth().addCurrentUserListener(currentUserListener);
     }
 
+    @Override
     public void publishTheory() throws NotEnoughActionsException {
         gameBoard.publishTheory();
     }
 
+    @Override
     public void debunkTheory() throws NotEnoughActionsException {
         gameBoard.debunkTheory();
     }
 
+    @Override
     public void activateArtifact(String name) {
         gameBoard.activateArtifact(name);
     }
 
+    @Override
     public void removeArtifactCardAfterUsing(String name) {
         gameBoard.removeArtifactCardAfterUsing(name);
     }
 
+    @Override
     public void paralyseEveryone() {
         gameBoard.paralyseEveryone();
     }
 
+    @Override
     public void setMarker(int id) {
         gameBoard.alchemyMarkerDeck.setChosen(id);
     }
 
+    @Override
     public void setCard(int id) {
         gameBoard.publicationCardDeck.setChosen(id);
     }
 
+    @Override
     public int getMarkerID(int id) {
         AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
         return marker.getId();
