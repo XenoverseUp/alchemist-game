@@ -403,8 +403,6 @@ public class HTTPHandler implements HttpHandler {
                                 "Paralysed everyone for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } catch (ServerSideException e) {
-                        e.printStackTrace();
                     }
                 });
             }
