@@ -417,6 +417,19 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 });
+                put("/http/swapAfterIndex", (HttpExchange exchange) -> {
+
+                    try {
+                        Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
+                        game.swapAfterIndex(Integer.parseInt(arguments.get("first")),
+                                Integer.parseInt(arguments.get("second")), Integer.parseInt(arguments.get("third")));
+
+                        sendResponse(exchange, 200, "Swapped ingredients for client #"
+                                + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         });
     }

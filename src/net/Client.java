@@ -288,6 +288,18 @@ public class Client {
         return Boolean.parseBoolean((String) response.body());
     }
 
+    public void swapAfterIndex(int first, int second, int third) {
+        String body = JON.build(new HashMap<String, String>() {
+            {
+                put("first", String.valueOf(first));
+                put("second", String.valueOf(second));
+                put("third", String.valueOf(third));
+            }
+        });
+
+        HttpResponse<String> response = request.put("/http/swapAfterIndex", body);
+    }
+
     /** Cache Supplier Methods */
 
     private String currentPlayerSupplier() {

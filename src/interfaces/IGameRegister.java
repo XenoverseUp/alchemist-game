@@ -77,4 +77,6 @@ public interface IGameRegister {
 
     public boolean hasArtifactCard(String string) throws ServerSideException;
 
+    public void swapAfterIndex(int first, int second, int third);
+
 }

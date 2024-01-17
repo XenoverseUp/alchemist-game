@@ -262,4 +262,9 @@ public class TheAlchemistGameOnline implements IGameRegister {
         return client.hasArtifactCard(name);
     }
 
+    @Override
+    public void swapAfterIndex(int first, int second, int third) {
+        client.swapAfterIndex(first, second, third);
+    }
+
 }

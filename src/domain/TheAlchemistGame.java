@@ -156,6 +156,7 @@ public class TheAlchemistGame implements IGameRegister {
 
     }
 
+    @Override
     public void swapAfterIndex(int first, int second, int third) {
         gameBoard.swapAfterIndex(first, second, third);
     }
