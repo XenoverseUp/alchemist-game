@@ -264,7 +264,9 @@ public class Board {
 		return auth.getCurrentPlayer().inventory.hasArtifactCard(name);
 	}
 
-	public void swapAfterIndex(int first, int second, int third) {
+	public void swapAfterIndex(int first, int second, int third) { // puts three cards starting from index to threeCards
+																	// array, updates the ingredient card deck using the
+																	// parameters
 		if ((first != second) & (second != third) & (third != first)) {
 			ArrayList<IngredientCard> threeCards = new ArrayList<IngredientCard>();
 			int index = ingredientCardDeck.index;
