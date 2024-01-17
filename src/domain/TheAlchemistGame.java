@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import enums.Avatar;
 import enums.DeductionToken;
@@ -232,5 +233,16 @@ public class TheAlchemistGame implements IGameRegister {
     @Override
     public Avatar getCurrentPlayerAvatar() {
         return this.getCurrentPlayer().avatar;
+    }
+
+    @Override
+    public List<String> getIngredients() { // gets only the top three ingredients
+        int index = gameBoard.ingredientCardDeck.index;
+        return gameBoard.ingredientCardDeck.getDeck()
+                .stream()
+                .skip(index)
+                .limit(3)
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
     }
 }

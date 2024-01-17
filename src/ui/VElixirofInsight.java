@@ -116,6 +116,7 @@ public class VElixirofInsight extends VComponent {
 
     private void update() {
         selectedValues = new ArrayList<>();
+
         this.scrollPosition = scrollPane.getVerticalScrollBar().getValue();
         scrollPane.setViewportView(null);
 
@@ -136,7 +137,7 @@ public class VElixirofInsight extends VComponent {
         cards.add(ingredientsTitle);
 
         game.getRegister()
-                .getCurrentPlayerIngredients()
+                .getIngredients()
                 .stream()
                 .map(name -> this.generateIngredientCard(name))
                 .forEach(cards::add);

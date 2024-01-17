@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,5 +79,7 @@ public interface IGameRegister {
     public boolean hasArtifactCard(String string) throws ServerSideException;
 
     public void swapAfterIndex(int first, int second, int third);
+
+    public List<String> getIngredients();
 
 }

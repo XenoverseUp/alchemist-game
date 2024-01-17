@@ -267,4 +267,9 @@ public class TheAlchemistGameOnline implements IGameRegister {
         client.swapAfterIndex(first, second, third);
     }
 
+    @Override
+    public List<String> getIngredients() {
+        return client.getIngredients();
+    }
+
 }

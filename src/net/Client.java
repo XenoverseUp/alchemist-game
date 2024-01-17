@@ -300,6 +300,15 @@ public class Client {
         HttpResponse<String> response = request.put("/http/swapAfterIndex", body);
     }
 
+    public List<String> getIngredients() {
+        HttpResponse<String> response = request.get("/http/board/ingredients");
+
+        if (response.statusCode() == 200)
+            return JON.parseList((String) response.body());
+
+        return null;
+    }
+
     /** Cache Supplier Methods */
 
     private String currentPlayerSupplier() {

@@ -158,6 +158,16 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 });
+                put("/http/board/ingredients", (HttpExchange exchange) -> {
+                    List<String> cards = game.getIngredients();
+                    String responseBody = JON.build(cards);
+
+                    try {
+                        sendResponse(exchange, 200, responseBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         });
 
