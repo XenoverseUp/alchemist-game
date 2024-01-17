@@ -60,6 +60,7 @@ public interface IGameRegister {
 
     public HashMap<String[], DeductionToken> getDeductionTokens();
 
+
     public void setCard(int i);
 
     public void setMarker(int i);
@@ -81,5 +82,8 @@ public interface IGameRegister {
     public void swapAfterIndex(int first, int second, int third);
 
     public List<String> getIngredients();
+
+
+    public ArrayList<Integer> calculateWinner();
 
 }

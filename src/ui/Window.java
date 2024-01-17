@@ -56,6 +56,7 @@ public class Window {
 
         mainPanel.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
 
+
         LinkedHashMap<View, VComponent> views = new LinkedHashMap<View, VComponent>() {
             {
                 put(View.Start, new VStart());
@@ -73,8 +74,10 @@ public class Window {
                 put(View.Lobby, new VLobby(game));
                 put(View.OnlineLogin, new VOnlineLogin(game));
                 put(View.ElixirOfInsight, new VElixirofInsight(game));
+                put(View.FinalScore, new VFinalScore(game));
             }
         };
+
 
         router = Router.getInstance();
         router.populate(views);

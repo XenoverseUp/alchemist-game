@@ -5,5 +5,7 @@ public enum BroadcastAction {
     PLAYER_CREATED,
     ROOM_IS_FULL,
     GAME_STARTED,
-    PLAYER_TOGGLED
+    PLAYER_TOGGLED,
+    GAME_FINISHED,
+    RESTART_GAME
 }
