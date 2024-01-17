@@ -265,22 +265,24 @@ public class Board {
 	}
 
 	public void swapAfterIndex(int first, int second, int third) {
-		ArrayList<IngredientCard> threeCards = new ArrayList<IngredientCard>();
-		int index = ingredientCardDeck.index;
-		int size = ingredientCardDeck.getDeck().size();
-		IngredientCard currentCard = ingredientCardDeck.getDeck().get(index);
-		IngredientCard nextCard = ingredientCardDeck.getDeck().get((index + 1) % size);
-		IngredientCard twoNextCard = ingredientCardDeck.getDeck().get((index + 2) % size);
-		threeCards.add(currentCard);
-		threeCards.add(currentCard);
-		threeCards.add(currentCard);
-		threeCards.set(first - 1, currentCard);
-		threeCards.set(second - 1, nextCard);
-		threeCards.set(third - 1, twoNextCard);
-		ingredientCardDeck.getDeck().set(index, threeCards.get(0));
-		ingredientCardDeck.getDeck().set((index + 1) % size, threeCards.get(1));
-		ingredientCardDeck.getDeck().set((index + 2) % size, threeCards.get(2));
-		ingredientCardDeck.shouldShuffle = false;
+		if ((first != second) & (second != third) & (third != first)) {
+			ArrayList<IngredientCard> threeCards = new ArrayList<IngredientCard>();
+			int index = ingredientCardDeck.index;
+			int size = ingredientCardDeck.getDeck().size();
+			IngredientCard currentCard = ingredientCardDeck.getDeck().get(index);
+			IngredientCard nextCard = ingredientCardDeck.getDeck().get((index + 1) % size);
+			IngredientCard twoNextCard = ingredientCardDeck.getDeck().get((index + 2) % size);
+			threeCards.add(currentCard);
+			threeCards.add(currentCard);
+			threeCards.add(currentCard);
+			threeCards.set(first - 1, currentCard);
+			threeCards.set(second - 1, nextCard);
+			threeCards.set(third - 1, twoNextCard);
+			ingredientCardDeck.getDeck().set(index, threeCards.get(0));
+			ingredientCardDeck.getDeck().set((index + 1) % size, threeCards.get(1));
+			ingredientCardDeck.getDeck().set((index + 2) % size, threeCards.get(2));
+			ingredientCardDeck.shouldShuffle = false;
+		}
 
 	}
 }

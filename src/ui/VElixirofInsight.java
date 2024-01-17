@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -88,14 +89,16 @@ public class VElixirofInsight extends VComponent {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        JButton actionButton = new JButton("Perform Action");
+        JButton actionButton = new JButton("Rearrange");
         actionButton.addActionListener(e -> {
             if (selectedValues.size() == 3) {
                 game.getRegister().swapAfterIndex(selectedValues.get(0), selectedValues.get(1), selectedValues.get(2));
                 this.update();
             }
         });
+        actionButton.setBounds(windowDimension.getWidth() / 2 - 50, windowDimension.getHeight() - 100, 100, 40);
 
+        panel.add(actionButton);
         panel.add(titleText);
         panel.add(title);
         panel.add(close);
@@ -116,6 +119,9 @@ public class VElixirofInsight extends VComponent {
 
     private void update() {
         selectedValues = new ArrayList<>();
+        selectedValues.add(0);
+        selectedValues.add(0);
+        selectedValues.add(0);
 
         this.scrollPosition = scrollPane.getVerticalScrollBar().getValue();
         scrollPane.setViewportView(null);
@@ -136,10 +142,12 @@ public class VElixirofInsight extends VComponent {
         ingredientsTitle.setForeground(Color.WHITE);
         cards.add(ingredientsTitle);
 
+        int startingRank = 0;
         game.getRegister()
                 .getIngredients()
                 .stream()
-                .map(name -> this.generateIngredientCard(name))
+                .map(name -> this.generateIngredientCard(name,
+                        startingRank + IntStream.range(0, Integer.MAX_VALUE).iterator().nextInt()))
                 .forEach(cards::add);
 
         JPanel marginBottom = new JPanel();
@@ -153,7 +161,7 @@ public class VElixirofInsight extends VComponent {
         scrollPane.repaint();
     }
 
-    private JPanel generateIngredientCard(String name) {
+    private JPanel generateIngredientCard(String name, int rank) {
         BufferedImage cardBuffer = assetLoader.getIngredientCard(name);
 
         JPanel card = new JPanel(null);
@@ -174,7 +182,7 @@ public class VElixirofInsight extends VComponent {
                 // Get the selected item
                 int selectedValue = (Integer) comboBox.getSelectedItem();
                 System.out.println("Selected Option: " + selectedValue);
-                selectedValues.add(selectedValue);
+                selectedValues.set(rank, selectedValue);
             }
         });
 

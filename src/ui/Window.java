@@ -32,7 +32,7 @@ public class Window {
         } catch (IOException | FontFormatException e) {
             System.err.println(e);
         }
-        
+
         this.game = game;
         frame = new JFrame(title);
 
@@ -42,7 +42,6 @@ public class Window {
         modalLayer.add(ModalController.generateInfoPopover(width, height));
         modalLayer.add(ModalController.generateOverlay(width, height));
 
-        
         mainPanel = new JPanel();
         mainPanel.setSize(width, height);
         mainPanel.setPreferredSize(new Dimension(width, height));
@@ -51,30 +50,31 @@ public class Window {
         mainPanel.setBounds(0, 0, width, height);
 
         modalLayer.add(mainPanel);
-        
+
         frame.add(modalLayer);
         frame.pack();
- 
-    
 
         mainPanel.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
 
-        LinkedHashMap<View, VComponent> views = new LinkedHashMap<View, VComponent>() {{
-            put(View.Start, new VStart());
-            put(View.Login, new VLogin(game));
-            put(View.Board, new VBoard(game));
-            put(View.Inventory, new VInventory(game));
-            put(View.CardDeck, new VCardDeck(game));
-            put(View.DeductionBoard, new VDeductionBoard(game));
-            put(View.PotionBrewingArea, new VPotionBrewingArea(game));
-            put(View.PublicationArea, new VPublicationArea(game));
-            put(View.Pause, new VPause(game));
-            put(View.Help, new VHelp());
-            put(View.ArtifactShop, new VArtifactShop(game));
-            put(View.OnlineSelection, new VOnlineSelection(game));
-            put(View.Lobby, new VLobby(game));
-            put(View.OnlineLogin, new VOnlineLogin(game));
-        }};
+        LinkedHashMap<View, VComponent> views = new LinkedHashMap<View, VComponent>() {
+            {
+                put(View.Start, new VStart());
+                put(View.Login, new VLogin(game));
+                put(View.Board, new VBoard(game));
+                put(View.Inventory, new VInventory(game));
+                put(View.CardDeck, new VCardDeck(game));
+                put(View.DeductionBoard, new VDeductionBoard(game));
+                put(View.PotionBrewingArea, new VPotionBrewingArea(game));
+                put(View.PublicationArea, new VPublicationArea(game));
+                put(View.Pause, new VPause(game));
+                put(View.Help, new VHelp());
+                put(View.ArtifactShop, new VArtifactShop(game));
+                put(View.OnlineSelection, new VOnlineSelection(game));
+                put(View.Lobby, new VLobby(game));
+                put(View.OnlineLogin, new VOnlineLogin(game));
+                put(View.ElixirOfInsight, new VElixirofInsight(game));
+            }
+        };
 
         router = Router.getInstance();
         router.populate(views);
@@ -97,7 +97,7 @@ public class Window {
                     } else
                         router.to(View.Pause);
                 }
-                
+
                 if (ke.getKeyCode() == KeyEvent.VK_UP) {
                     if (router.getCurrentView() == View.Help) {
                         if (router.hasPreviousView())
@@ -105,7 +105,7 @@ public class Window {
                     } else
                         router.to(View.Help);
                 }
-                
+
                 // NOTICE: Development Cheat Code
                 if (ke.getKeyCode() == KeyEvent.VK_ENTER && router.getCurrentView() == View.Start) {
                     game.getLocalRegister().createUser("Can", Avatar.Celestial);
@@ -116,8 +116,11 @@ public class Window {
 
             }
 
-            public void keyReleased(KeyEvent e) {}
-            public void keyTyped(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
+
+            public void keyTyped(KeyEvent e) {
+            }
         });
     }
 }
