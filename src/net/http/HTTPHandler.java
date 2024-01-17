@@ -133,7 +133,7 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 });
-                put("/http/getMarkerId", (HttpExchange exchange) -> {
+                put("/http/getMarkerId/:markedId", (HttpExchange exchange) -> {
                     String handle = HTTPRequestParser.parsePath(exchange.getRequestURI().getPath(), paths);
                     String idParameter = HTTPRequestParser.parseParameter(exchange.getRequestURI().getPath(), handle);
                     try {
@@ -146,7 +146,7 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 });
-                put("/http/hasArtifactCard", (HttpExchange exchange) -> {
+                put("/http/hasArtifactCard/:name", (HttpExchange exchange) -> {
                     String handle = HTTPRequestParser.parsePath(exchange.getRequestURI().getPath(), paths);
                     String name = HTTPRequestParser.parseParameter(exchange.getRequestURI().getPath(), handle);
                     try {

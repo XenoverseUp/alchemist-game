@@ -231,6 +231,63 @@ public class Client {
         HttpResponse<String> response = request.put("/http/toggleDeductionTable", body);
     }
 
+    public void setCard(int i) throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/setCard", String.valueOf(i));
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public void setMarker(int i) throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/setMarker", String.valueOf(i));
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public void publishTheory() throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/publishTheory");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public void debunkTheory() throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/debunkTheory");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public int getMarkerId(int i) throws ServerSideException {
+        HttpResponse<String> response = request.get(String.format("/http/getMarkerId/%d", i));
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+
+        return Integer.parseInt((String) response.body());
+    }
+
+    public void activateArtifact(String name) throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/activateArtifact");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public void removeArtifactCardAfterUsing(String name) throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/removeArtifactCardAfterUsing", name);
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public void paralyseEveryone() throws ServerSideException {
+        HttpResponse<String> response = request.put("/http/paralyseEveryone");
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+    }
+
+    public boolean hasArtifactCard(String name) throws ServerSideException {
+        HttpResponse<String> response = request.get(String.format("/http/hasArtifactCard/%s", name));
+        if (response.statusCode() != 200)
+            throw new ServerSideException();
+        return Boolean.parseBoolean((String) response.body());
+    }
+
     /** Cache Supplier Methods */
 
     private String currentPlayerSupplier() {
@@ -320,64 +377,6 @@ public class Client {
     public void publishBroadcastListener(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
         for (var l : this.broadcastListeners)
             l.onBroadcast(action, payload);
-    }
-
-    public void setCard(int i) throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/setCard", String.valueOf(i));
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-    }
-
-    public void setMarker(int i) throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/setMarker", String.valueOf(i));
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-    }
-
-    public void publishTheory() throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/publishTheory");
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-    }
-
-    public void debunkTheory() throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/debunkTheory");
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-    }
-
-    public int getMarkerId(int i) throws ServerSideException {
-        HttpResponse<String> response = request.get("/http/getMarkerId");
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-        // HttpResponse<String> response = request.get("/http/game/players");
-        // Map<String, String> data = JON.parseMap((String) response.body());
-        return Integer.parseInt((String) response.body());
-    }
-
-    public void activateArtifact(String name) throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/activateArtifact");
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-    }
-
-    public void removeArtifactCardAfterUsing(String name) throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/removeArtifactCardAfterUsing");
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-    }
-
-    public void paralyseEveryone() throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/paralyseEveryone");
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-    }
-
-    public boolean hasArtifactCard(String name) throws ServerSideException {
-        HttpResponse<String> response = request.get("/http/hasArtifactCard");
-        if (response.statusCode() != 200)
-            throw new ServerSideException();
-        return Boolean.parseBoolean((String) response.body());
     }
 
 }

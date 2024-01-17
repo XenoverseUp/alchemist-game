@@ -110,10 +110,6 @@ public class TheAlchemistGame implements IGameRegister {
 
     }
 
-    public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
-        gameBoard.getAuth().addCurrentUserListener(currentUserListener);
-    }
-
     @Override
     public void publishTheory() throws NotEnoughActionsException {
         gameBoard.publishTheory();
@@ -158,6 +154,10 @@ public class TheAlchemistGame implements IGameRegister {
         AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
         return marker.getId();
 
+    }
+
+    public void swapAfterIndex(int first, int second, int third) {
+        gameBoard.swapAfterIndex(first, second, third);
     }
 
     public Potion makeExperiment(
@@ -232,59 +232,4 @@ public class TheAlchemistGame implements IGameRegister {
     public Avatar getCurrentPlayerAvatar() {
         return this.getCurrentPlayer().avatar;
     }
-
-    public class OnlineRegister {
-
-        public int getId() {
-            if (client != null)
-                return client.getId();
-            return 0;
-        }
-
-        public boolean isHost() {
-            return getId() == 0;
-        }
-
-        public int createUser(int id, String name, Avatar avatar) {
-            return client.createUser(id, name, avatar);
-        }
-
-        public Map<String, String> getPlayerNames() {
-            return client.getPlayerNames();
-        }
-
-        public Avatar getAvatar(int id) {
-            return client.getAvatar(id);
-        }
-
-        public void startGame() throws ServerSideException {
-            client.startGame();
-        }
-
-        public Map<String, String> getCurrentUser(boolean cached) {
-            return client.getCurrentUser(cached);
-        }
-
-        public Map<String, String> getCurrentUser() {
-            return client.getCurrentUser();
-        }
-
-        public GamePhase getPhase(boolean cached) {
-            return client.getPhase(cached);
-        }
-
-        public GamePhase getPhase() {
-            return client.getPhase();
-        }
-
-        public void toggleCurrentUser() throws ServerSideException {
-            client.toggleCurrentUser();
-        }
-
-        public void revalidateCache() {
-            client.getCache().revalidateAll();
-        }
-
-    }
-
 }

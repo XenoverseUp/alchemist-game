@@ -43,8 +43,8 @@ public class VCardDeck extends VComponent {
     private void update() {
         try {
             if (game.getRegister().hasArtifactCard("Elixir of Insight")) {
-                JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER, 5, 5));
-                cards.setPreferredSize(new Dimension(120, 120));
+                JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER, 24, 24));
+                cards.setPreferredSize(new Dimension(120, 300));
                 game.getRegister()
                         .getCurrentPlayerIngredients().stream().limit(3)
                         .map(name -> this.generateIngredientCard(name))
@@ -52,12 +52,13 @@ public class VCardDeck extends VComponent {
 
                 JTextField inputField = new JTextField();
                 JButton rearrange = new JButton("rearrange");
-                inputField.setBounds(60, 120, 80, 60);
-                rearrange.setBounds(60, 190, 80, 60);
-                cards.setBounds(60, 500, 120, 120);
-                panel.add(cards);
+                inputField.setBounds(60, 120, 120, 60);
+                rearrange.setBounds(60, 190, 120, 60);
+                cards.setBounds(60, 300, 200, 200);
+
                 panel.add(inputField);
                 panel.add(rearrange);
+                panel.add(cards);
 
                 // rearrange.addActionListener(game.getRegister.rearrange());
             }
@@ -171,7 +172,7 @@ public class VCardDeck extends VComponent {
         card.setPreferredSize(new Dimension(cardBuffer.getWidth(), cardBuffer.getHeight()));
 
         JLabel bg = new JLabel(new ImageIcon(cardBuffer));
-        bg.setBounds(60, 60, cardBuffer.getWidth() / 5, cardBuffer.getHeight() / 5);
+        bg.setBounds(60, 60, 40, 60);
 
         card.add(bg);
 

@@ -76,4 +76,5 @@ public interface IGameRegister {
     public void paralyseEveryone() throws ServerSideException;
 
     public boolean hasArtifactCard(String string) throws ServerSideException;
+
 }
