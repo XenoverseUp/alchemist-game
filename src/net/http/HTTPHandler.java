@@ -81,6 +81,16 @@ public class HTTPHandler implements HttpHandler {
                 }
 
             });
+            put("/http/game/scores", (HttpExchange exchange) -> {
+                Map<String, String> scores = game.getPlayerScores();
+
+                try {
+                    sendResponse(exchange, 200, JON.build(scores));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
             put("/http/game/phase", (HttpExchange exchange) -> {
                 GamePhase currentPhase = game.getPhase();
 

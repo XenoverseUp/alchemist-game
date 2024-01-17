@@ -160,7 +160,7 @@ public class AssetLoader {
             BNameRibbonGreen = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonGreen.png"));
             BNameRibbonRed = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonRed.png"));
             BNameRibbonBlue = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonBlue.png"));
-
+            
             BCrown = ImageIO.read(new File("./src/resources/image/HUD/Crown.png"));
 
         } catch (IOException e) {
@@ -305,6 +305,8 @@ public class AssetLoader {
                 return null;
         }
     }
+
+
 
     public BufferedImage getCrown(){
         return BCrown;

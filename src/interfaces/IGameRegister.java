@@ -36,4 +36,5 @@ public interface IGameRegister {
     public void toggleDeductionTable(String name, int tableIndex);
     public HashMap<String[], DeductionToken> getDeductionTokens();
     public ArrayList<Integer> calculateWinner();
+    public Map<String, String> getPlayerScores();
 }

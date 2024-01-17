@@ -10,6 +10,7 @@ public class Player implements Serializable {
     public String name;
     public Avatar avatar;
     public Inventory inventory;
+    private Integer score = null;
     private int sickness = 0;
     private int reputation = 0;
     public int leftActions = 2;
@@ -59,6 +60,10 @@ public class Player implements Serializable {
 
     public int getReputation() {
         return reputation;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
     private void setExtraActions(int extraActions) {
@@ -173,6 +178,7 @@ public class Player implements Serializable {
         finalPoints += (this.inventory.getGold() / 3);
         int leftoverGold = this.inventory.getGold() % 3;
         int[] score =  {finalPoints, leftoverGold};
+        this.score = finalPoints;
         return score;
     }
 
