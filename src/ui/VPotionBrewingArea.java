@@ -10,7 +10,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -21,12 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import domain.Game;
-import enums.BroadcastAction;
 import enums.View;
 import error.NotEnoughActionsException;
 import error.WrongGameRoundException;
-import interfaces.IBroadcastListener;
-import interfaces.IDynamicTypeValue;
 
 public class VPotionBrewingArea extends VComponent {
     private ArrayList<String> selectedIngredients = new ArrayList<String>() {

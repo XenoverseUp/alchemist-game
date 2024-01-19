@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -25,11 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import domain.ArtifactCard;
 import domain.Game;
 import enums.View;
-import error.NotEnoughActionsException;
-import error.ServerSideException;
 import ui.framework.VComponent;
 import ui.util.WrapLayout;
 
@@ -41,8 +37,6 @@ public class VElixirofInsight extends VComponent {
     private int scrollPosition = 0;
 
     private BufferedImage BHammer;
-    private BufferedImage BArtifactCardTemplate;
-    private BufferedImage BDiscardArtifactCard;
     List<Integer> selectedValues = new ArrayList<>();
 
     public VElixirofInsight(Game game) {
@@ -58,8 +52,6 @@ public class VElixirofInsight extends VComponent {
 
         try {
             BHammer = ImageIO.read(new File("./src/resources/image/HUD/hammer.png"));
-            BArtifactCardTemplate = ImageIO.read(new File("./src/resources/image/artifactCard.png"));
-            BDiscardArtifactCard = ImageIO.read(new File("./src/resources/image/HUD/discardArtifact.png"));
         } catch (IOException e) {
             System.out.println(e);
         }

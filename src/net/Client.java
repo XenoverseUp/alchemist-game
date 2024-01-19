@@ -238,7 +238,7 @@ public class Client {
             }
         });
 
-        HttpResponse<String> response = request.put("/http/toggleDeductionTable", body);
+        request.put("/http/toggleDeductionTable", body);
     }
 
     public void setCard(int i) throws ServerSideException {
@@ -290,7 +290,7 @@ public class Client {
         if (response.statusCode() != 200)
             throw new ServerSideException();
 
-       request.put("/http/toggleDeductionTable", body);
+       request.put("/http/toggleDeductionTable");
     }
 
     public void finishGame() {
@@ -320,7 +320,7 @@ public class Client {
             }
         });
 
-        HttpResponse<String> response = request.put("/http/swapAfterIndex", body);
+        request.put("/http/swapAfterIndex", body);
     }
 
     public List<String> getIngredients() {
@@ -444,3 +444,4 @@ public class Client {
     }
 
 }
+

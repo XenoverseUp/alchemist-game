@@ -20,11 +20,9 @@ import javax.swing.SwingConstants;
 import enums.View;
 import error.NotEnoughActionsException;
 import error.ServerSideException;
-import java8.util.stream.Collectors;
 import ui.framework.VComponent;
 import ui.util.WrapLayout;
 import domain.Game;
-import domain.IngredientCard;
 import javax.swing.JTextField;
 import java.awt.FlowLayout;
 

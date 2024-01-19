@@ -1,6 +1,6 @@
 package test.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -10,8 +10,6 @@ import domain.ArtifactCard;
 import domain.ArtifactCardDeck;
 
 import java.util.ArrayList;
-
-import javax.swing.Box;
 
 /*
  This ArtifactCardDeckDrawCardTest provide tests for the drawMysteryCard method in ArtifactCardDeck.java whose specifications (requires, modifies and effects statements) can be demosntarated as follows:
