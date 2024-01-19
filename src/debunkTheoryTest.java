@@ -1,5 +1,7 @@
 import domain.*;
 import enums.Avatar;
+import error.NotEnoughActionsException;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -71,15 +73,19 @@ public class debunkTheoryTest {
      * dissociation is implemented.
      */
     @Test
-    public void testDebunkTheoryWithWrongTheory() {
+    public void testDebunkTheoryWithWrongTheory() throws NotEnoughActionsException {
 
         AlchemyMarkerDeck markerDeck = board.alchemyMarkerDeck;
         markerDeck.setChosen(0);
 
         PublicationCardDeck publicationDeck = board.publicationCardDeck;
         publicationDeck.setChosen(0);
-        board.publishTheory(); // ASSUME PUBLISHED THEORY IS WRONG (7/8 POSSIBILITY)
+
+        board.publishTheory();
+
+        // ASSUME PUBLISHED THEORY IS WRONG (7/8 POSSIBILITY)
         auth.toggleCurrentUser();
+
         board.debunkTheory();
 
         assertFalse("Marker should be dissociated", markerDeck.getChosen().checkAvailability());
@@ -99,7 +105,7 @@ public class debunkTheoryTest {
      * 
      */
     @Test
-    public void testDebunkTheoryWithAssociatedMarker() {
+    public void testDebunkTheoryWithAssociatedMarker() throws NotEnoughActionsException {
 
         AlchemyMarkerDeck markerDeck = board.alchemyMarkerDeck;
         markerDeck.setChosen(0);
@@ -121,7 +127,7 @@ public class debunkTheoryTest {
      * points after calling board.debunkTheory().
      */
     @Test
-    public void testReputationIncreaseOnDebunkedTheory() {
+    public void testReputationIncreaseOnDebunkedTheory() throws NotEnoughActionsException {
         AlchemyMarkerDeck markerDeck = board.alchemyMarkerDeck;
         markerDeck.setChosen(0);
 
@@ -148,7 +154,7 @@ public class debunkTheoryTest {
      * reputation decrease after debunking).
      */
     @Test
-    public void testDebunkTheoryAffectsCorrectPlayer() {
+    public void testDebunkTheoryAffectsCorrectPlayer() throws NotEnoughActionsException {
         AlchemyMarkerDeck markerDeck = board.alchemyMarkerDeck;
         markerDeck.setChosen(0);
 
@@ -179,7 +185,7 @@ public class debunkTheoryTest {
      * in player reputation
      */
     @Test
-    public void testDebunkTheoryWithNoTheoryPublicationCard() {
+    public void testDebunkTheoryWithNoTheoryPublicationCard() throws NotEnoughActionsException {
 
         AlchemyMarkerDeck markerDeck = board.alchemyMarkerDeck;
         markerDeck.setChosen(0);
