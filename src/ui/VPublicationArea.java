@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import enums.GamePhase;
 import enums.View;
 import error.NotEnoughActionsException;
 import ui.framework.VComponent;
@@ -243,7 +244,7 @@ public class VPublicationArea extends VComponent {
             try {
                 game.getRegister().publishTheory();
             } catch (NotEnoughActionsException e1) {
-                e1.printStackTrace();
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }
             SwingUtilities.invokeLater(() -> {
                 update();
@@ -261,7 +262,7 @@ public class VPublicationArea extends VComponent {
             try {
                 game.getRegister().debunkTheory();
             } catch (NotEnoughActionsException e1) {
-                e1.printStackTrace();
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }
             SwingUtilities.invokeLater(() -> {
                 update();
@@ -269,7 +270,10 @@ public class VPublicationArea extends VComponent {
         });
         debunkTheory.setBounds(1100, 250, 170, 60);
         debunkTheory.setForeground(customColor);
-        panel.add(debunkTheory);
+        if ((game.getRegister().getPhase() != GamePhase.FirstRound)
+                && (game.getRegister().getPhase() != GamePhase.SecondRound)) {
+            panel.add(debunkTheory);
+        }
 
         panel.revalidate();
         panel.repaint();

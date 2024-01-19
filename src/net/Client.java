@@ -75,7 +75,6 @@ public class Client {
             }
         });
 
-
         HttpResponse<String> response = request.post("/http/createPlayer", body);
 
         if (response.statusCode() == 200)
@@ -229,20 +228,19 @@ public class Client {
             }
         });
 
-
         HttpResponse<String> response = request.put("/http/toggleDeductionTable", body);
 
-       request.put("/http/toggleDeductionTable", body);
+        request.put("/http/toggleDeductionTable", body);
     }
 
     public void finishGame() {
         request.put("/http/finishGame");
     }
 
-    public ArrayList<Integer> calculateWinner(){
+    public ArrayList<Integer> calculateWinner() {
         HttpResponse<String> response = request.put("/http/calculateWinner");
 
-        return JON.parseListInt((String)response.body());
+        return JON.parseListInt((String) response.body());
 
     }
 
@@ -276,18 +274,8 @@ public class Client {
                         BroadcastPackage incoming = ((BroadcastPackage) in.readObject());
                         BroadcastAction action = incoming.getAction();
 
-
-                        switch (action) {
-                            case PLAYER_CREATED:
-                                break;
-                            case CLIENT_CONNECTED:
-                                id = ((DynamicTypeValue<Integer>) (incoming.get("id"))).getValue().intValue();
-                                break;
-                            default:
-                                break;
-
                         if (action == BroadcastAction.CLIENT_CONNECTED) {
-                            id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
+                            id = ((DynamicTypeValue<Integer>) (incoming.get("id"))).getValue().intValue();
 
                         }
 
