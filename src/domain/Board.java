@@ -349,4 +349,12 @@ public class Board {
 			e.printStackTrace();
 		}
 	}
+
+	public void setCard(int id) {
+		publicationCardDeck.setChosen(id);
+	}
+
+	public void setMarker(int id) {
+		alchemyMarkerDeck.setChosen(id);
+	}
 }

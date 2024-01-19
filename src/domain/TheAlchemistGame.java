@@ -142,12 +142,12 @@ public class TheAlchemistGame implements IGameRegister {
 
     @Override
     public void setMarker(int id) {
-        gameBoard.alchemyMarkerDeck.setChosen(id);
+        gameBoard.setMarker(id);
     }
 
     @Override
     public void setCard(int id) {
-        gameBoard.publicationCardDeck.setChosen(id);
+        gameBoard.setCard(id);
     }
 
     @Override
