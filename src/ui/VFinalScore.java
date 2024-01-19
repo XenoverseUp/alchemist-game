@@ -28,7 +28,6 @@ public class VFinalScore extends VComponent {
     public void mounted(){
         ArrayList<Integer> winnerIds = game.getRegister().calculateWinner();
         Map<String, String> playerNames = game.getRegister().getPlayerNames();
-        Map<String, String> playerScores = game.getRegister().getPlayerScores(); 
 
         int winnerId = winnerIds.get(0);
         String winnerScore = playerScores.get(String.valueOf(winnerId));
@@ -47,10 +46,13 @@ public class VFinalScore extends VComponent {
         winner.add(winnerNameLabel);
         winner.add(winnerAvatarImage);
 
+
         playerNames.forEach((i, name) -> {
             int id = Integer.parseInt(i);
             Avatar avatar = game.getRegister().getPlayerAvatar(id);
+
             String finalScore = playerScores.get(i);
+
 
             BufferedImage BAvatar = assetLoader.getAvatarImage(avatar);
             JLabel avatarImage = new JLabel(new ImageIcon(BAvatar));
@@ -60,7 +62,9 @@ public class VFinalScore extends VComponent {
             JLabel nameRibbon = new JLabel(new ImageIcon(BRibbon));
             nameRibbon.setBounds(72 + id * (BRibbon.getWidth() + 30), 169, BRibbon.getWidth(), BRibbon.getHeight());
             
+
             JLabel nameLabel = new JLabel(name + ": " + finalScore, SwingConstants.CENTER);
+
             nameLabel.setBounds(72 + id * (BRibbon.getWidth() + 30), 168, BRibbon.getWidth(), BRibbon.getHeight() - 6);
             nameLabel.setFont(new Font("Crimson Pro", Font.BOLD, 18));
             nameLabel.setForeground(assetLoader.getNameRibbonColor(id));
@@ -114,7 +118,9 @@ public class VFinalScore extends VComponent {
         controls.setBounds(0, 526, windowDimension.getWidth(), 241);
         controls.setOpaque(false);
 
+
         winner.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight()-241);
+
         winner.setOpaque(false);
         panel.add(winner);
         panel.add(controls);

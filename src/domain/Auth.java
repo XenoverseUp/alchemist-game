@@ -123,6 +123,7 @@ public class Auth {
 	}
 
     public ArrayList<Integer> calculateWinner(){
+
         if (this.winnerIds == null){
             this.winnerIds = new ArrayList<>();
             Player candidateWinner = null;
@@ -146,10 +147,13 @@ public class Auth {
                         this.winnerIds.add(player.id);
                     }
                 }
+
             }
             this.winnerIds.add(candidateWinner.id);
         }
+
         
         return this.winnerIds;
+
     }
 }

@@ -350,7 +350,6 @@ public class AssetLoader {
     }
 
 
-
     public BufferedImage getCrown(){
         return BCrown;
     }

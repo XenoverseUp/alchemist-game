@@ -274,6 +274,7 @@ public class TheAlchemistGameOnline implements IGameRegister {
         client.paralyseEveryone();
     }
 
+
     @Override
     public boolean hasArtifactCard(String name) throws ServerSideException {
         return client.hasArtifactCard(name);
@@ -290,11 +291,9 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
 
+
     public ArrayList<Integer> calculateWinner() {
         return client.calculateWinner();
     }
 
-    
-
- 
 }

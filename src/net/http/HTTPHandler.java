@@ -166,6 +166,15 @@ public class HTTPHandler implements HttpHandler {
                     List<ArtifactCard> cards = game.getCurrentPlayer().inventory.getArtifactCards();
                     String responseBody = JON.build(cards.stream().map(c -> c.getName()).toList());
 
+                    for (Avatar a : Avatar.values())
+                        if (a.toString().equals(parsed.get("avatar"))){
+                            avatar = a;
+                            break;
+                        }
+                        
+                    int result = game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
+
+
                     try {
                         sendResponse(exchange, 200, responseBody);
                     } catch (IOException e) {
@@ -301,7 +310,9 @@ public class HTTPHandler implements HttpHandler {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+
                 }
+
 
             });
             put("/http/restartGame", (HttpExchange exchange) -> {
@@ -326,7 +337,7 @@ public class HTTPHandler implements HttpHandler {
                 }
             });
             put("/http/forageIngredient", (HttpExchange exchange) -> {
-                
+
                     try {
                         game.forageIngredient();
                         try {
@@ -559,8 +570,23 @@ public class HTTPHandler implements HttpHandler {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+
+                });
+                put("/http/paralyseEveryone", (HttpExchange exchange) -> {
+
+                    try {
+                        game.paralyseEveryone();
+
+                        sendResponse(exchange, 200,
+                                "Paralysed everyone for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                 catch (IOException e) {
+                    e.printStackTrace();
                 }
-                
+
             });
             put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
                 
@@ -573,6 +599,7 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+
             put("/http/calculateWinner", (HttpExchange exchange) -> {
                 
                 try {
@@ -584,7 +611,9 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+
         }});
+
     }
 
 

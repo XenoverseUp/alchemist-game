@@ -79,6 +79,7 @@ public class Window {
         };
 
 
+
         router = Router.getInstance();
         router.populate(views);
         router.to(View.Start);

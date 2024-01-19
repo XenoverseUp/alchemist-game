@@ -238,6 +238,22 @@ public class Client {
             }
         });
 
+
+        HttpResponse<String> response = request.put("/http/toggleDeductionTable", body);
+
+        request.put("/http/toggleDeductionTable", body);
+    }
+
+    public void finishGame() {
+        request.put("/http/finishGame");
+    }
+
+    public ArrayList<Integer> calculateWinner() {
+        HttpResponse<String> response = request.put("/http/calculateWinner");
+
+        return JON.parseListInt((String) response.body());
+
+
         request.put("/http/toggleDeductionTable", body);
     }
 
@@ -271,6 +287,7 @@ public class Client {
             throw new ServerSideException();
 
         return Integer.parseInt((String) response.body());
+
     }
 
     public void activateArtifact(String name) throws ServerSideException {
@@ -386,8 +403,10 @@ public class Client {
                         BroadcastAction action = incoming.getAction();
 
 
+
                         if (action == BroadcastAction.CLIENT_CONNECTED) {
                             id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
+
 
                         }
 

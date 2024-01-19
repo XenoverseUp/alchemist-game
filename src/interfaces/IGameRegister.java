@@ -81,6 +81,9 @@ public interface IGameRegister {
 
     public void paralyseEveryone() throws ServerSideException;
 
+    public ArrayList<Integer> calculateWinner();
+ 
+
     public boolean hasArtifactCard(String string) throws ServerSideException;
 
     public void swapAfterIndex(int first, int second, int third);
@@ -91,5 +94,6 @@ public interface IGameRegister {
     public ArrayList<Integer> calculateWinner();
 
     public Map<String, String> getPlayerScores();
+
 
 }
