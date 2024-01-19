@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
 import error.WrongGameRoundException;
 import interfaces.IGameRegister;
 
@@ -109,37 +111,57 @@ public class TheAlchemistGame implements IGameRegister {
 
     }
 
-    public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
-        gameBoard.getAuth().addCurrentUserListener(currentUserListener);
-    }
-
-    public void publishTheory() {
+    @Override
+    public void publishTheory() throws NotEnoughActionsException {
         gameBoard.publishTheory();
     }
 
-    public void debunkTheory() {
+    @Override
+    public void debunkTheory() throws NotEnoughActionsException {
         gameBoard.debunkTheory();
     }
 
+    @Override
+    public void activateArtifact(String name) {
+        gameBoard.activateArtifact(name);
+    }
+
+    @Override
+    public void removeArtifactCardAfterUsing(String name) {
+        gameBoard.removeArtifactCardAfterUsing(name);
+    }
+
+    public boolean hasArtifactCard(String name) {
+        return gameBoard.hasArtifactCard(name);
+    }
+
+    @Override
+    public void paralyseEveryone() {
+        gameBoard.paralyseEveryone();
+    }
+
+    @Override
     public void setMarker(int id) {
         gameBoard.alchemyMarkerDeck.setChosen(id);
     }
 
+    @Override
     public void setCard(int id) {
         gameBoard.publicationCardDeck.setChosen(id);
     }
 
-    public String getMarkerImagePath(int id) {
+    @Override
+    public int getMarkerID(int id) {
         AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
-        if (marker != null) {
-            return marker.getImagePath();
-        } else {
-            return "";
-        }
+        return marker.getId();
 
     }
 
     @Override
+    public void swapAfterIndex(int first, int second, int third) {
+        gameBoard.swapAfterIndex(first, second, third);
+    }
+
     public Potion makeExperiment(
             String ingredientName1,
             String ingredientName2,
@@ -213,58 +235,14 @@ public class TheAlchemistGame implements IGameRegister {
         return this.getCurrentPlayer().avatar;
     }
 
-    public class OnlineRegister {
-
-        public int getId() {
-            if (client != null)
-                return client.getId();
-            return 0;
-        }
-
-        public boolean isHost() {
-            return getId() == 0;
-        }
-
-        public int createUser(int id, String name, Avatar avatar) {
-            return client.createUser(id, name, avatar);
-        }
-
-        public Map<String, String> getPlayerNames() {
-            return client.getPlayerNames();
-        }
-
-        public Avatar getAvatar(int id) {
-            return client.getAvatar(id);
-        }
-
-        public void startGame() throws ServerSideException {
-            client.startGame();
-        }
-
-        public Map<String, String> getCurrentUser(boolean cached) {
-            return client.getCurrentUser(cached);
-        }
-
-        public Map<String, String> getCurrentUser() {
-            return client.getCurrentUser();
-        }
-
-        public GamePhase getPhase(boolean cached) {
-            return client.getPhase(cached);
-        }
-
-        public GamePhase getPhase() {
-            return client.getPhase();
-        }
-
-        public void toggleCurrentUser() throws ServerSideException {
-            client.toggleCurrentUser();
-        }
-
-        public void revalidateCache() {
-            client.getCache().revalidateAll();
-        }
-
+    @Override
+    public List<String> getIngredients() { // gets only the top three ingredients
+        int index = gameBoard.ingredientCardDeck.index;
+        return gameBoard.ingredientCardDeck.getDeck()
+                .stream()
+                .skip(index)
+                .limit(3)
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
     }
-
 }

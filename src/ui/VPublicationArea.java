@@ -1,4 +1,5 @@
 package ui;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import enums.View;
+import error.NotEnoughActionsException;
 import ui.framework.VComponent;
 import domain.Game;
 
@@ -37,7 +39,7 @@ public class VPublicationArea extends VComponent {
         publicationPanel = createPublicationJPanel();
 
         BufferedImage bg = assetLoader.getPbBackground();
-        if (bg == null){
+        if (bg == null) {
             System.out.println("Background image not available.");
         }
         int desiredWidth = 1450;
@@ -52,78 +54,83 @@ public class VPublicationArea extends VComponent {
 
         panel.add(bgPic);
 
-       int startX = 60;
+        int startX = 60;
         int startY = 75;
         int imageWidth = 150;
         int imageHeight = 230;
         int gap = 85;
 
         addImageToPanel(0, publicationPanel, "bird claw", startX, startY, imageWidth, imageHeight, (e -> {
-            game.setCard(0);
+            game.getRegister().setCard(0);
             System.out.print("bird claw is clicked!");
         }));
         addImageToPanel(1, publicationPanel, "fern", startX + imageWidth + gap, startY, imageWidth, imageHeight, (e -> {
-            game.setCard(1);
+            game.getRegister().setCard(1);
             System.out.println("fern is clicked!");
         }));
-        addImageToPanel(2, publicationPanel, "mandrake root", startX + 2 * (imageWidth + gap), startY, imageWidth, imageHeight, (e -> {
-            game.setCard(2);
-            System.out.println("mandrake root is clicked!");
-        }));
-        addImageToPanel(3, publicationPanel, "moonshade", startX + 3 * (imageWidth + gap), startY, imageWidth, imageHeight, (e -> {
-            game.setCard(3);
-            System.out.println("moonshade is clicked!");
-        }));
-        addImageToPanel(4, publicationPanel, "mushroom", startX, startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(4);
-            System.out.println("mushroom is clicked!");
-        }));
-        addImageToPanel(5, publicationPanel, "raven's feather", startX + (imageWidth + gap), startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(5);
-            System.out.println("raven's feather is clicked!");
-        }));
-        addImageToPanel(6, publicationPanel, "scorpion tail", startX + 2 * (imageWidth + gap), startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(6);
-            System.out.println("scorpion tail is clicked!");
-        }));
-        addImageToPanel(7, publicationPanel, "warty toad", startX + 3 * (imageWidth + gap), startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(7);
-            System.out.println("warty toad is clicked!");
-        }));
+        addImageToPanel(2, publicationPanel, "mandrake root", startX + 2 * (imageWidth + gap), startY, imageWidth,
+                imageHeight, (e -> {
+                    game.getRegister().setCard(2);
+                    System.out.println("mandrake root is clicked!");
+                }));
+        addImageToPanel(3, publicationPanel, "moonshade", startX + 3 * (imageWidth + gap), startY, imageWidth,
+                imageHeight, (e -> {
+                    game.getRegister().setCard(3);
+                    System.out.println("moonshade is clicked!");
+                }));
+        addImageToPanel(4, publicationPanel, "mushroom", startX, startY + (imageHeight + gap), imageWidth, imageHeight,
+                (e -> {
+                    game.getRegister().setCard(4);
+                    System.out.println("mushroom is clicked!");
+                }));
+        addImageToPanel(5, publicationPanel, "raven's feather", startX + (imageWidth + gap),
+                startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
+                    game.getRegister().setCard(5);
+                    System.out.println("raven's feather is clicked!");
+                }));
+        addImageToPanel(6, publicationPanel, "scorpion tail", startX + 2 * (imageWidth + gap),
+                startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
+                    game.getRegister().setCard(6);
+                    System.out.println("scorpion tail is clicked!");
+                }));
+        addImageToPanel(7, publicationPanel, "warty toad", startX + 3 * (imageWidth + gap),
+                startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
+                    game.getRegister().setCard(7);
+                    System.out.println("warty toad is clicked!");
+                }));
 
         createButtonWithImage(publicationPanel, 1, 1070, 370, 75, 70, (e -> {
-            game.setMarker(1);
+            game.getRegister().setMarker(1);
             System.out.println("Clicked marker1!");
         })); // molecule id:1
         createButtonWithImage(publicationPanel, 5, 1170, 370, 70, 70, (e -> {
-            game.setMarker(5);
+            game.getRegister().setMarker(5);
             System.out.println("Clicked marker5!");
         })); // molecule id:5
         createButtonWithImage(publicationPanel, 0, 1270, 370, 75, 70, (e -> {
-            game.setMarker(0);
+            game.getRegister().setMarker(0);
             System.out.println("Clicked marker0!");
         })); // molecule id: 0
         createButtonWithImage(publicationPanel, 3, 1070, 480, 75, 70, (e -> {
-            game.setMarker(3);
+            game.getRegister().setMarker(3);
             System.out.println("Clicked marker3!");
         })); // molecule id:3
         createButtonWithImage(publicationPanel, 6, 1170, 480, 70, 70, (e -> {
-            game.setMarker(6);
+            game.getRegister().setMarker(6);
             System.out.println("Clicked marker6!");
         })); // molecule id:6
         createButtonWithImage(publicationPanel, 7, 1270, 480, 75, 70, (e -> {
-            game.setMarker(7);
+            game.getRegister().setMarker(7);
             System.out.println("Clicked marker7!");
         })); // molecule id:7
         createButtonWithImage(publicationPanel, 4, 1120, 590, 75, 70, (e -> {
-            game.setMarker(4);
+            game.getRegister().setMarker(4);
             System.out.println("Clicked marker4!");
         })); // molecule id:4
-          createButtonWithImage(publicationPanel, 2, 1220, 590, 75, 70, (e -> {
-            game.setMarker(2);
+        createButtonWithImage(publicationPanel, 2, 1220, 590, 75, 70, (e -> {
+            game.getRegister().setMarker(2);
             System.out.println("Clicked marker2!");
         })); // molecule id:2
-        
 
     }
 
@@ -137,68 +144,74 @@ public class VPublicationArea extends VComponent {
         int gap = 85;
 
         addImageToPanel(0, publicationPanel, "bird claw", startX, startY, imageWidth, imageHeight, (e -> {
-            game.setCard(0);
+            game.getRegister().setCard(0);
             System.out.print("bird claw is clicked!");
         }));
         addImageToPanel(1, publicationPanel, "fern", startX + imageWidth + gap, startY, imageWidth, imageHeight, (e -> {
-            game.setCard(1);
+            game.getRegister().setCard(1);
             System.out.println("fern is clicked!");
         }));
-        addImageToPanel(2, publicationPanel, "mandrake root", startX + 2 * (imageWidth + gap), startY, imageWidth, imageHeight, (e -> {
-            game.setCard(2);
-            System.out.println("mandrake root is clicked!");
-        }));
-        addImageToPanel(3, publicationPanel, "moonshade", startX + 3 * (imageWidth + gap), startY, imageWidth, imageHeight, (e -> {
-            game.setCard(3);
-            System.out.println("moonshade is clicked!");
-        }));
-        addImageToPanel(4, publicationPanel, "mushroom", startX, startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(4);
-            System.out.println("mushroom is clicked!");
-        }));
-        addImageToPanel(5, publicationPanel, "raven's feather", startX + (imageWidth + gap), startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(5);
-            System.out.println("raven's feather is clicked!");
-        }));
-        addImageToPanel(6, publicationPanel, "scorpion tail", startX + 2 * (imageWidth + gap), startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(6);
-            System.out.println("scorpion tail is clicked!");
-        }));
-        addImageToPanel(7, publicationPanel, "warty toad", startX + 3 * (imageWidth + gap), startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
-            game.setCard(7);
-            System.out.println("warty toad is clicked!");
-        }));
+        addImageToPanel(2, publicationPanel, "mandrake root", startX + 2 * (imageWidth + gap), startY, imageWidth,
+                imageHeight, (e -> {
+                    game.getRegister().setCard(2);
+                    System.out.println("mandrake root is clicked!");
+                }));
+        addImageToPanel(3, publicationPanel, "moonshade", startX + 3 * (imageWidth + gap), startY, imageWidth,
+                imageHeight, (e -> {
+                    game.getRegister().setCard(3);
+                    System.out.println("moonshade is clicked!");
+                }));
+        addImageToPanel(4, publicationPanel, "mushroom", startX, startY + (imageHeight + gap), imageWidth, imageHeight,
+                (e -> {
+                    game.getRegister().setCard(4);
+                    System.out.println("mushroom is clicked!");
+                }));
+        addImageToPanel(5, publicationPanel, "raven's feather", startX + (imageWidth + gap),
+                startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
+                    game.getRegister().setCard(5);
+                    System.out.println("raven's feather is clicked!");
+                }));
+        addImageToPanel(6, publicationPanel, "scorpion tail", startX + 2 * (imageWidth + gap),
+                startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
+                    game.getRegister().setCard(6);
+                    System.out.println("scorpion tail is clicked!");
+                }));
+        addImageToPanel(7, publicationPanel, "warty toad", startX + 3 * (imageWidth + gap),
+                startY + (imageHeight + gap), imageWidth, imageHeight, (e -> {
+                    game.getRegister().setCard(7);
+                    System.out.println("warty toad is clicked!");
+                }));
 
-     createButtonWithImage(publicationPanel, 1, 1070, 370, 75, 70, (e -> {
-            game.setMarker(1);
+        createButtonWithImage(publicationPanel, 1, 1070, 370, 75, 70, (e -> {
+            game.getRegister().setMarker(1);
             System.out.println("Clicked marker1!");
         })); // molecule id:1
         createButtonWithImage(publicationPanel, 5, 1170, 370, 70, 70, (e -> {
-            game.setMarker(5);
+            game.getRegister().setMarker(5);
             System.out.println("Clicked marker5!");
         })); // molecule id:5
         createButtonWithImage(publicationPanel, 0, 1270, 370, 75, 70, (e -> {
-            game.setMarker(0);
+            game.getRegister().setMarker(0);
             System.out.println("Clicked marker0!");
         })); // molecule id: 0
         createButtonWithImage(publicationPanel, 3, 1070, 480, 75, 70, (e -> {
-            game.setMarker(3);
+            game.getRegister().setMarker(3);
             System.out.println("Clicked marker3!");
         })); // molecule id:3
         createButtonWithImage(publicationPanel, 6, 1170, 480, 70, 70, (e -> {
-            game.setMarker(6);
+            game.getRegister().setMarker(6);
             System.out.println("Clicked marker6!");
         })); // molecule id:6
         createButtonWithImage(publicationPanel, 7, 1270, 480, 75, 70, (e -> {
-            game.setMarker(7);
+            game.getRegister().setMarker(7);
             System.out.println("Clicked marker7!");
         })); // molecule id:7
         createButtonWithImage(publicationPanel, 4, 1120, 590, 75, 70, (e -> {
-            game.setMarker(4);
+            game.getRegister().setMarker(4);
             System.out.println("Clicked marker4!");
         })); // molecule id:4
-          createButtonWithImage(publicationPanel, 2, 1220, 590, 75, 70, (e -> {
-            game.setMarker(2);
+        createButtonWithImage(publicationPanel, 2, 1220, 590, 75, 70, (e -> {
+            game.getRegister().setMarker(2);
             System.out.println("Clicked marker2!");
         })); // molecule id:2
 
@@ -216,7 +229,7 @@ public class VPublicationArea extends VComponent {
         publicationPanel.setOpaque(false);
 
         JButton back = new JButton("Back");
-        back.setBounds(480, 690, 150, 30);
+        back.setBounds(480, 650, 150, 30);
         back.addActionListener(event -> router.to(View.Board));
         back.setForeground(customColor);
         panel.add(back);
@@ -227,7 +240,11 @@ public class VPublicationArea extends VComponent {
 
         publishTheory.setFont(new Font("CrimsonPro", Font.BOLD, 18));
         publishTheory.addActionListener(e -> {
-            game.publishTheory();
+            try {
+                game.getRegister().publishTheory();
+            } catch (NotEnoughActionsException e1) {
+                e1.printStackTrace();
+            }
             SwingUtilities.invokeLater(() -> {
                 update();
             });
@@ -241,7 +258,11 @@ public class VPublicationArea extends VComponent {
         JButton debunkTheory = new JButton("Debunk Theory");
         debunkTheory.setFont(new Font("CrimsonPro", Font.BOLD, 18));
         debunkTheory.addActionListener(e -> {
-            game.debunkTheory();
+            try {
+                game.getRegister().debunkTheory();
+            } catch (NotEnoughActionsException e1) {
+                e1.printStackTrace();
+            }
             SwingUtilities.invokeLater(() -> {
                 update();
             });
@@ -260,11 +281,11 @@ public class VPublicationArea extends VComponent {
             ActionListener action) {
         AssetLoader assetLoader = AssetLoader.getInstance();
         BufferedImage img = assetLoader.getIngredientCard(ingredientCardName); // img -> publicationCard
-        BufferedImage img2 = null; // img2 -> marker
+        BufferedImage img2 = null;
         try {
-            img2 = ImageIO.read(new File(game.getMarkerImagePath(id)));
+            img2 = assetLoader.getMarkerImage(game.getRegister().getMarkerID(id));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (img != null) {
@@ -301,7 +322,7 @@ public class VPublicationArea extends VComponent {
 
     private void createButtonWithImage(JPanel panel, int markerId, int x, int y, int width, int height,
             ActionListener action) {
-        AssetLoader assetLoader = AssetLoader.getInstance(); 
+        AssetLoader assetLoader = AssetLoader.getInstance();
         BufferedImage img = assetLoader.getMarkerImage(markerId);
 
         if (img != null) {
