@@ -44,6 +44,11 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
     @Override
+    public Map<String, String> getPlayerScores() {
+        return client.getPlayerScores();
+    }
+
+    @Override
     public Avatar getPlayerAvatar(int id) {
         return client.getAvatar(id);
     }
@@ -288,6 +293,8 @@ public class TheAlchemistGameOnline implements IGameRegister {
     public ArrayList<Integer> calculateWinner() {
         return client.calculateWinner();
     }
+
+    
 
  
 }

@@ -64,6 +64,15 @@ public class TheAlchemistGame implements IGameRegister {
     }
 
     @Override
+    public Map<String, String> getPlayerScores() {
+        Map<String, String> scores = new HashMap<String, String>();
+
+        this.auth.players.forEach(p -> scores.put(String.valueOf(p.id), String.valueOf(p.getScore())));
+
+        return scores;
+    }
+
+    @Override
     public void toggleCurrentUser() {
         gameBoard.toggleCurrentUser();
     }

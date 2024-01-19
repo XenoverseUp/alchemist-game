@@ -93,6 +93,13 @@ public class Client {
         return data;
     }
 
+    public Map<String, String> getPlayerScores() {
+        HttpResponse<String> response = request.get("/http/game/scores");
+        Map<String, String> data = JON.parseMap((String)response.body());
+        
+        return data;
+    }
+
     public Avatar getAvatar(int id) {
         HttpResponse<String> response = request.get(String.format("/http/playerAvatar/%d", id));
 

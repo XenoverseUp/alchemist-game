@@ -9,6 +9,7 @@ public class Auth {
     public ArrayList<Player> players = new ArrayList<>(2);
     private int currentUser = 0;
     private ArrayList<ICurrentUserListener> currentUserListeners = new ArrayList<>();
+    private ArrayList<Integer> winnerIds = null;
 
     /**
      * @param name - Name of the alchemist.
@@ -122,29 +123,33 @@ public class Auth {
 	}
 
     public ArrayList<Integer> calculateWinner(){
-        ArrayList<Integer> winnerIds = new ArrayList<>();
-        Player candidateWinner = null;
-        int[] candidateScore = null;
-        for (Player player: this.players){
-            if(candidateWinner == null || candidateScore == null){
-                candidateWinner = player;
-                candidateScore = player.calculateFinalScore();
-            } 
-            else{
-                int [] score = player.calculateFinalScore();
-                if ((score[0] > candidateScore[0]) || (score[0] == candidateScore[0] && score[1] > score[1] )){
+        if (this.winnerIds == null){
+            this.winnerIds = new ArrayList<>();
+            Player candidateWinner = null;
+            int[] candidateScore = null;
+
+            for (Player player: this.players){
+                if(candidateWinner == null || candidateScore == null){
                     candidateWinner = player;
-                    candidateScore = score;
-                    if (winnerIds.size() > 0){
-                        winnerIds.clear();
+                    candidateScore = player.calculateFinalScore();
+                } 
+                else{
+                    int [] score = player.calculateFinalScore();
+                    if ((score[0] > candidateScore[0]) || (score[0] == candidateScore[0] && score[1] > score[1] )){
+                        candidateWinner = player;
+                        candidateScore = score;
+                        if (this.winnerIds.size() > 0){
+                            this.winnerIds.clear();
+                        }
+                    }
+                    else if (score[0] == candidateScore[0] && score[1] == candidateScore[1]){
+                        this.winnerIds.add(player.id);
                     }
                 }
-                else if (score[0] == candidateScore[0] && score[1] == candidateScore[1]){
-                    winnerIds.add(player.id);
-                }
             }
+            this.winnerIds.add(candidateWinner.id);
         }
-        winnerIds.add(candidateWinner.id);
-        return winnerIds;
+        
+        return this.winnerIds;
     }
 }
