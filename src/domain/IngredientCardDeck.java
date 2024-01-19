@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class IngredientCardDeck {
 	private ArrayList<IngredientCard> ingredientCardDeck = new ArrayList<IngredientCard>();
@@ -73,5 +74,28 @@ public class IngredientCardDeck {
 			index++;
 		}
 	}
+
+
+	public boolean repOk() {
+
+		if (ingredientCardDeck == null || ingredientCardDeck.isEmpty()) {
+			return false;
+		}
+	
+		// Check if index is within the bounds of the deck
+		if (index < -1 || index >= ingredientCardDeck.size()) {
+			return false;
+		}
+
+		HashSet<IngredientCard> cardSet = new HashSet<>(ingredientCardDeck);
+		if (cardSet.size() != ingredientCardDeck.size()) {
+			return false;
+		}
+	
+		
+		return true; 
+	}
+	
+
 
 }
