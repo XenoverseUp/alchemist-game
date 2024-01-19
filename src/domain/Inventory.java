@@ -73,11 +73,10 @@ public class Inventory {
 	public Boolean hasArtifactCard(String name) {
 		ArrayList<ArtifactCard> artifactCards = getArtifactCards();
 		String cardToFind = name;
-		boolean isCardFound = false;
 		int cardActivated = 0;
 		for (ArtifactCard card : artifactCards) {
 			if (card.getName().equalsIgnoreCase(cardToFind)) {
-				isCardFound = true;
+
 				cardActivated = card.getActivation();
 				if (cardActivated == 1) {
 					return true;

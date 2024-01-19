@@ -10,6 +10,10 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Board {
 
@@ -22,6 +26,8 @@ public class Board {
 
 	protected GamePhase phase;
 	protected int numberOfTurns;
+	String filePath = "gamelog.txt";
+	BufferedWriter bufferedWriter;
 
 	public Board(Auth auth) {
 		this.auth = auth;
@@ -33,6 +39,12 @@ public class Board {
 
 		this.phase = GamePhase.FirstRound;
 		this.numberOfTurns = 0;
+		try {
+			FileWriter fileWriter = new FileWriter(filePath);
+			this.bufferedWriter = new BufferedWriter(fileWriter);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -43,18 +55,23 @@ public class Board {
 				player.inventory.addIngredientCard(iCard);
 			}
 		}
+		writetoFile("Cards are dealed.");
 	}
 
 	public void dealGolds() {
 		for (Player p : auth.players)
 			p.inventory.addGold(10);
 
+		writetoFile("Golds are dealed.");
 	}
 
 	public void toggleCurrentUser() {
 		auth.toggleCurrentUser();
 		this.numberOfTurns += 1;
 		updatePhase();
+
+		String formattedString = String.format("It's %s's turn.", auth.getCurrentPlayer().name);
+		writetoFile(formattedString);
 	}
 
 	public void forageIngredient() throws NotEnoughActionsException {
@@ -62,6 +79,9 @@ public class Board {
 		IngredientCard icard = this.ingredientCardDeck.drawCard();
 		auth.addIngredientCardToCurrentPlayer(icard);
 		auth.decreaseLeftActionsOfCurrentPlayer();
+
+		String formattedString = String.format("%s foraged an ingredient.", auth.getCurrentPlayer().name);
+		writetoFile(formattedString);
 	}
 
 	public void transmuteIngredient(String name) throws NotEnoughActionsException {
@@ -78,6 +98,9 @@ public class Board {
 		this.ingredientCardDeck.addCard(iCard);
 		this.ingredientCardDeck.shuffle();
 		auth.decreaseLeftActionsOfCurrentPlayer();
+
+		String formattedString = String.format("%s transmuted an ingredient.", auth.getCurrentPlayer().name);
+		writetoFile(formattedString);
 	}
 
 	public int buyArtifact(String name) throws NotEnoughActionsException {
@@ -87,9 +110,17 @@ public class Board {
 			this.auth.addArtifactCardToCurrentPlayer(card);
 			this.auth.removeGoldFromCurrentUser(card.getPrice());
 			auth.decreaseLeftActionsOfCurrentPlayer();
+
+			String formattedString = String.format("%s bought an artifact.", auth.getCurrentPlayer().name);
+			writetoFile(formattedString);
 			return 0;
-		} else
+		} else {
+
+			String formattedString = String.format("%s was too poor to buy an artifact.", auth.getCurrentPlayer().name);
+			writetoFile(formattedString);
 			return 1;
+		}
+
 	}
 
 	public int drawMysteryCard() throws NotEnoughActionsException {
@@ -100,6 +131,8 @@ public class Board {
 		this.auth.getCurrentPlayer().inventory.spendGold(5);
 		this.auth.getCurrentPlayer().inventory.addArtifactCard(card);
 		auth.decreaseLeftActionsOfCurrentPlayer();
+		String formattedString = String.format("%s got a mystery card. Wow!", auth.getCurrentPlayer().name);
+		writetoFile(formattedString);
 		return 0;
 	}
 
@@ -107,6 +140,8 @@ public class Board {
 		auth.checkLeftActionsOfCurrentPlayer();
 		auth.getCurrentPlayer().inventory.discardArtifactCard(name);
 		auth.decreaseLeftActionsOfCurrentPlayer();
+		String formattedString = String.format("%s discarded an artifact card.", auth.getCurrentPlayer().name);
+		writetoFile(formattedString);
 	}
 
 	public Auth getAuth() {
@@ -155,6 +190,8 @@ public class Board {
 			}
 		}
 		auth.decreaseLeftActionsOfCurrentPlayer();
+		String formattedString = String.format("%s made an experiment.", auth.getCurrentPlayer().name);
+		writetoFile(formattedString);
 		return potion;
 	}
 
@@ -183,6 +220,9 @@ public class Board {
 								"Success!", JOptionPane.PLAIN_MESSAGE);
 					});
 					auth.decreaseLeftActionsOfCurrentPlayer();
+
+					String formattedString = String.format("%s published a theory.", auth.getCurrentPlayer().name);
+					writetoFile(formattedString);
 				}
 			}
 		}
@@ -200,6 +240,9 @@ public class Board {
 					JOptionPane.showMessageDialog(null, "Published Theory Was Correct.\n Reputation: -1",
 							"Failed!", JOptionPane.PLAIN_MESSAGE);
 				});
+				String formattedString = String.format("%s tried to debunk a theory but was not successful.",
+						auth.getCurrentPlayer().name);
+				writetoFile(formattedString);
 				auth.decreaseLeftActionsOfCurrentPlayer();
 			} else {
 				this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
@@ -223,6 +266,9 @@ public class Board {
 					JOptionPane.showMessageDialog(null, "Debunked Theory Successfully!\n Reputation: +2",
 							"Success!", JOptionPane.PLAIN_MESSAGE);
 				});
+				String formattedString = String.format("%s successfully debunked a theory.",
+						auth.getCurrentPlayer().name);
+				writetoFile(formattedString);
 				auth.decreaseLeftActionsOfCurrentPlayer();
 			}
 		}
@@ -249,6 +295,8 @@ public class Board {
 
 	public void activateArtifact(String name) {
 		auth.getCurrentPlayer().inventory.activateArtifact(name);
+		String formattedString = String.format("%s activated artifact %s.", auth.getCurrentPlayer().name, name);
+		writetoFile(formattedString);
 	}
 
 	public void removeArtifactCardAfterUsing(String name) {
@@ -256,9 +304,49 @@ public class Board {
 	}
 
 	public void paralyseEveryone() {
-		int a = auth.players.size();
-		for (int i = 0; i < a; i++) {
-			toggleCurrentUser();
+		auth.players.forEach(p -> p.extraActions = -2);
+		auth.getCurrentPlayer().extraActions = 0;
+		String formattedString = String.format("%s used Stanley Parable.", auth.getCurrentPlayer().name);
+		writetoFile(formattedString);
+	}
+
+	public boolean hasArtifactCard(String name) {
+		return auth.getCurrentPlayer().inventory.hasArtifactCard(name);
+	}
+
+	public void swapAfterIndex(int first, int second, int third) { // puts three cards starting from index to threeCards
+																	// array, updates the ingredient card deck using the
+																	// parameters
+		if ((first != second) & (second != third) & (third != first)) {
+			ArrayList<IngredientCard> threeCards = new ArrayList<IngredientCard>();
+			int index = ingredientCardDeck.index;
+			int size = ingredientCardDeck.getDeck().size();
+			IngredientCard currentCard = ingredientCardDeck.getDeck().get(index);
+			IngredientCard nextCard = ingredientCardDeck.getDeck().get((index + 1) % size);
+			IngredientCard twoNextCard = ingredientCardDeck.getDeck().get((index + 2) % size);
+			threeCards.add(currentCard);
+			threeCards.add(currentCard);
+			threeCards.add(currentCard);
+			threeCards.set(first - 1, currentCard);
+			threeCards.set(second - 1, nextCard);
+			threeCards.set(third - 1, twoNextCard);
+			ingredientCardDeck.getDeck().set(index, threeCards.get(0));
+			ingredientCardDeck.getDeck().set((index + 1) % size, threeCards.get(1));
+			ingredientCardDeck.getDeck().set((index + 2) % size, threeCards.get(2));
+			ingredientCardDeck.shouldShuffle = false;
+			String formattedString = String.format("%s used Elixir of Insight.", auth.getCurrentPlayer().name);
+			writetoFile(formattedString);
+		}
+
+	}
+
+	public void writetoFile(String formattedString) {
+		try {
+			bufferedWriter.write(formattedString);
+			bufferedWriter.newLine();
+			bufferedWriter.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

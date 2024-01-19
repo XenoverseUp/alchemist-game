@@ -8,8 +8,10 @@ import java.util.Map;
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.GamePhase;
+import enums.Potion;
 import error.NotEnoughActionsException;
 import error.ServerSideException;
+import error.WrongGameRoundException;
 import interfaces.IGameRegister;
 import net.Client;
 
@@ -39,6 +41,11 @@ public class TheAlchemistGameOnline implements IGameRegister {
     @Override
     public Map<String, String> getPlayerNames() {
         return client.getPlayerNames();
+    }
+
+    @Override
+    public Map<String, String> getPlayerScores() {
+        return client.getPlayerScores();
     }
 
     @Override
@@ -176,6 +183,11 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
     @Override
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn)
+            throws WrongGameRoundException, NotEnoughActionsException, Exception {
+        return client.makeExperiment(ingredientName1, ingredientName2, testOn);
+    }
+  
     public void toggleDeductionTable(String name, int tableIndex) {
         client.toggleDeductionTable(name, tableIndex);
     }
@@ -263,10 +275,25 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
 
+    @Override
+    public boolean hasArtifactCard(String name) throws ServerSideException {
+        return client.hasArtifactCard(name);
+    }
+
+    @Override
+    public void swapAfterIndex(int first, int second, int third) {
+        client.swapAfterIndex(first, second, third);
+    }
+
+    @Override
+    public List<String> getIngredients() {
+        return client.getIngredients();
+    }
+
+
+
     public ArrayList<Integer> calculateWinner() {
         return client.calculateWinner();
     }
-
- 
 
 }

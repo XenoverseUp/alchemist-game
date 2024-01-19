@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import enums.Avatar;
 import enums.DeductionToken;
@@ -63,6 +64,15 @@ public class TheAlchemistGame implements IGameRegister {
     }
 
     @Override
+    public Map<String, String> getPlayerScores() {
+        Map<String, String> scores = new HashMap<String, String>();
+
+        this.auth.players.forEach(p -> scores.put(String.valueOf(p.id), String.valueOf(p.getScore())));
+
+        return scores;
+    }
+
+    @Override
     public void toggleCurrentUser() {
         gameBoard.toggleCurrentUser();
     }
@@ -110,10 +120,6 @@ public class TheAlchemistGame implements IGameRegister {
 
     }
 
-    public void addCurrentUserListener(ICurrentUserListener currentUserListener) {
-        gameBoard.getAuth().addCurrentUserListener(currentUserListener);
-    }
-
     @Override
     public void publishTheory() throws NotEnoughActionsException {
         gameBoard.publishTheory();
@@ -132,6 +138,10 @@ public class TheAlchemistGame implements IGameRegister {
     @Override
     public void removeArtifactCardAfterUsing(String name) {
         gameBoard.removeArtifactCardAfterUsing(name);
+    }
+
+    public boolean hasArtifactCard(String name) {
+        return gameBoard.hasArtifactCard(name);
     }
 
     @Override
@@ -154,6 +164,11 @@ public class TheAlchemistGame implements IGameRegister {
         AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
         return marker.getId();
 
+    }
+
+    @Override
+    public void swapAfterIndex(int first, int second, int third) {
+        gameBoard.swapAfterIndex(first, second, third);
     }
 
     public Potion makeExperiment(
@@ -229,58 +244,14 @@ public class TheAlchemistGame implements IGameRegister {
         return this.getCurrentPlayer().avatar;
     }
 
-    public class OnlineRegister {
-
-        public int getId() {
-            if (client != null)
-                return client.getId();
-            return 0;
-        }
-
-        public boolean isHost() {
-            return getId() == 0;
-        }
-
-        public int createUser(int id, String name, Avatar avatar) {
-            return client.createUser(id, name, avatar);
-        }
-
-        public Map<String, String> getPlayerNames() {
-            return client.getPlayerNames();
-        }
-
-        public Avatar getAvatar(int id) {
-            return client.getAvatar(id);
-        }
-
-        public void startGame() throws ServerSideException {
-            client.startGame();
-        }
-
-        public Map<String, String> getCurrentUser(boolean cached) {
-            return client.getCurrentUser(cached);
-        }
-
-        public Map<String, String> getCurrentUser() {
-            return client.getCurrentUser();
-        }
-
-        public GamePhase getPhase(boolean cached) {
-            return client.getPhase(cached);
-        }
-
-        public GamePhase getPhase() {
-            return client.getPhase();
-        }
-
-        public void toggleCurrentUser() throws ServerSideException {
-            client.toggleCurrentUser();
-        }
-
-        public void revalidateCache() {
-            client.getCache().revalidateAll();
-        }
-
+    @Override
+    public List<String> getIngredients() { // gets only the top three ingredients
+        int index = gameBoard.ingredientCardDeck.index;
+        return gameBoard.ingredientCardDeck.getDeck()
+                .stream()
+                .skip(index)
+                .limit(3)
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
     }
-
 }

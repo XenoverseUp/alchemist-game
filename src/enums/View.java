@@ -16,5 +16,8 @@ public enum View {
     OnlineSelection,
     Lobby,
     OnlineLogin,
+
+    ElixirOfInsight,
+
     FinalScore
 }

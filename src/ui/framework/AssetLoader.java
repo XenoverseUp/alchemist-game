@@ -174,7 +174,6 @@ public class AssetLoader {
             BNameRibbonRed = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonRed.png"));
             BNameRibbonBlue = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonBlue.png"));
 
-
             BCrown = ImageIO.read(new File("./src/resources/image/HUD/Crown.png"));
             
             BMarker0 = ImageIO.read(new File("src/resources/image/marker0.png"));
@@ -349,6 +348,7 @@ public class AssetLoader {
                 return null;
         }
     }
+
 
     public BufferedImage getCrown(){
         return BCrown;

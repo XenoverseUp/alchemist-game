@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +10,10 @@ import domain.ArtifactCard;
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.GamePhase;
+import enums.Potion;
 import error.NotEnoughActionsException;
 import error.ServerSideException;
+import error.WrongGameRoundException;
 
 public interface IGameRegister {
     public int createUser(String userName, Avatar a);
@@ -55,6 +58,8 @@ public interface IGameRegister {
 
     public int[][] getDeductionTable();
 
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception;
+
     public void toggleDeductionTable(String name, int tableIndex);
 
     public HashMap<String[], DeductionToken> getDeductionTokens();
@@ -78,4 +83,17 @@ public interface IGameRegister {
 
     public ArrayList<Integer> calculateWinner();
  
+
+    public boolean hasArtifactCard(String string) throws ServerSideException;
+
+    public void swapAfterIndex(int first, int second, int third);
+
+    public List<String> getIngredients();
+
+
+    public ArrayList<Integer> calculateWinner();
+
+    public Map<String, String> getPlayerScores();
+
+
 }

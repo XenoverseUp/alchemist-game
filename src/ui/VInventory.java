@@ -292,6 +292,8 @@ public class VInventory extends VComponent {
                 if (name.equals("Stanley Parable")) {
                     game.getRegister().paralyseEveryone();
                     game.getRegister().removeArtifactCardAfterUsing("Stanley Parable");
+                } else if (name.equals("Elixir of Insight")) {
+                    router.to(View.ElixirOfInsight);
                 } else {
                     game.getRegister().activateArtifact(name);
                 }

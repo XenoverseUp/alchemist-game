@@ -5,11 +5,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 import ui.framework.AssetLoader;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -230,7 +227,7 @@ public class VPublicationArea extends VComponent {
         publicationPanel.setOpaque(false);
 
         JButton back = new JButton("Back");
-        back.setBounds(480, 690, 150, 30);
+        back.setBounds(480, 650, 150, 30);
         back.addActionListener(event -> router.to(View.Board));
         back.setForeground(customColor);
         panel.add(back);

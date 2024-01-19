@@ -30,17 +30,29 @@ public class VFinalScore extends VComponent {
         Map<String, String> playerNames = game.getRegister().getPlayerNames();
 
         int winnerId = winnerIds.get(0);
+        String winnerScore = playerScores.get(String.valueOf(winnerId));
+        String winnerName = playerNames.get(String.valueOf(winnerId));
         Avatar winnerAvatar = game.getRegister().getPlayerAvatar(winnerId);
-        BufferedImage BAvatarWinner = assetLoader.getAvatarImage(winnerAvatar);
+
+        BufferedImage BAvatarWinner = assetLoader.getAvatarImageBig(winnerAvatar);
         JLabel winnerAvatarImage = new JLabel(new ImageIcon(BAvatarWinner));
+        winnerAvatarImage.setBounds(350, 157, BAvatarWinner.getWidth(), BAvatarWinner.getHeight());
 
+        JLabel winnerNameLabel = new JLabel(winnerName + ": " + winnerScore, SwingConstants.CENTER);
+        winnerNameLabel.setBounds(316, 395, 316, 70);
+        winnerNameLabel.setFont(new Font("Crimson Pro", Font.BOLD, 18));
+        winnerNameLabel.setForeground(assetLoader.getNameRibbonColor(1));
 
-        
+        winner.add(winnerNameLabel);
+        winner.add(winnerAvatarImage);
+
 
         playerNames.forEach((i, name) -> {
             int id = Integer.parseInt(i);
             Avatar avatar = game.getRegister().getPlayerAvatar(id);
-            //int finalScore = game.getRegister().getPlayerScore(id);
+
+            String finalScore = playerScores.get(i);
+
 
             BufferedImage BAvatar = assetLoader.getAvatarImage(avatar);
             JLabel avatarImage = new JLabel(new ImageIcon(BAvatar));
@@ -50,7 +62,9 @@ public class VFinalScore extends VComponent {
             JLabel nameRibbon = new JLabel(new ImageIcon(BRibbon));
             nameRibbon.setBounds(72 + id * (BRibbon.getWidth() + 30), 169, BRibbon.getWidth(), BRibbon.getHeight());
             
-            JLabel nameLabel = new JLabel(name + ": " /*finalScore*/, SwingConstants.CENTER);
+
+            JLabel nameLabel = new JLabel(name + ": " + finalScore, SwingConstants.CENTER);
+
             nameLabel.setBounds(72 + id * (BRibbon.getWidth() + 30), 168, BRibbon.getWidth(), BRibbon.getHeight() - 6);
             nameLabel.setFont(new Font("Crimson Pro", Font.BOLD, 18));
             nameLabel.setForeground(assetLoader.getNameRibbonColor(id));
@@ -104,7 +118,9 @@ public class VFinalScore extends VComponent {
         controls.setBounds(0, 526, windowDimension.getWidth(), 241);
         controls.setOpaque(false);
 
-        winner.setBounds(0, 0, 10, 10);
+
+        winner.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight()-241);
+
         winner.setOpaque(false);
         panel.add(winner);
         panel.add(controls);
