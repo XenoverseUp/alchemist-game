@@ -254,4 +254,9 @@ public class TheAlchemistGame implements IGameRegister {
                 .map(c -> c.getName())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void restart() {
+        gameBoard.clearPlayers();
+    }
 }

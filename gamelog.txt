@@ -1,7 +1,2 @@
 Cards are dealed.
 Golds are dealed.
-beril1 foraged an ingredient.
-beril1 foraged an ingredient.
-It's beril2's turn.
-beril2 bought an artifact.
-beril2 activated artifact Magic Mortar.

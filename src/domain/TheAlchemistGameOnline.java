@@ -67,6 +67,7 @@ public class TheAlchemistGameOnline implements IGameRegister {
     public void finishGame() {
         client.finishGame();
     }
+    
 
     @Override
     @SuppressWarnings("unchecked")
@@ -293,6 +294,11 @@ public class TheAlchemistGameOnline implements IGameRegister {
     public ArrayList<Integer> calculateWinner() {
         return client.calculateWinner();
     }
+
+	@Override
+	public void restart() {
+		client.restart();
+	}
 
     
 

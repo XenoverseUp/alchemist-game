@@ -152,4 +152,8 @@ public class Auth {
         
         return this.winnerIds;
     }
+
+    public void clearPlayers(){
+        this.players = new ArrayList<>(3);
+    }
 }

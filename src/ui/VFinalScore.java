@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -15,10 +16,13 @@ import javax.swing.SwingConstants;
 
 import domain.Game;
 import enums.Avatar;
+import enums.BroadcastAction;
 import enums.View;
+import interfaces.IBroadcastListener;
+import interfaces.IDynamicTypeValue;
 import ui.framework.VComponent;
 
-public class VFinalScore extends VComponent {
+public class VFinalScore extends VComponent implements IBroadcastListener {
 
     private JPanel controls = new JPanel(null);
     private JPanel winner = new JPanel(null);
@@ -30,10 +34,14 @@ public class VFinalScore extends VComponent {
         Map<String, String> playerNames = game.getRegister().getPlayerNames();
         Map<String, String> playerScores = game.getRegister().getPlayerScores(); 
 
+        System.out.println("Here 1.");
+
         int winnerId = winnerIds.get(0);
         String winnerScore = playerScores.get(String.valueOf(winnerId));
         String winnerName = playerNames.get(String.valueOf(winnerId));
         Avatar winnerAvatar = game.getRegister().getPlayerAvatar(winnerId);
+
+        System.out.println("Here 2.");
 
         BufferedImage BAvatarWinner = assetLoader.getAvatarImageBig(winnerAvatar);
         JLabel winnerAvatarImage = new JLabel(new ImageIcon(BAvatarWinner));
@@ -77,6 +85,8 @@ public class VFinalScore extends VComponent {
             controls.add(avatarImage);
         });
 
+        System.out.println("Here 3.");
+
         if ((game.isOnline() && game.getOnlineRegister().isHost()) || (!game.isOnline())){
             BufferedImage BButton = assetLoader.getFinishButton(false);
             JButton finishButton = new JButton(new ImageIcon(BButton));
@@ -88,7 +98,7 @@ public class VFinalScore extends VComponent {
             finishButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) { 
-                    //TODO
+                    game.getRegister().restart();
                 }
 
                 @Override
@@ -119,6 +129,13 @@ public class VFinalScore extends VComponent {
         panel.add(winner);
         panel.add(controls);
         panel.add(background);
+    }
+
+    @Override
+    public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
+        if(action == BroadcastAction.RESTART_GAME){
+            router.to(View.Start);
+        }
     }
 
     

@@ -91,5 +91,6 @@ public interface IGameRegister {
     public ArrayList<Integer> calculateWinner();
 
     public Map<String, String> getPlayerScores();
+    public void restart();
 
 }
