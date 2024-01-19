@@ -74,6 +74,7 @@ public class Window {
             put(View.OnlineSelection, new VOnlineSelection(game));
             put(View.Lobby, new VLobby(game));
             put(View.OnlineLogin, new VOnlineLogin(game));
+            put(View.FinalScore, new VFinalScore(game));
         }};
 
         router = Router.getInstance();

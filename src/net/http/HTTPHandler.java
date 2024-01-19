@@ -16,6 +16,7 @@ import domain.IngredientCard;
 import domain.TheAlchemistGame;
 import enums.Avatar;
 import enums.BroadcastAction;
+import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
@@ -121,6 +122,16 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+
+            put("/http/deductionBoard/token", (HttpExchange exchange) -> {
+                HashMap<String[], DeductionToken> deductionTokens = game.getDeductionTokens();
+                String responseBody = JON.build(deductionTokens);
+                try {
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }});
 
 
@@ -139,7 +150,7 @@ public class HTTPHandler implements HttpHandler {
                             avatar = a;
                             break;
                         }
-
+                        
                     int result = game.createUser(Integer.parseInt(parsed.get("id")), parsed.get("name"), avatar);
 
                     if (result == 0) {
@@ -181,6 +192,27 @@ public class HTTPHandler implements HttpHandler {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+                }
+            });
+            put("/http/restartGame", (HttpExchange exchange) -> {
+                // game.reset();
+                try {
+                    sendResponse(exchange, 200, "Game is started by the host.");
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
+                } catch (IOException e) {
+                    try {
+                        sendResponse(exchange, 500, "Internal Server Error");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+            put("/http/finishGame", (HttpExchange exchange) -> {
+                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_FINISHED));
+                try {
+                    sendResponse(exchange, 200, "Game session has ended.");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             });
             put("/http/forageIngredient", (HttpExchange exchange) -> {
@@ -299,6 +331,29 @@ public class HTTPHandler implements HttpHandler {
                     }
                 }
                 
+            });
+            put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
+                
+                try {
+                    Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
+                    game.toggleDeductionTable(arguments.get("ingredient-name"), Integer.parseInt(arguments.get("table-index")));
+            
+                    sendResponse(exchange, 200, "Toggled deduction table for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            put("/http/calculateWinner", (HttpExchange exchange) -> {
+                
+                try {
+                    ArrayList<Integer> winnerIds = game.calculateWinner();
+                    String responseBody = JON.build(winnerIds);
+            
+                    sendResponse(exchange, 200, responseBody);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             });
         }});
     }

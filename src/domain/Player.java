@@ -65,6 +65,13 @@ public class Player implements Serializable {
         this.extraActions = extraActions;
     }
 
+    public void checkLeftActions() throws NotEnoughActionsException {
+        if (this.leftActions < 1){
+            throw new NotEnoughActionsException();
+        }
+    }
+    
+
     public void decreaseLeftActions() throws NotEnoughActionsException{
         if (this.leftActions > 0){
             this.leftActions -= 1;
@@ -168,4 +175,6 @@ public class Player implements Serializable {
         int[] score =  {finalPoints, leftoverGold};
         return score;
     }
+
+    
 }

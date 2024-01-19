@@ -1,11 +1,13 @@
 package interfaces;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import domain.ArtifactCard;
 import enums.Avatar;
+import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
@@ -34,4 +36,7 @@ public interface IGameRegister {
     public void toggleCurrentUser();
     public int[][] getDeductionTable();
     public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception;
+    public void toggleDeductionTable(String name, int tableIndex);
+    public HashMap<String[], DeductionToken> getDeductionTokens();
+    public ArrayList<Integer> calculateWinner();
 }

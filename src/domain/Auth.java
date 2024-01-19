@@ -92,6 +92,9 @@ public class Auth {
     	return getCurrentPlayer().inventory.getIngredient(name);
     }
 
+    public void checkLeftActionsOfCurrentPlayer() throws NotEnoughActionsException{
+        getCurrentPlayer().checkLeftActions();
+    }
     public void decreaseLeftActionsOfCurrentPlayer() throws NotEnoughActionsException {
         getCurrentPlayer().decreaseLeftActions();
     }
@@ -118,8 +121,8 @@ public class Auth {
 		for(ICurrentUserListener listener : currentUserListeners) listener.onCurrentUserChange();
 	}
 
-    public ArrayList<Player> calculateWinner(){
-        ArrayList<Player> winners = new ArrayList<>();
+    public ArrayList<Integer> calculateWinner(){
+        ArrayList<Integer> winnerIds = new ArrayList<>();
         Player candidateWinner = null;
         int[] candidateScore = null;
         for (Player player: this.players){
@@ -132,17 +135,16 @@ public class Auth {
                 if ((score[0] > candidateScore[0]) || (score[0] == candidateScore[0] && score[1] > score[1] )){
                     candidateWinner = player;
                     candidateScore = score;
-                    if (winners.size() > 0){
-                        winners.clear();
+                    if (winnerIds.size() > 0){
+                        winnerIds.clear();
                     }
                 }
                 else if (score[0] == candidateScore[0] && score[1] == candidateScore[1]){
-                    winners.add(player);
+                    winnerIds.add(player.id);
                 }
-                
             }
         }
-        winners.add(candidateWinner);
-        return winners;
+        winnerIds.add(candidateWinner.id);
+        return winnerIds;
     }
 }

@@ -1,10 +1,12 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import enums.Avatar;
+import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
@@ -15,7 +17,7 @@ import net.Client;
 
 public class TheAlchemistGameOnline implements IGameRegister {
     private Client client;
-    private Board staticBoard;
+    private Board staticBoard = new Board(null);
 
     public TheAlchemistGameOnline(Client client) {
         this.client = client;
@@ -54,6 +56,10 @@ public class TheAlchemistGameOnline implements IGameRegister {
         }
 
         return 0;
+    }
+
+    public void finishGame() {
+        client.finishGame();
     }
 
     @Override
@@ -176,6 +182,20 @@ public class TheAlchemistGameOnline implements IGameRegister {
     public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn)
             throws WrongGameRoundException, NotEnoughActionsException, Exception {
         return client.makeExperiment(ingredientName1, ingredientName2, testOn);
+    }
+  
+    public void toggleDeductionTable(String name, int tableIndex) {
+        client.toggleDeductionTable(name, tableIndex);
+    }
+
+    @Override
+    public HashMap<String[], DeductionToken> getDeductionTokens() {
+        return client.getDeductionTokens();
+    }
+
+    @Override
+    public ArrayList<Integer> calculateWinner() {
+        return client.calculateWinner();
     }
 
  

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import enums.DeductionToken;
+
 public class JON {
     public static String build(Map<String, String> data) {
         StringBuilder body = new StringBuilder("");
@@ -34,6 +36,16 @@ public class JON {
         }
         return body.toString();
     }
+
+    public static String build(ArrayList<Integer> data){
+        return data.toString();
+    }
+
+    public static String build(HashMap<String[], DeductionToken> data){
+        StringBuilder body = new StringBuilder();
+         data.forEach((k, v) -> body.append(String.format("%s,%s:%s\n", k[0], k[1], v.toString())));
+        return body.toString();
+    }
    
     public static Map<String, String> parseMap(String requestBody) {
         Map<String, String> data = new HashMap<String, String>();
@@ -46,11 +58,36 @@ public class JON {
         
         return data;
     }
+
+     public static HashMap<String[], DeductionToken> parseMapStringArrayDeductionToken(String requestBody) {
+        HashMap<String [], DeductionToken> data = new HashMap<String [], DeductionToken>();
+
+        for (var line : requestBody.split("\n")) {
+            if (line.trim().equals("")) continue;
+            String[] kv = line.trim().split(":");
+            String[] k = kv[0].trim().split(",");
+            DeductionToken token = DeductionToken.valueOf(kv[1]);
+            data.put(k, token);
+        }
+        return data;
+    }
     
     public static List<String> parseList(String requestBody) {
         List<String> parsed = new ArrayList<>();
         for (String token : requestBody.split(":"))
             if (!token.equals("")) parsed.add(token);
+
+        return parsed;
+    }
+
+    public static ArrayList<Integer> parseListInt(String requestBody) {
+        System.out.println(requestBody);
+        requestBody = requestBody.replace("[", "");
+        requestBody = requestBody.replace("]", "");
+        requestBody.trim();
+        ArrayList<Integer> parsed = new ArrayList<>();
+        for (String token : requestBody.split(","))
+            if (!token.equals("")) parsed.add(Integer.parseInt(token.trim()));
 
         return parsed;
     }

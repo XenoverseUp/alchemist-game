@@ -6,12 +6,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.image.BufferedImage;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,14 +36,30 @@ public class VLogin extends VComponent {
 
     @Override
     protected void render() {
+        BufferedImage BBackground = assetLoader.getBackground(View.Login);
+        JLabel background = new JLabel(new ImageIcon(BBackground));
+        background.setBounds(0, 0, BBackground.getWidth(), BBackground.getHeight());
+
+        BufferedImage BLeftArrow = assetLoader.getLeftArrow();
+        JButton back = new JButton(new ImageIcon(BLeftArrow));
+        back.setBounds(36, 36, BLeftArrow.getWidth(), BLeftArrow.getHeight());
+        back.addActionListener(e -> router.navigateBack());
+        back.setOpaque(false);
+        back.setContentAreaFilled(false);
+        back.setBorderPainted(false);
+        back.setFocusable(false);
+
+
         JPanel firstUserForm = createUserForm("First Alchemist", 0);
         JPanel secondUserForm = createUserForm("Second Alchemist", 1);
 
-        firstUserForm.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
-        secondUserForm.setBounds(windowDimension.getWidth() / 2 - 1, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        firstUserForm.setBounds(41, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        secondUserForm.setBounds(windowDimension.getWidth() / 2 - 39, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
 
-        this.panel.add(secondUserForm);
-        this.panel.add(firstUserForm);
+        panel.add(secondUserForm);
+        panel.add(firstUserForm);
+        panel.add(back);
+        panel.add(background);
     }
 
     private JPanel createUserForm(String title, int userIndex) {

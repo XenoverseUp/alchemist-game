@@ -32,12 +32,6 @@ public class VLobby extends VComponent implements IBroadcastListener {
     @Override
     protected void mounted() {
         update();
-        game.addBroadcastListener(this);
-    }
-
-    @Override
-    protected void unmounted() {
-        game.removeBroadcastListener(this);
     }
 
     @Override
@@ -80,10 +74,15 @@ public class VLobby extends VComponent implements IBroadcastListener {
         panel.add(background);
     }
 
- 
+    @Override
+    protected void listenBroadcast() {
+        if (game.isOnline()) game.addBroadcastListener(this);
+    }
+
 
     @Override
     public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
+        if (router.getCurrentView() != View.Lobby) return;
         if (action == BroadcastAction.PLAYER_CREATED) update();
         if (action == BroadcastAction.ROOM_IS_FULL) waitingLabel.setText("Waiting for host to start the game...");
         if (action == BroadcastAction.GAME_STARTED) router.to(View.Board);

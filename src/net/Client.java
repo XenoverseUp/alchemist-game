@@ -13,6 +13,7 @@ import java.util.Map;
 
 import enums.Avatar;
 import enums.BroadcastAction;
+import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
 import error.HostDoesNotExistsException;
@@ -76,6 +77,7 @@ public class Client {
             put("id", String.valueOf(id));
             put("avatar", avatar.toString());
         }});
+
 
         HttpResponse<String> response = request.post("/http/createPlayer", body);
 
@@ -199,9 +201,29 @@ public class Client {
         return JON.parseMatrix((String)response.body());
     }
 
-    public int[][] getCurrentPlayerDeductionTokens() {
+    public HashMap<String[], DeductionToken> getDeductionTokens() {
         HttpResponse<String> response = request.get("/http/deductionBoard/token");
-        return null;
+        
+        return JON.parseMapStringArrayDeductionToken((String)response.body());
+    }
+
+    public void toggleDeductionTable(String name, int tableIndex) {
+       String body = JON.build(new HashMap<String, String>() {{
+            put("ingredient-name", name);
+            put("table-index", String.valueOf(tableIndex));
+        }});
+
+       request.put("/http/toggleDeductionTable", body);
+    }
+
+    public void finishGame() {
+        request.put("/http/finishGame");
+    }
+
+    public ArrayList<Integer> calculateWinner(){
+        HttpResponse<String> response = request.put("/http/calculateWinner");
+
+        return JON.parseListInt((String)response.body());
     }
 
     public Potion makeExperiment(
@@ -257,18 +279,12 @@ public class Client {
                         BroadcastPackage incoming = ((BroadcastPackage)in.readObject());
                         BroadcastAction action = incoming.getAction();
 
-
-                        switch (action) {
-                            case PLAYER_CREATED:
-                                break;
-                            case CLIENT_CONNECTED:
-                                id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
-                                break;
-                            default:
-                                break;
+                        if (action == BroadcastAction.CLIENT_CONNECTED) {
+                            id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
                         }
 
                         publishBroadcastListener(action, incoming.getPayload());
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         shutdown();
@@ -315,6 +331,8 @@ public class Client {
         for (var l : this.broadcastListeners) 
             l.onBroadcast(action, payload);
     }
+
+    
 
     
 }

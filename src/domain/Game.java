@@ -86,9 +86,4 @@ public class Game {
         if (isOnline() && this.client != null)
             client.addBroadcastListener(component);
     }
-
-    public void removeBroadcastListener(IBroadcastListener component) {
-        if (isOnline() && this.client != null)
-            client.removeBroadcastListener(component);
-    }
 }
