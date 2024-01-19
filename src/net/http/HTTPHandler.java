@@ -18,7 +18,9 @@ import enums.Avatar;
 import enums.BroadcastAction;
 import enums.DeductionToken;
 import enums.GamePhase;
+import enums.Potion;
 import error.NotEnoughActionsException;
+import error.WrongGameRoundException;
 import net.ClientHandler;
 import net.util.BroadcastPackage;
 import net.util.JON;
@@ -300,6 +302,36 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
+            put("/http/makeExperiment", (HttpExchange exchange) -> {
+                try {
+                    String data = getRequestString(exchange);
+                    Map<String, String> parameters = JON.parseMap(data);
+                    Potion potion = game.makeExperiment(parameters.get("ingredient1"), parameters.get("ingredient2"), parameters.get("testOn"));
+
+                    sendResponse(exchange, 200, potion.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (WrongGameRoundException e) {
+                    try {
+                        sendResponse(exchange, 401, "You cannot make this action in this round.");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                } catch (NotEnoughActionsException e) {
+                    try {
+                        sendResponse(exchange, 400, "Not enough actions.");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    try {
+                        sendResponse(exchange, 402, e.getMessage());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                
+            });
             put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
                 
                 try {
@@ -323,8 +355,6 @@ public class HTTPHandler implements HttpHandler {
                     e.printStackTrace();
                 }
             });
-
-
         }});
     }
 

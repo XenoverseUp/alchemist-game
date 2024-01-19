@@ -139,6 +139,7 @@ public class TheAlchemistGame implements IGameRegister {
 
     }
 
+    @Override
     public Potion makeExperiment(
             String ingredientName1,
             String ingredientName2,
