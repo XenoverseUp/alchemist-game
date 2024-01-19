@@ -1,3 +1,4 @@
+package test.domain;
 import domain.*;
 import enums.Avatar;
 import org.junit.*;
