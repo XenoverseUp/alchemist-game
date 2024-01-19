@@ -7,8 +7,8 @@ public class Cache {
     private HashMap<String, String> cachedValues = new HashMap<>();
     private HashMap<String, Supplier<String>> validators = new HashMap<>();
 
-    public void create(String key, Supplier<String> c) {
-        validators.put(key, c);
+    public void create(String key, Supplier<String> supplier) {
+        validators.put(key, supplier);
         set(key, null);
     }
     public String get(String key) {
