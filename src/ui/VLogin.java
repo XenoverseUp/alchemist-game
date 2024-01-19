@@ -6,12 +6,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.image.BufferedImage;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +23,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import domain.TheAlchemistGame;
+import domain.Game;
 import enums.Avatar;
 import enums.View;
 import ui.framework.VComponent;
@@ -30,18 +32,34 @@ public class VLogin extends VComponent {
     private boolean isFirstPlayerReady = false;
     private boolean isSecondPlayerReady = false;
 
-    public VLogin(TheAlchemistGame game) { super(game); }
+    public VLogin(Game game) { super(game); }
 
     @Override
     protected void render() {
+        BufferedImage BBackground = assetLoader.getBackground(View.Login);
+        JLabel background = new JLabel(new ImageIcon(BBackground));
+        background.setBounds(0, 0, BBackground.getWidth(), BBackground.getHeight());
+
+        BufferedImage BLeftArrow = assetLoader.getLeftArrow();
+        JButton back = new JButton(new ImageIcon(BLeftArrow));
+        back.setBounds(36, 36, BLeftArrow.getWidth(), BLeftArrow.getHeight());
+        back.addActionListener(e -> router.navigateBack());
+        back.setOpaque(false);
+        back.setContentAreaFilled(false);
+        back.setBorderPainted(false);
+        back.setFocusable(false);
+
+
         JPanel firstUserForm = createUserForm("First Alchemist", 0);
         JPanel secondUserForm = createUserForm("Second Alchemist", 1);
 
-        firstUserForm.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
-        secondUserForm.setBounds(windowDimension.getWidth() / 2 - 1, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        firstUserForm.setBounds(41, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
+        secondUserForm.setBounds(windowDimension.getWidth() / 2 - 39, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
 
-        this.panel.add(secondUserForm);
-        this.panel.add(firstUserForm);
+        panel.add(secondUserForm);
+        panel.add(firstUserForm);
+        panel.add(back);
+        panel.add(background);
     }
 
     private JPanel createUserForm(String title, int userIndex) {
@@ -118,7 +136,7 @@ public class VLogin extends VComponent {
         for (Avatar a: Avatar.values()) {
         	JRadioButton avatar = new JRadioButton(a.toString());
 
-            if (a == Avatar.Radiant) avatar.setSelected(true);
+            if (a == Avatar.Thunderous) avatar.setSelected(true);
 
             avatar.setFont(new Font("Itim-Regular", Font.PLAIN, 12));
         	avatar.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -149,7 +167,7 @@ public class VLogin extends VComponent {
                 }
             }
 
-            int result = game.createUser(playerName, playerAvatar);
+            int result = game.getRegister().createUser(playerName, playerAvatar);
 
             switch (result) {
                 case 0: {
@@ -180,7 +198,7 @@ public class VLogin extends VComponent {
             }
 
             if (isFirstPlayerReady && isSecondPlayerReady) { 
-                game.initializeGame();
+                game.getRegister().initializeGame();
                 router.to(View.Board);
             }
 

@@ -39,6 +39,7 @@ public class DeductionBoard {
 		return deductionTable.clone();
 	}
 
+	@SuppressWarnings("unchecked")
 	public HashMap<String[], DeductionToken> getDeductionTokens() {
 		return (HashMap<String[], DeductionToken>) deductionTokens.clone();
 	}

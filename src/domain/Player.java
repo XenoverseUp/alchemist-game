@@ -1,12 +1,16 @@
 package domain;
+import java.io.Serializable;
+
 import enums.Avatar;
 import enums.Potion;
+import error.NotEnoughActionsException;
 
-public class Player {
+public class Player implements Serializable {
     public int id;
     public String name;
     public Avatar avatar;
     public Inventory inventory;
+    private Integer score = null;
     private int sickness = 0;
     private int reputation = 0;
     public int leftActions = 2;
@@ -58,8 +62,33 @@ public class Player {
         return reputation;
     }
 
+    public int getScore() {
+        return this.score;
+    }
+
     private void setExtraActions(int extraActions) {
         this.extraActions = extraActions;
+    }
+
+    public void checkLeftActions() throws NotEnoughActionsException {
+        if (this.leftActions < 1){
+            throw new NotEnoughActionsException();
+        }
+    }
+    
+
+    public void decreaseLeftActions() throws NotEnoughActionsException{
+        if (this.leftActions > 0){
+            this.leftActions -= 1;
+        }
+        else{
+            throw new NotEnoughActionsException();
+        }
+    }
+
+    public void calculateTotalActions(){
+        this.leftActions = 2 + this.extraActions;
+        this.extraActions = 0;
     }
 
 
@@ -149,6 +178,9 @@ public class Player {
         finalPoints += (this.inventory.getGold() / 3);
         int leftoverGold = this.inventory.getGold() % 3;
         int[] score =  {finalPoints, leftoverGold};
+        this.score = finalPoints;
         return score;
     }
+
+    
 }

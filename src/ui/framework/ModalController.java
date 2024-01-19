@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -21,36 +21,45 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import ui.util.FadePane;
+import ui.util.Move;
+import ui.util.FadePane.FaderListener;
+
 public class ModalController {
-    private static JPanel overlay = null;
+    private static FadePane overlay = null;
     
     private static JPanel infoPopover = null;
     private static JLabel infoPopoverTitle = null;
     private static JLabel infoPopoverDescription = null;
-    
+    private static Move move = null;
+
     public static JPanel generateOverlay(int windowWidth, int windowHeight) {
-        int overlayOpacity = 90;
+        int overlayOpacity = 120;
 
         if (overlay == null) {
-            overlay = new JPanel() {
-                protected void paintComponent(Graphics g) {
-                    g.setColor(getBackground());
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                    super.paintComponent(g);
-                }
-            };
-
+            overlay = new FadePane();
+            overlay.setFaddedOut();
+            overlay.setVisible(false);
             overlay.setBackground(new Color(0, 0, 0, overlayOpacity));
             overlay.setBounds(0, 0, windowWidth, windowHeight);
-            overlay.setVisible(false);
-        }
 
-        overlay.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                close();
-            }
-        });
+            overlay.addFadeListener(new FaderListener() {
+                @Override
+                public void fadeDidComplete(FadePane pane) {
+                    if (!overlay.isFadingIn()) {
+                        overlay.setVisible(false);
+                    }
+                }
+            });
+            
+            overlay.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    close();
+                }
+            });
+        }
+        
 
         return overlay;
     }
@@ -60,6 +69,7 @@ public class ModalController {
             infoPopover = new JPanel(null);
             infoPopover.addMouseListener(new MouseAdapter() {});
             infoPopover.setFocusable(false);
+            
 
             BufferedImage BPopover = null;
             try {
@@ -68,6 +78,11 @@ public class ModalController {
                 System.out.println(e);
             }
 
+            move = new Move(infoPopover)
+                .from(new Rectangle(windowWidth / 2 - BPopover.getWidth() / 4, windowHeight, BPopover.getWidth() / 2, BPopover.getHeight() / 2))
+                .to(new Rectangle(windowWidth / 2 - BPopover.getWidth() / 4, windowHeight / 2 - BPopover.getHeight() / 4, BPopover.getWidth() / 2, BPopover.getHeight() / 2));
+
+
             JPanel content = new JPanel();
             content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
             content.setOpaque(false);
@@ -75,11 +90,15 @@ public class ModalController {
             infoPopoverTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
             infoPopoverTitle.setFont(new Font("Crimson Pro", Font.BOLD, 24));
             infoPopoverTitle.setForeground(new Color(41, 31, 25));
+            infoPopoverTitle.setMaximumSize(new Dimension(BPopover.getWidth() - 400, 99));
+            infoPopoverTitle.setHorizontalAlignment(SwingConstants.CENTER);
+
             
             infoPopoverDescription = new JLabel();
             infoPopoverDescription.setAlignmentX(Component.CENTER_ALIGNMENT);
             infoPopoverDescription.setFont(new Font("Crimson Pro", Font.PLAIN, 18));
             infoPopoverDescription.setMaximumSize(new Dimension(360, 9999));
+            infoPopoverDescription.setHorizontalAlignment(SwingConstants.CENTER);
 
 
             JButton defaultActionButton = new JButton("Ok!");
@@ -106,7 +125,7 @@ public class ModalController {
                
             infoPopover.setVisible(false);
             infoPopover.setOpaque(false);
-            infoPopover.setBounds(windowWidth / 2 - BPopover.getWidth() / 4, windowHeight / 2 - BPopover.getHeight() / 4, BPopover.getWidth() / 2, BPopover.getHeight() / 2);
+            // infoPopover.setBounds(windowWidth / 2 - BPopover.getWidth() / 4, windowHeight / 2 - BPopover.getHeight() / 4, BPopover.getWidth() / 2, BPopover.getHeight() / 2);
         }
 
 
@@ -114,8 +133,9 @@ public class ModalController {
     }
 
     public static void close() {
-        infoPopover.setVisible(false);
-        overlay.setVisible(false);
+        overlay.fadeOut();
+        move.setDirection(1);
+        move.run();
     }
 
 
@@ -133,10 +153,13 @@ public class ModalController {
 
     public static class Modal {
         public void info(String title, String description) {
-            infoPopoverTitle.setText(title);
+            infoPopoverTitle.setText(String.format("<html><div style='text-align: center;'>%s</div></html>", title));
             infoPopoverDescription.setText(String.format("<html><div style='text-align: center;'>%s</div></html>", description));
             infoPopover.setVisible(true);
+            move.setDirection(0);
+            move.run();
             overlay.setVisible(true);
+            overlay.fadeIn();
         }
 
         public void dismiss() {

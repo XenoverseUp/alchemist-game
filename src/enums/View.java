@@ -12,5 +12,11 @@ public enum View {
     CardDeck,
     PublicationArea,
     Pause,
-    ArtifactShop
+    ArtifactShop,
+    OnlineSelection,
+    Lobby,
+    OnlineLogin,
+    ElixirOfInsight
+    FinalScore
+
 }
