@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 
 import enums.Avatar;
 import enums.DeductionToken;
 import enums.GamePhase;
 import enums.Potion;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
 import error.WrongGameRoundException;
 import interfaces.IGameRegister;
 
@@ -19,21 +20,23 @@ public class TheAlchemistGame implements IGameRegister {
     private Board gameBoard;
 
     public TheAlchemistGame() {
-    	auth = new Auth();
+        auth = new Auth();
         gameBoard = new Board(auth);
     }
 
     @Override
     public int createUser(String userName, Avatar a) {
         return auth.createUser(userName, a);
+
     }
-   
+
     public int createUser(int id, String name, Avatar avatar) {
         return auth.createUser(id, name, avatar);
     }
-  
+
     public String getPlayerName(int id) {
         return this.auth.players.get(id).name;
+
     }
 
     @Override
@@ -107,23 +110,77 @@ public class TheAlchemistGame implements IGameRegister {
     @Override
     @SuppressWarnings("unchecked")
     public ArrayList<ArtifactCard> getArtifactCardDeck() {
-		return (ArrayList<ArtifactCard>)this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
-	}
+
+        return (ArrayList<ArtifactCard>) this.gameBoard.artifactCardDeck.getArtifactCardDeck().clone();
+    }
 
     @Override
     public int drawMysteryCard() throws NotEnoughActionsException {
         return this.gameBoard.drawMysteryCard();
+
+    }
+
+    @Override
+    public void publishTheory() throws NotEnoughActionsException {
+        gameBoard.publishTheory();
+    }
+
+    @Override
+    public void debunkTheory() throws NotEnoughActionsException {
+        gameBoard.debunkTheory();
+    }
+
+    @Override
+    public void activateArtifact(String name) {
+        gameBoard.activateArtifact(name);
+    }
+
+    @Override
+    public void removeArtifactCardAfterUsing(String name) {
+        gameBoard.removeArtifactCardAfterUsing(name);
+    }
+
+    public boolean hasArtifactCard(String name) {
+        return gameBoard.hasArtifactCard(name);
+    }
+
+    @Override
+    public void paralyseEveryone() {
+        gameBoard.paralyseEveryone();
+    }
+
+    @Override
+    public void setMarker(int id) {
+        gameBoard.alchemyMarkerDeck.setChosen(id);
+    }
+
+    @Override
+    public void setCard(int id) {
+        gameBoard.publicationCardDeck.setChosen(id);
+    }
+
+    @Override
+    public int getMarkerID(int id) {
+        AlchemyMarker marker = gameBoard.publicationCardDeck.getCard(id).getAlchemyMarker();
+        return marker.getId();
+
+    }
+
+    @Override
+    public void swapAfterIndex(int first, int second, int third) {
+        gameBoard.swapAfterIndex(first, second, third);
     }
 
     public Potion makeExperiment(
-        String ingredientName1, 
-        String ingredientName2, 
-        String testOn
-    ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+            String ingredientName1,
+            String ingredientName2,
+            String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+
         return gameBoard.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
+
     @Override
-    public void toggleDeductionTable(String ingredient, int coordinate){
+    public void toggleDeductionTable(String ingredient, int coordinate) {
         gameBoard.getAuth().getCurrentPlayer().deductionBoard.toggleDeductionTable(ingredient, coordinate);
     }
 
@@ -131,6 +188,7 @@ public class TheAlchemistGame implements IGameRegister {
     public int[][] getDeductionTable() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTable();
     }
+
     @Override
     public HashMap<String[], DeductionToken> getDeductionTokens() {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
@@ -144,11 +202,10 @@ public class TheAlchemistGame implements IGameRegister {
     public GamePhase getPhase() {
         return gameBoard.getPhase();
     }
-  
+
     public Player getCurrentPlayer() {
         return this.auth.getCurrentPlayer();
     }
-
 
     // NEW
 
@@ -187,5 +244,14 @@ public class TheAlchemistGame implements IGameRegister {
         return this.getCurrentPlayer().avatar;
     }
 
-   
+    @Override
+    public List<String> getIngredients() { // gets only the top three ingredients
+        int index = gameBoard.ingredientCardDeck.index;
+        return gameBoard.ingredientCardDeck.getDeck()
+                .stream()
+                .skip(index)
+                .limit(3)
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
+    }
 }

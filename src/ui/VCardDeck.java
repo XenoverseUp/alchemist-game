@@ -19,36 +19,75 @@ import javax.swing.SwingConstants;
 
 import enums.View;
 import error.NotEnoughActionsException;
+import error.ServerSideException;
+import java8.util.stream.Collectors;
 import ui.framework.VComponent;
+import ui.util.WrapLayout;
 import domain.Game;
+import domain.IngredientCard;
+import javax.swing.JTextField;
+import java.awt.FlowLayout;
 
 public class VCardDeck extends VComponent {
 
     public VCardDeck(Game game) {
         super(game);
     }
-    
+
+    @Override
+    protected void mounted() {
+        this.update();
+
+    }
+
+    private void update() {
+        try {
+            if (game.getRegister().hasArtifactCard("Elixir of Insight")) {
+                JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER, 24, 24));
+                cards.setPreferredSize(new Dimension(120, 300));
+                game.getRegister()
+                        .getCurrentPlayerIngredients().stream().limit(3)
+                        .map(name -> this.generateIngredientCard(name))
+                        .forEach(cards::add);
+
+                JTextField inputField = new JTextField();
+                JButton rearrange = new JButton("rearrange");
+                inputField.setBounds(60, 120, 120, 60);
+                rearrange.setBounds(60, 190, 120, 60);
+                cards.setBounds(60, 300, 200, 200);
+
+                panel.add(inputField);
+                panel.add(rearrange);
+                panel.add(cards);
+
+                // rearrange.addActionListener(game.getRegister.rearrange());
+            }
+        } catch (ServerSideException e) {
+
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void render() {
         JPanel ingredientCardDeck = createCardDeck("ingredient", "Forage Ingredient");
         JPanel artifactCardDeck = createCardDeck("artifact", "Visit Artifact Shop");
-        
+
         ingredientCardDeck.setBounds(0, 0, windowDimension.getWidth() / 2, windowDimension.getHeight());
         artifactCardDeck.setBounds(
-            windowDimension.getWidth() / 2, 
-            0, 
-            windowDimension.getWidth() / 2,
-            windowDimension.getHeight()
-        );
-        
+                windowDimension.getWidth() / 2,
+                0,
+                windowDimension.getWidth() / 2,
+                windowDimension.getHeight());
+
         BufferedImage BBackground = assetLoader.getBackground(View.CardDeck);
         JLabel bgPic = new JLabel(new ImageIcon(BBackground));
-        bgPic.setBounds(0,0, windowDimension.getWidth(), windowDimension.getHeight());
-
+        bgPic.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight());
 
         Image BTitle = assetLoader.getPageBanner();
         JLabel title = new JLabel(new ImageIcon(BTitle));
-        title.setBounds(windowDimension.getWidth() / 2 - BTitle.getWidth(null) / 2, -16, BTitle.getWidth(null), BTitle.getHeight(null));
+        title.setBounds(windowDimension.getWidth() / 2 - BTitle.getWidth(null) / 2, -16, BTitle.getWidth(null),
+                BTitle.getHeight(null));
 
         JLabel titleText = new JLabel("Card Deck", SwingConstants.CENTER);
         titleText.setForeground(Color.white);
@@ -66,6 +105,7 @@ public class VCardDeck extends VComponent {
         panel.add(ingredientCardDeck);
         panel.add(artifactCardDeck);
         panel.add(bgPic);
+
     }
 
     private JPanel createCardDeck(String type, String buttonText) {
@@ -80,19 +120,20 @@ public class VCardDeck extends VComponent {
 
         BufferedImage ingredientCardPile = null;
         BufferedImage artifactCardPile = null;
-        
+
         try {
-            if (type.equals("ingredient")) ingredientCardPile = ImageIO.read(new File("./src/resources/image/ingredientCardPile.png"));
-            else artifactCardPile = ImageIO.read(new File("./src/resources/image/artifactCardPile.png"));
+            if (type.equals("ingredient"))
+                ingredientCardPile = ImageIO.read(new File("./src/resources/image/ingredientCardPile.png"));
+            else
+                artifactCardPile = ImageIO.read(new File("./src/resources/image/artifactCardPile.png"));
         } catch (Exception e) {
             System.out.println(e);
         }
 
         JLabel deckPic = new JLabel(new ImageIcon(
-            type.equals("ingredient") 
-                ? ingredientCardPile
-                : artifactCardPile
-        ));
+                type.equals("ingredient")
+                        ? ingredientCardPile
+                        : artifactCardPile));
 
         deckPic.setBounds(0, 0, pile.getWidth(), pile.getHeight());
         pile.add(deckPic);
@@ -105,12 +146,13 @@ public class VCardDeck extends VComponent {
                     game.getRegister().forageIngredient();
                     router.to(View.Inventory);
                 } catch (NotEnoughActionsException e) {
-                   modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
+                    modal.info("No Actions Left",
+                            "For this round you don't have any actions left! Wait till next round!");
                 }
-            } else router.to(View.ArtifactShop);
-            
-        });
+            } else
+                router.to(View.ArtifactShop);
 
+        });
 
         cardPanel.add(Box.createVerticalGlue());
         cardPanel.add(pile);
@@ -120,6 +162,21 @@ public class VCardDeck extends VComponent {
 
         return cardPanel;
 
+    }
+
+    private JPanel generateIngredientCard(String name) {
+        BufferedImage cardBuffer = assetLoader.getIngredientCard(name);
+
+        JPanel card = new JPanel(null);
+        card.setOpaque(false);
+        card.setPreferredSize(new Dimension(cardBuffer.getWidth(), cardBuffer.getHeight()));
+
+        JLabel bg = new JLabel(new ImageIcon(cardBuffer));
+        bg.setBounds(60, 60, 40, 60);
+
+        card.add(bg);
+
+        return card;
     }
 
 }

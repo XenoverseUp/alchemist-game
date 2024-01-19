@@ -3,7 +3,6 @@ package ui.framework;
 import java.util.Map;
 import java.util.Stack;
 
-import domain.Game;
 import enums.View;
 import ui.Window;
 

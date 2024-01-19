@@ -56,8 +56,10 @@ public class AssetLoader {
     private BufferedImage BArtifactShopBackground;
     private BufferedImage BInventoryBackground;
     private BufferedImage BBlurredBoard;
-    private BufferedImage BOnlineBackground;
+    private BufferedImage BOnlineLoginBackground;
+    private BufferedImage BLoginBackground;
     private BufferedImage BFinalBackground;
+    private BufferedImage pbAreaBackground;
 
     private BufferedImage BClose;
     private BufferedImage BTitle;
@@ -74,7 +76,17 @@ public class AssetLoader {
     private BufferedImage BNameRibbonRed;
     private BufferedImage BNameRibbonBlue;
 
+
     private BufferedImage BCrown;
+
+    private BufferedImage BMarker0;
+    private BufferedImage BMarker1;
+    private BufferedImage BMarker2;
+    private BufferedImage BMarker3;
+    private BufferedImage BMarker4;
+    private BufferedImage BMarker5;
+    private BufferedImage BMarker6;
+    private BufferedImage BMarker7;
 
     public ArrayList<String> ingredientNames = new ArrayList<String>() {{
         add("mushroom");
@@ -142,7 +154,8 @@ public class AssetLoader {
             BArtifactShopBackground =  ImageIO.read(new File("./src/resources/image/cardDeckBg.png"));
             BInventoryBackground = ImageIO.read(new File("./src/resources/image/inventoryBg.png"));
             BBlurredBoard = ImageIO.read(new File("./src/resources/image/notTurnBackground.png"));
-            BOnlineBackground = ImageIO.read(new File("./src/resources/image/onlineLoginBackground.png"));
+            BOnlineLoginBackground = ImageIO.read(new File("./src/resources/image/onlineLoginBackground.png"));
+            BLoginBackground = ImageIO.read(new File("./src/resources/image/loginBackground.png"));
             BFinalBackground =  ImageIO.read(new File("./src/resources/image/finalBackground.png"));
             
             BClose = ImageIO.read(new File("./src/resources/image/HUD/closeButton.png"));
@@ -160,8 +173,19 @@ public class AssetLoader {
             BNameRibbonGreen = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonGreen.png"));
             BNameRibbonRed = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonRed.png"));
             BNameRibbonBlue = ImageIO.read(new File("./src/resources/image/HUD/nameRibbonBlue.png"));
-            
+
             BCrown = ImageIO.read(new File("./src/resources/image/HUD/Crown.png"));
+            
+            BMarker0 = ImageIO.read(new File("src/resources/image/marker0.png"));
+            BMarker1 = ImageIO.read(new File("src/resources/image/marker1.png"));
+            BMarker2 = ImageIO.read(new File("src/resources/image/marker2.png"));
+            BMarker3 = ImageIO.read(new File("src/resources/image/marker3.png"));
+            BMarker4 = ImageIO.read(new File("src/resources/image/marker4.png"));
+            BMarker5 = ImageIO.read(new File("src/resources/image/marker5.png"));
+            BMarker6 = ImageIO.read(new File("src/resources/image/marker6.png"));
+            BMarker7 = ImageIO.read(new File("src/resources/image/marker7.png"));
+            
+            pbAreaBackground = ImageIO.read(new File("src/resources/image/publication-area-bg.png"));
 
         } catch (IOException e) {
             System.out.println(e);
@@ -181,6 +205,23 @@ public class AssetLoader {
 
 
         return null;
+    }
+
+    public BufferedImage getPbBackground() {
+        return pbAreaBackground;
+    }
+    public BufferedImage getMarkerImage(int markerId) {
+        switch (markerId) {
+            case 0: return BMarker0;
+            case 1: return BMarker1;
+            case 2: return BMarker2;
+            case 3: return BMarker3;
+            case 4: return BMarker4;
+            case 5: return BMarker5;
+            case 6: return BMarker6;
+            case 7: return BMarker7;
+            default: return null;
+        }
     }
 
     public Image getIngredientCard(String name, double scale) {
@@ -298,7 +339,9 @@ public class AssetLoader {
             case Inventory:
                 return BInventoryBackground;
             case OnlineLogin:
-                return BOnlineBackground;
+                return BOnlineLoginBackground;
+            case Login:
+                return BLoginBackground;
             case FinalScore:
                 return BFinalBackground;
             default:
