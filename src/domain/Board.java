@@ -86,8 +86,6 @@ public class Board {
 
 	public void transmuteIngredient(String name) throws NotEnoughActionsException {
 
-		auth.decreaseLeftActionsOfCurrentPlayer();
-
 		auth.checkLeftActionsOfCurrentPlayer();
 
 		IngredientCard iCard = auth.getIngredientCardFromCurrentPlayer(name);
