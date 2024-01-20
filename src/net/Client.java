@@ -354,6 +354,10 @@ public class Client {
         return null;
     }
 
+    public void restart() {
+        request.put("/http/restartGame");
+    }
+
 
     /** Cache Supplier Methods */
 
@@ -442,6 +446,5 @@ public class Client {
         for (var l : this.broadcastListeners)
             l.onBroadcast(action, payload);
     }
-
 }
 

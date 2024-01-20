@@ -41,72 +41,6 @@ public class HTTPHandler implements HttpHandler {
 
         /** GET Methods */
 
-        endpoints.put("GET", new HashMap<String, Consumer<HttpExchange>>() {{
-            put("/http/currentPlayer", (HttpExchange) -> {
-                HashMap<String, String> currentPlayer = new HashMap<>() {{
-                    put("id", String.valueOf(game.getCurrentPlayer().id));
-                    put("name", game.getCurrentPlayer().name);
-                    put("avatar", game.getCurrentPlayer().avatar.toString());
-                    put("left-actions", String.valueOf(game.getCurrentPlayer().leftActions));
-                    put("gold", String.valueOf(game.getCurrentPlayer().inventory.getGold()));
-                    put("sickness", String.valueOf(game.getCurrentPlayer().getSickness()));
-                    put("reputation", String.valueOf(game.getCurrentPlayer().getReputation()));
-                }};
-
-                try {
-                    sendResponse(HttpExchange, 200, JON.build(currentPlayer));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/playerAvatar/:id", (HttpExchange exchange) -> {
-                String handle = HTTPRequestParser.parsePath(exchange.getRequestURI().getPath(), paths);
-                String idParameter = HTTPRequestParser.parseParameter(exchange.getRequestURI().getPath(), handle);
-
-                try {
-                    if (idParameter == null) sendResponse(exchange, 400, "Cannot parse the passed parameter.");
-                    int id = Integer.parseInt(idParameter);
-
-                    sendResponse(exchange, 200, game.getPlayerAvatar(id).toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/game/players", (HttpExchange exchange) -> {
-                HashMap<String, String> players = game.getPlayers();
-
-                try {
-                    sendResponse(exchange, 200, JON.build(players));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            });
-            put("/http/game/scores", (HttpExchange exchange) -> {
-                Map<String, String> scores = game.getPlayerScores();
-
-                try {
-                    sendResponse(exchange, 200, JON.build(scores));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            });
-            put("/http/game/phase", (HttpExchange exchange) -> {
-                GamePhase currentPhase = game.getPhase();
-
-                try {
-                    sendResponse(exchange, 200, currentPhase.toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/inventory/artifact", (HttpExchange exchange) -> {
-                List<ArtifactCard> cards = game.getCurrentPlayer().inventory.getArtifactCards();
-                String responseBody = JON.build(cards.stream().map(c -> c.getName()).toList());
-            });
-        }});
-
         endpoints.put("GET", new HashMap<String, Consumer<HttpExchange>>() {
             {
                 put("/http/currentPlayer", (HttpExchange) -> {
@@ -152,6 +86,16 @@ public class HTTPHandler implements HttpHandler {
                     }
 
 
+                });
+                put("/http/game/scores", (HttpExchange exchange) -> {
+                    Map<String, String> scores = game.getPlayerScores();
+                    System.out.println("cano");
+                    try {
+                        sendResponse(exchange, 200, JON.build(scores));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+    
                 });
                 put("/http/game/phase", (HttpExchange exchange) -> {
                     GamePhase currentPhase = game.getPhase();
@@ -304,23 +248,20 @@ public class HTTPHandler implements HttpHandler {
                 }
 
             });
-            put("/http/restartGame", (HttpExchange exchange) -> {
-                // game.reset();
-                try {
-                    sendResponse(exchange, 200, "Game is started by the host.");
-                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
-                } catch (IOException e) {
-                    try {
-                        sendResponse(exchange, 500, "Internal Server Error");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
             put("/http/finishGame", (HttpExchange exchange) -> {
                 ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_FINISHED));
                 try {
                     sendResponse(exchange, 200, "Game session has ended.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            put("/http/restartGame", (HttpExchange exchange) -> {
+                game.restart();
+                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
+                ClientHandler.clientHandlers.clear();
+                try {
+                    sendResponse(exchange, 200, "Game is restarted.");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

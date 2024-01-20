@@ -81,7 +81,6 @@ public class JON {
     }
 
     public static ArrayList<Integer> parseListInt(String requestBody) {
-        System.out.println(requestBody);
         requestBody = requestBody.replace("[", "");
         requestBody = requestBody.replace("]", "");
         requestBody.trim();

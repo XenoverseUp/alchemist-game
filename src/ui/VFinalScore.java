@@ -5,7 +5,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,17 +18,44 @@ import javax.swing.SwingConstants;
 
 import domain.Game;
 import enums.Avatar;
+import enums.BroadcastAction;
 import enums.View;
+import interfaces.IBroadcastListener;
+import interfaces.IDynamicTypeValue;
 import ui.framework.VComponent;
 
-public class VFinalScore extends VComponent {
+public class VFinalScore extends VComponent implements IBroadcastListener {
 
     private JPanel controls = new JPanel(null);
     private JPanel winner = new JPanel(null);
     public VFinalScore(Game game) { super(game); }
 
     @Override
-    public void mounted(){
+    protected void render() {
+        BufferedImage BBackground = assetLoader.getBackground(View.FinalScore);
+        JLabel background = new JLabel(new ImageIcon(BBackground));
+        background.setBounds(0, 0, BBackground.getWidth(), BBackground.getHeight());
+
+        controls.setBounds(0, 526, windowDimension.getWidth(), 241);
+        controls.setOpaque(false);
+
+        winner.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight()-241);
+        winner.setOpaque(false);
+        panel.add(winner);
+        panel.add(controls);
+        panel.add(background);
+    }
+
+
+    @Override
+    public void mounted() {
+       update();
+
+       panel.revalidate();
+       panel.repaint();
+    }
+
+    private void update() {
         ArrayList<Integer> winnerIds = game.getRegister().calculateWinner();
         Map<String, String> playerNames = game.getRegister().getPlayerNames();
         Map<String, String> playerScores = game.getRegister().getPlayerScores(); 
@@ -34,6 +64,7 @@ public class VFinalScore extends VComponent {
         String winnerScore = playerScores.get(String.valueOf(winnerId));
         String winnerName = playerNames.get(String.valueOf(winnerId));
         Avatar winnerAvatar = game.getRegister().getPlayerAvatar(winnerId);
+
 
         BufferedImage BAvatarWinner = assetLoader.getAvatarImageBig(winnerAvatar);
         JLabel winnerAvatarImage = new JLabel(new ImageIcon(BAvatarWinner));
@@ -77,6 +108,7 @@ public class VFinalScore extends VComponent {
             controls.add(avatarImage);
         });
 
+
         if ((game.isOnline() && game.getOnlineRegister().isHost()) || (!game.isOnline())){
             BufferedImage BButton = assetLoader.getFinishButton(false);
             JButton finishButton = new JButton(new ImageIcon(BButton));
@@ -88,7 +120,11 @@ public class VFinalScore extends VComponent {
             finishButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) { 
-                    //TODO
+                    game.getRegister().restart();
+                    if (!game.isOnline()) {
+                        game.dispose();
+                        router.to(View.Start);
+                    }
                 }
 
                 @Override
@@ -106,23 +142,16 @@ public class VFinalScore extends VComponent {
     }
 
     @Override
-    protected void render() {
-        BufferedImage BBackground = assetLoader.getBackground(View.FinalScore);
-        JLabel background = new JLabel(new ImageIcon(BBackground));
-        background.setBounds(0, 0, BBackground.getWidth(), BBackground.getHeight());
-
-        controls.setBounds(0, 526, windowDimension.getWidth(), 241);
-        controls.setOpaque(false);
-
-        winner.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight()-241);
-        winner.setOpaque(false);
-        panel.add(winner);
-        panel.add(controls);
-        panel.add(background);
+    protected void listenBroadcast() {
+        game.addBroadcastListener(this);
     }
 
-    
-
-
+    @Override
+    public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
+        if(action == BroadcastAction.RESTART_GAME){
+            router.to(View.Start);
+            game.dispose();
+        }
+    }
     
 }

@@ -279,7 +279,7 @@ public class Canvas extends JPanel {
                     } else {
                         router.to(View.FinalScore);
                     }
-                } else{
+                } else {
                     game.getRegister().toggleCurrentUser();
                 }
             }
@@ -367,10 +367,6 @@ public class Canvas extends JPanel {
 
     public void togglePlayer() {
         game.getOnlineRegister().revalidateCache();
-    }
-
-    public void gameFinished() {
-        router.to(View.FinalScore);
     }
 
 }

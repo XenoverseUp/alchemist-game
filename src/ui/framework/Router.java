@@ -44,10 +44,11 @@ public class Router {
         component.getContentPane().setVisible(true);
 
         Window.mainPanel.add(component.getContentPane());
+        
+        component.mounted();
+        
         Window.mainPanel.revalidate();
         Window.mainPanel.repaint();
-
-        component.mounted();
 
         this.currentView = nextView;
     }
@@ -64,6 +65,10 @@ public class Router {
 
     public void activateListeners() {
         this.views.forEach((k, v) -> v.listenBroadcast());
+    }
+
+    public VComponent get(View v) {
+        return views.get(v);
     }
 
 }
