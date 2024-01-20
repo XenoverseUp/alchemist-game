@@ -14,6 +14,8 @@ public class Game {
     private IGameRegister register = new TheAlchemistGame();
     private ApplicationType type = ApplicationType.Local; 
     private Client client = null;
+    private ServerSocket serverSocket = null;
+    private Server server = null;
 
     private enum ApplicationType {
         Local,
@@ -42,8 +44,8 @@ public class Game {
 
     public int createServer(int port) {
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            Server server = new Server(serverSocket);
+            serverSocket = new ServerSocket(port);
+            server = new Server(serverSocket);
             server.start();
             this.connectToServer(port);
         } catch (BindException e) {
@@ -79,6 +81,18 @@ public class Game {
         }
 
         return 0;
+    }
+
+    public void dispose() {
+        try {
+            serverSocket.close();
+            server.closeServer();
+            client.shutdown();
+            setType(ApplicationType.Local);
+            register = new TheAlchemistGame();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

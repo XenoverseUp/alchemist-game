@@ -178,5 +178,15 @@ public class VOnlineLogin extends VComponent {
     @Override
     protected void mounted() {
         router.activateListeners();
+        this.reset();
     }
+
+    public void reset() {
+        panel.removeAll();;
+        render();
+        panel.revalidate();
+        panel.repaint();
+    }
+    
 }
+

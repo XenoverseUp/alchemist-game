@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,19 +31,40 @@ public class VFinalScore extends VComponent implements IBroadcastListener {
     public VFinalScore(Game game) { super(game); }
 
     @Override
-    public void mounted(){
+    protected void render() {
+        BufferedImage BBackground = assetLoader.getBackground(View.FinalScore);
+        JLabel background = new JLabel(new ImageIcon(BBackground));
+        background.setBounds(0, 0, BBackground.getWidth(), BBackground.getHeight());
+
+        controls.setBounds(0, 526, windowDimension.getWidth(), 241);
+        controls.setOpaque(false);
+
+        winner.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight()-241);
+        winner.setOpaque(false);
+        panel.add(winner);
+        panel.add(controls);
+        panel.add(background);
+    }
+
+
+    @Override
+    public void mounted() {
+       update();
+
+       panel.revalidate();
+       panel.repaint();
+    }
+
+    private void update() {
         ArrayList<Integer> winnerIds = game.getRegister().calculateWinner();
         Map<String, String> playerNames = game.getRegister().getPlayerNames();
         Map<String, String> playerScores = game.getRegister().getPlayerScores(); 
-
-        System.out.println("Here 1.");
 
         int winnerId = winnerIds.get(0);
         String winnerScore = playerScores.get(String.valueOf(winnerId));
         String winnerName = playerNames.get(String.valueOf(winnerId));
         Avatar winnerAvatar = game.getRegister().getPlayerAvatar(winnerId);
 
-        System.out.println("Here 2.");
 
         BufferedImage BAvatarWinner = assetLoader.getAvatarImageBig(winnerAvatar);
         JLabel winnerAvatarImage = new JLabel(new ImageIcon(BAvatarWinner));
@@ -85,7 +108,6 @@ public class VFinalScore extends VComponent implements IBroadcastListener {
             controls.add(avatarImage);
         });
 
-        System.out.println("Here 3.");
 
         if ((game.isOnline() && game.getOnlineRegister().isHost()) || (!game.isOnline())){
             BufferedImage BButton = assetLoader.getFinishButton(false);
@@ -99,6 +121,10 @@ public class VFinalScore extends VComponent implements IBroadcastListener {
                 @Override
                 public void mouseClicked(MouseEvent e) { 
                     game.getRegister().restart();
+                    if (!game.isOnline()) {
+                        game.dispose();
+                        router.to(View.Start);
+                    }
                 }
 
                 @Override
@@ -116,30 +142,16 @@ public class VFinalScore extends VComponent implements IBroadcastListener {
     }
 
     @Override
-    protected void render() {
-        BufferedImage BBackground = assetLoader.getBackground(View.FinalScore);
-        JLabel background = new JLabel(new ImageIcon(BBackground));
-        background.setBounds(0, 0, BBackground.getWidth(), BBackground.getHeight());
-
-        controls.setBounds(0, 526, windowDimension.getWidth(), 241);
-        controls.setOpaque(false);
-
-        winner.setBounds(0, 0, windowDimension.getWidth(), windowDimension.getHeight()-241);
-        winner.setOpaque(false);
-        panel.add(winner);
-        panel.add(controls);
-        panel.add(background);
+    protected void listenBroadcast() {
+        game.addBroadcastListener(this);
     }
 
     @Override
     public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
         if(action == BroadcastAction.RESTART_GAME){
             router.to(View.Start);
+            game.dispose();
         }
     }
-
-    
-
-
     
 }

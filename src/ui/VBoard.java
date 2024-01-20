@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import domain.Game;
 import enums.BroadcastAction;
+import enums.View;
 import interfaces.IBroadcastListener;
 import interfaces.IDynamicTypeValue;
 import ui.framework.VComponent;
@@ -39,6 +40,8 @@ public class VBoard extends VComponent implements IBroadcastListener {
     @Override
     public void onBroadcast(BroadcastAction action, HashMap<String, IDynamicTypeValue> payload) {
         if (action == BroadcastAction.PLAYER_TOGGLED) canvas.togglePlayer();
-        else if (action == BroadcastAction.GAME_FINISHED) canvas.gameFinished();
+        else if (action == BroadcastAction.GAME_FINISHED) {
+            router.to(View.FinalScore);
+        }
     }
 }

@@ -248,19 +248,6 @@ public class HTTPHandler implements HttpHandler {
                 }
 
             });
-            put("/http/restartGame", (HttpExchange exchange) -> {
-                // game.reset();
-                try {
-                    sendResponse(exchange, 200, "Game is started by the host.");
-                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
-                } catch (IOException e) {
-                    try {
-                        sendResponse(exchange, 500, "Internal Server Error");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
             put("/http/finishGame", (HttpExchange exchange) -> {
                 ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_FINISHED));
                 try {
@@ -270,9 +257,9 @@ public class HTTPHandler implements HttpHandler {
                 }
             });
             put("/http/restartGame", (HttpExchange exchange) -> {
-                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
-                //TODO
                 game.restart();
+                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
+                ClientHandler.clientHandlers.clear();
                 try {
                     sendResponse(exchange, 200, "Game is restarted.");
                 } catch (IOException e) {

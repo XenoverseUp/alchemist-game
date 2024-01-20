@@ -295,6 +295,8 @@ public class Board {
 
 	public void clearPlayers(){
 		this.auth.clearPlayers();
+		this.phase = GamePhase.FirstRound;
+		this.numberOfTurns = 0;
 	}
 
 	public void activateArtifact(String name) {
