@@ -283,7 +283,7 @@ public class VPublicationArea extends VComponent {
             img2 = assetLoader.getMarkerImage(game.getRegister().getMarkerID(id));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("theory not published yet.");
         }
         if (img != null) {
             System.out.println("Loaded ingredient card image: " + ingredientCardName);
