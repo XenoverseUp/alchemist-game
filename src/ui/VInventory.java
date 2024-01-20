@@ -289,14 +289,12 @@ public class VInventory extends VComponent {
         activateButton.addActionListener(event -> {
             try {
 
-                if (name.equals("Stanley Parable")) {
-                    game.getRegister().paralyseEveryone();
-                    game.getRegister().removeArtifactCardAfterUsing("Stanley Parable");
-                } else if (name.equals("Elixir of Insight")) {
+                if (name.equals("Elixir of Insight")) {
                     router.to(View.ElixirOfInsight);
-                } else {
-                    game.getRegister().activateArtifact(name);
                 }
+                game.getRegister().activateArtifact(name);
+                game.getRegister().removeArtifactCardAfterUsing(name);
+
             } catch (ServerSideException e) {
 
                 e.printStackTrace();
