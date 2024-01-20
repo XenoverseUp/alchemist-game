@@ -239,8 +239,9 @@ public class VPublicationArea extends VComponent {
         publishTheory.addActionListener(e -> {
             try {
                 game.getRegister().publishTheory();
+                modal.info("Function call", "Publish theory");
             } catch (NotEnoughActionsException e1) {
-                e1.printStackTrace();
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }
             SwingUtilities.invokeLater(() -> {
                 update();
@@ -257,8 +258,9 @@ public class VPublicationArea extends VComponent {
         debunkTheory.addActionListener(e -> {
             try {
                 game.getRegister().debunkTheory();
+                modal.info("Function call", "Debunk theory");
             } catch (NotEnoughActionsException e1) {
-                e1.printStackTrace();
+                modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }
             SwingUtilities.invokeLater(() -> {
                 update();

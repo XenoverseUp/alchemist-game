@@ -212,11 +212,7 @@ public class Board {
 					this.publicationCardDeck.getChosen().setAlchemyMarker(alchemyMarkerDeck.getChosen());
 					alchemyMarkerDeck.getChosen().associate();
 					publicationCardDeck.getChosen().setPlayer(auth.getCurrentPlayer());
-					SwingUtilities.invokeLater(() -> {
-						JOptionPane.showMessageDialog(null,
-								"Published Theory Successfully!\n Reputation: +1\n Gold: -1",
-								"Success!", JOptionPane.PLAIN_MESSAGE);
-					});
+
 					auth.decreaseLeftActionsOfCurrentPlayer();
 
 					String formattedString = String.format("%s published a theory.", auth.getCurrentPlayer().name);
@@ -235,10 +231,7 @@ public class Board {
 				Molecule m = this.publicationCardDeck.getChosen().getIngredient().getMolecule();
 				if (this.publicationCardDeck.getChosen().getAlchemyMarker().getMolecule().equals(m)) {
 					auth.getCurrentPlayer().decreaseReputation(1);
-					SwingUtilities.invokeLater(() -> {
-						JOptionPane.showMessageDialog(null, "Published Theory Was Correct.\n Reputation: -1",
-								"Failed!", JOptionPane.PLAIN_MESSAGE);
-					});
+
 					String formattedString = String.format("%s tried to debunk a theory but was not successful.",
 							auth.getCurrentPlayer().name);
 					writetoFile(formattedString);
@@ -261,10 +254,7 @@ public class Board {
 						}
 					}
 					this.publicationCardDeck.getChosen().setAlchemyMarker(marker);
-					SwingUtilities.invokeLater(() -> {
-						JOptionPane.showMessageDialog(null, "Debunked Theory Successfully!\n Reputation: +2",
-								"Success!", JOptionPane.PLAIN_MESSAGE);
-					});
+
 					String formattedString = String.format("%s successfully debunked a theory.",
 							auth.getCurrentPlayer().name);
 					writetoFile(formattedString);
