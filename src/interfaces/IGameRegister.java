@@ -58,20 +58,20 @@ public interface IGameRegister {
 
     public int[][] getDeductionTable();
 
-    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception;
+    public Potion makeExperiment(String ingredientName1, String ingredientName2, String testOn)
+            throws WrongGameRoundException, NotEnoughActionsException, Exception;
 
     public void toggleDeductionTable(String name, int tableIndex);
 
     public HashMap<String[], DeductionToken> getDeductionTokens();
 
-
     public void setCard(int i);
 
     public void setMarker(int i);
 
-    public void publishTheory() throws NotEnoughActionsException;
+    public int publishTheory() throws NotEnoughActionsException;
 
-    public void debunkTheory() throws NotEnoughActionsException;
+    public int debunkTheory() throws NotEnoughActionsException;
 
     public int getMarkerID(int id);
 
@@ -87,10 +87,10 @@ public interface IGameRegister {
 
     public List<String> getIngredients();
 
-
     public ArrayList<Integer> calculateWinner();
 
     public Map<String, String> getPlayerScores();
+
     public void restart();
 
 }

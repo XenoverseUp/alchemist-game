@@ -193,7 +193,7 @@ public class Board {
 		return potion;
 	}
 
-	public void publishTheory() throws NotEnoughActionsException {
+	public int publishTheory() throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
 
 		if (!alchemyMarkerDeck.getChosen().checkAvailability()) {
@@ -217,14 +217,16 @@ public class Board {
 
 					String formattedString = String.format("%s published a theory.", auth.getCurrentPlayer().name);
 					writetoFile(formattedString);
+					return 1;
 				}
 			}
 		}
+		return 0;
 	}
 
 	// chooses a publication card, states the published theory is wrong, doesn't
 	// need to state the correct theory
-	public void debunkTheory() throws NotEnoughActionsException {
+	public int debunkTheory() throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
 		if (!this.publicationCardDeck.getChosen().getPlayer().equals(auth.getCurrentPlayer())) {
 			if ((this.publicationCardDeck.getChosen().getAlchemyMarker() != null)) {
@@ -236,6 +238,7 @@ public class Board {
 							auth.getCurrentPlayer().name);
 					writetoFile(formattedString);
 					auth.decreaseLeftActionsOfCurrentPlayer();
+					return 0;
 				} else {
 					this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
 					AlchemyMarker marker = null;
@@ -259,9 +262,11 @@ public class Board {
 							auth.getCurrentPlayer().name);
 					writetoFile(formattedString);
 					auth.decreaseLeftActionsOfCurrentPlayer();
+					return 1;
 				}
 			}
 		}
+		return 0;
 	}
 
 	public void updatePhase() {

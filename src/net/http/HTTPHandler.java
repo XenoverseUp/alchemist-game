@@ -85,7 +85,6 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
 
-
                 });
                 put("/http/game/scores", (HttpExchange exchange) -> {
                     Map<String, String> scores = game.getPlayerScores();
@@ -95,7 +94,7 @@ public class HTTPHandler implements HttpHandler {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-    
+
                 });
                 put("/http/game/phase", (HttpExchange exchange) -> {
                     GamePhase currentPhase = game.getPhase();
@@ -181,6 +180,33 @@ public class HTTPHandler implements HttpHandler {
                         e.printStackTrace();
                     }
                 });
+                put("/http/publishTheory", (HttpExchange exchange) -> {
+
+                    try {
+                        try {
+                            sendResponse(exchange, 200, String.valueOf(game.publishTheory()));
+                        } catch (NotEnoughActionsException e) {
+
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/debunkTheory", (HttpExchange exchange) -> {
+
+                    try {
+                        try {
+                            sendResponse(exchange, 200, String.valueOf(game.debunkTheory()));
+                        } catch (NotEnoughActionsException e) {
+
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
             }
         });
 
@@ -220,54 +246,55 @@ public class HTTPHandler implements HttpHandler {
 
         /** PUT Methods */
 
-        endpoints.put("PUT", new HashMap<String, Consumer<HttpExchange>>() {{
-            put("/http/togglePlayer", (HttpExchange exchange) -> {
-                game.toggleCurrentUser();
-                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.PLAYER_TOGGLED));
-                try {
-                    sendResponse(exchange, 200, "It fucking works");
-                } catch (IOException e) {
+        endpoints.put("PUT", new HashMap<String, Consumer<HttpExchange>>() {
+            {
+                put("/http/togglePlayer", (HttpExchange exchange) -> {
+                    game.toggleCurrentUser();
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.PLAYER_TOGGLED));
                     try {
-                        sendResponse(exchange, 500, "Internal Server Error");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                        sendResponse(exchange, 200, "It fucking works");
+                    } catch (IOException e) {
+                        try {
+                            sendResponse(exchange, 500, "Internal Server Error");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
-                }
-            });
-            put("/http/startGame", (HttpExchange exchange) -> {
-                game.initializeGame();
-                try {
-                    sendResponse(exchange, 200, "Game is started by the host.");
-                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_STARTED));
-                } catch (IOException e) {
+                });
+                put("/http/startGame", (HttpExchange exchange) -> {
+                    game.initializeGame();
                     try {
-                        sendResponse(exchange, 500, "Internal Server Error");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                        sendResponse(exchange, 200, "Game is started by the host.");
+                        ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_STARTED));
+                    } catch (IOException e) {
+                        try {
+                            sendResponse(exchange, 500, "Internal Server Error");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
-                }
 
-            });
-            put("/http/finishGame", (HttpExchange exchange) -> {
-                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_FINISHED));
-                try {
-                    sendResponse(exchange, 200, "Game session has ended.");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/restartGame", (HttpExchange exchange) -> {
-                game.restart();
-                ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
-                ClientHandler.clientHandlers.clear();
-                try {
-                    sendResponse(exchange, 200, "Game is restarted.");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/forageIngredient", (HttpExchange exchange) -> {
-                
+                });
+                put("/http/finishGame", (HttpExchange exchange) -> {
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.GAME_FINISHED));
+                    try {
+                        sendResponse(exchange, 200, "Game session has ended.");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/restartGame", (HttpExchange exchange) -> {
+                    game.restart();
+                    ClientHandler.broadcast(new BroadcastPackage(BroadcastAction.RESTART_GAME));
+                    ClientHandler.clientHandlers.clear();
+                    try {
+                        sendResponse(exchange, 200, "Game is restarted.");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/forageIngredient", (HttpExchange exchange) -> {
+
                     try {
                         game.forageIngredient();
                         try {
@@ -284,250 +311,226 @@ public class HTTPHandler implements HttpHandler {
                         }
                     }
                 });
-            put("/http/drawMysteryCard", (HttpExchange exchange) -> {
-                try {
-                    int result = game.drawMysteryCard();
+                put("/http/drawMysteryCard", (HttpExchange exchange) -> {
+                    try {
+                        int result = game.drawMysteryCard();
 
-                    if (result == 0) {
-                        sendResponse(exchange, 200, "Drawed a mystery card for client #"
+                        if (result == 0) {
+                            sendResponse(exchange, 200, "Drawed a mystery card for client #"
+                                    + String.valueOf(game.getCurrentPlayer().id) + ".");
+                        } else
+                            sendResponse(exchange, 409, String.valueOf(result));
+
+                    } catch (NotEnoughActionsException e) {
+                        try {
+                            sendResponse(exchange, 400, "Not enough actions.");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/buyArtifact", (HttpExchange exchange) -> {
+                    try {
+                        String body = getRequestString(exchange);
+                        int result = game.buyArtifact(body);
+
+                        if (result == 0) {
+                            sendResponse(exchange, 200, "Drawed an artifact card for client #"
+                                    + String.valueOf(game.getCurrentPlayer().id) + ".");
+                        } else
+                            sendResponse(exchange, 409, String.valueOf(result));
+
+                    } catch (NotEnoughActionsException e) {
+                        try {
+                            sendResponse(exchange, 400, "Not enough actions.");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/transmuteIngredient", (HttpExchange exchange) -> {
+                    try {
+                        String ingredient = getRequestString(exchange);
+                        game.transmuteIngredient(ingredient);
+
+                        sendResponse(exchange, 200, "Transmuted an ingredient card for client #"
                                 + String.valueOf(game.getCurrentPlayer().id) + ".");
-                    } else
-                        sendResponse(exchange, 409, String.valueOf(result));
-
-                } catch (NotEnoughActionsException e) {
-                    try {
-                        sendResponse(exchange, 400, "Not enough actions.");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    } catch (NotEnoughActionsException e) {
+                        try {
+                            sendResponse(exchange, 400, "Not enough actions.");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/buyArtifact", (HttpExchange exchange) -> {
-                try {
-                    String body = getRequestString(exchange);
-                    int result = game.buyArtifact(body);
+                });
+                put("/http/discardArtifact", (HttpExchange exchange) -> {
+                    try {
+                        String artifact = getRequestString(exchange);
+                        game.discardArtifact(artifact);
 
-                    if (result == 0) {
-                        sendResponse(exchange, 200, "Drawed an artifact card for client #"
+                        sendResponse(exchange, 200, "Discarded an artifact card for client #"
                                 + String.valueOf(game.getCurrentPlayer().id) + ".");
-                    } else
-                        sendResponse(exchange, 409, String.valueOf(result));
-
-                } catch (NotEnoughActionsException e) {
-                    try {
-                        sendResponse(exchange, 400, "Not enough actions.");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    } catch (NotEnoughActionsException e) {
+                        try {
+                            sendResponse(exchange, 400, "Not enough actions.");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/transmuteIngredient", (HttpExchange exchange) -> {
-                try {
-                    String ingredient = getRequestString(exchange);
-                    game.transmuteIngredient(ingredient);
+                });
+                put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
 
-                    sendResponse(exchange, 200, "Transmuted an ingredient card for client #"
-                            + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (NotEnoughActionsException e) {
                     try {
-                        sendResponse(exchange, 400, "Not enough actions.");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/discardArtifact", (HttpExchange exchange) -> {
-                try {
-                    String artifact = getRequestString(exchange);
-                    game.discardArtifact(artifact);
+                        Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
+                        game.toggleDeductionTable(arguments.get("ingredient-name"),
+                                Integer.parseInt(arguments.get("table-index")));
 
-                    sendResponse(exchange, 200, "Discarded an artifact card for client #"
-                            + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (NotEnoughActionsException e) {
+                        sendResponse(exchange, 200, "Toggled deduction table for client #"
+                                + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/setCard", (HttpExchange exchange) -> {
+
                     try {
-                        sendResponse(exchange, 400, "Not enough actions.");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                        String cardId = getRequestString(exchange);
+                        game.setCard(Integer.parseInt(cardId));
+
+                        sendResponse(exchange, 200,
+                                "Set card for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
+                });
+                put("/http/setMarker", (HttpExchange exchange) -> {
 
-                try {
-                    Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
-                    game.toggleDeductionTable(arguments.get("ingredient-name"),
-                            Integer.parseInt(arguments.get("table-index")));
-
-                    sendResponse(exchange, 200, "Toggled deduction table for client #"
-                            + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/setCard", (HttpExchange exchange) -> {
-
-                try {
-                    String cardId = getRequestString(exchange);
-                    game.setCard(Integer.parseInt(cardId));
-
-                    sendResponse(exchange, 200,
-                            "Set card for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/setMarker", (HttpExchange exchange) -> {
-
-                try {
-                    String markerId = getRequestString(exchange);
-                    game.setMarker(Integer.parseInt(markerId));
-
-                    sendResponse(exchange, 200,
-                            "Set marker for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/publishTheory", (HttpExchange exchange) -> {
-
-                try {
-                    game.publishTheory();
-
-                    sendResponse(exchange, 200,
-                            "Published theory for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (NotEnoughActionsException e) {
-
-                    e.printStackTrace();
-                }
-            });
-            put("/http/debunkTheory", (HttpExchange exchange) -> {
-
-                try {
-                    game.debunkTheory();
-
-                    sendResponse(exchange, 200,
-                            "Debunked theory for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (NotEnoughActionsException e) {
-
-                    e.printStackTrace();
-                }
-            });
-            put("/http/activateArtifact", (HttpExchange exchange) -> {
-
-                try {
-                    String name = getRequestString(exchange);
-                    game.activateArtifact(name);
-
-                    sendResponse(exchange, 200,
-                            "Activated artifact for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/removeArtifactCardAfterUsing", (HttpExchange exchange) -> {
-
-                try {
-                    String name = getRequestString(exchange);
-                    game.removeArtifactCardAfterUsing(name);
-
-                    sendResponse(exchange, 200,
-                            "Removed artifact for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/paralyseEveryone", (HttpExchange exchange) -> {
-
-                try {
-                    game.paralyseEveryone();
-
-                    sendResponse(exchange, 200,
-                            "Paralysed everyone for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/swapAfterIndex", (HttpExchange exchange) -> {
-
-                try {
-                    Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
-                    game.swapAfterIndex(Integer.parseInt(arguments.get("first")),
-                            Integer.parseInt(arguments.get("second")), Integer.parseInt(arguments.get("third")));
-
-                    sendResponse(exchange, 200, "Swapped ingredients for client #"
-                            + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            });
-            put("/http/makeExperiment", (HttpExchange exchange) -> {
-                try {
-                    String data = getRequestString(exchange);
-                    Map<String, String> parameters = JON.parseMap(data);
-                    Potion potion = game.makeExperiment(parameters.get("ingredient1"), parameters.get("ingredient2"), parameters.get("testOn"));
-
-                    sendResponse(exchange, 200, potion.toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (WrongGameRoundException e) {
                     try {
-                        sendResponse(exchange, 401, "You cannot make this action in this round.");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                        String markerId = getRequestString(exchange);
+                        game.setMarker(Integer.parseInt(markerId));
+
+                        sendResponse(exchange, 200,
+                                "Set marker for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (NotEnoughActionsException e) {
+                });
+
+                put("/http/activateArtifact", (HttpExchange exchange) -> {
+
                     try {
-                        sendResponse(exchange, 400, "Not enough actions.");
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                        String name = getRequestString(exchange);
+                        game.activateArtifact(name);
+
+                        sendResponse(exchange, 200,
+                                "Activated artifact for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
+                });
+                put("/http/removeArtifactCardAfterUsing", (HttpExchange exchange) -> {
+
                     try {
-                        sendResponse(exchange, 402, e.getMessage());
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                        String name = getRequestString(exchange);
+                        game.removeArtifactCardAfterUsing(name);
+
+                        sendResponse(exchange, 200,
+                                "Removed artifact for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }
-                
-            });
-            put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
-                
-                try {
-                    Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
-                    game.toggleDeductionTable(arguments.get("ingredient-name"), Integer.parseInt(arguments.get("table-index")));
-            
-                    sendResponse(exchange, 200, "Toggled deduction table for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            put("/http/calculateWinner", (HttpExchange exchange) -> {
-                
-                try {
-                    ArrayList<Integer> winnerIds = game.calculateWinner();
-                    String responseBody = JON.build(winnerIds);
-            
-                    sendResponse(exchange, 200, responseBody);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        }});
+                });
+                put("/http/paralyseEveryone", (HttpExchange exchange) -> {
+
+                    try {
+                        game.paralyseEveryone();
+
+                        sendResponse(exchange, 200,
+                                "Paralysed everyone for client #" + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/swapAfterIndex", (HttpExchange exchange) -> {
+
+                    try {
+                        Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
+                        game.swapAfterIndex(Integer.parseInt(arguments.get("first")),
+                                Integer.parseInt(arguments.get("second")), Integer.parseInt(arguments.get("third")));
+
+                        sendResponse(exchange, 200, "Swapped ingredients for client #"
+                                + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+                put("/http/makeExperiment", (HttpExchange exchange) -> {
+                    try {
+                        String data = getRequestString(exchange);
+                        Map<String, String> parameters = JON.parseMap(data);
+                        Potion potion = game.makeExperiment(parameters.get("ingredient1"),
+                                parameters.get("ingredient2"), parameters.get("testOn"));
+
+                        sendResponse(exchange, 200, potion.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (WrongGameRoundException e) {
+                        try {
+                            sendResponse(exchange, 401, "You cannot make this action in this round.");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (NotEnoughActionsException e) {
+                        try {
+                            sendResponse(exchange, 400, "Not enough actions.");
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (Exception e) {
+                        try {
+                            sendResponse(exchange, 402, e.getMessage());
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+
+                });
+                put("/http/toggleDeductionTable", (HttpExchange exchange) -> {
+
+                    try {
+                        Map<String, String> arguments = JON.parseMap(getRequestString(exchange));
+                        game.toggleDeductionTable(arguments.get("ingredient-name"),
+                                Integer.parseInt(arguments.get("table-index")));
+
+                        sendResponse(exchange, 200, "Toggled deduction table for client #"
+                                + String.valueOf(game.getCurrentPlayer().id) + ".");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                put("/http/calculateWinner", (HttpExchange exchange) -> {
+
+                    try {
+                        ArrayList<Integer> winnerIds = game.calculateWinner();
+                        String responseBody = JON.build(winnerIds);
+
+                        sendResponse(exchange, 200, responseBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        });
     }
-
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -556,4 +559,3 @@ public class HTTPHandler implements HttpHandler {
         }
     }
 }
-

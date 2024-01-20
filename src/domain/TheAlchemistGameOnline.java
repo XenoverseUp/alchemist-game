@@ -67,7 +67,6 @@ public class TheAlchemistGameOnline implements IGameRegister {
     public void finishGame() {
         client.finishGame();
     }
-    
 
     @Override
     @SuppressWarnings("unchecked")
@@ -188,7 +187,7 @@ public class TheAlchemistGameOnline implements IGameRegister {
             throws WrongGameRoundException, NotEnoughActionsException, Exception {
         return client.makeExperiment(ingredientName1, ingredientName2, testOn);
     }
-  
+
     public void toggleDeductionTable(String name, int tableIndex) {
         client.toggleDeductionTable(name, tableIndex);
     }
@@ -224,27 +223,28 @@ public class TheAlchemistGameOnline implements IGameRegister {
     }
 
     @Override
-    public void publishTheory() {
+    public int publishTheory() {
 
         try {
-            client.publishTheory();
+            return client.publishTheory();
         } catch (ServerSideException e) {
 
             e.printStackTrace();
         }
-
+        return 0;
     }
 
     @Override
-    public void debunkTheory() {
+    public int debunkTheory() {
 
         try {
-            client.debunkTheory();
+            return client.debunkTheory();
         } catch (ServerSideException e) {
 
             e.printStackTrace();
         }
-        throw new UnsupportedOperationException("Unimplemented method 'debunkTheory'");
+        return 0;
+
     }
 
     @Override
@@ -290,17 +290,13 @@ public class TheAlchemistGameOnline implements IGameRegister {
         return client.getIngredients();
     }
 
-
     public ArrayList<Integer> calculateWinner() {
         return client.calculateWinner();
     }
 
-	@Override
-	public void restart() {
-		client.restart();
-	}
+    @Override
+    public void restart() {
+        client.restart();
+    }
 
-    
-
- 
 }

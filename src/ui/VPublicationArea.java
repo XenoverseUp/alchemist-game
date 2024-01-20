@@ -238,8 +238,14 @@ public class VPublicationArea extends VComponent {
         publishTheory.setFont(new Font("CrimsonPro", Font.BOLD, 18));
         publishTheory.addActionListener(e -> {
             try {
-                game.getRegister().publishTheory();
-                modal.info("Function call", "Publish theory");
+                int success = game.getRegister().publishTheory();
+                if (success == 1) {
+                    modal.info("Publish theory", "Theory published successfully.");
+                }
+                if (success == 0) {
+                    modal.info("Publish theory", "You cannot publish theory.");
+                }
+
             } catch (NotEnoughActionsException e1) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }
@@ -257,8 +263,15 @@ public class VPublicationArea extends VComponent {
         debunkTheory.setFont(new Font("CrimsonPro", Font.BOLD, 18));
         debunkTheory.addActionListener(e -> {
             try {
-                game.getRegister().debunkTheory();
-                modal.info("Function call", "Debunk theory");
+
+                int success = game.getRegister().debunkTheory();
+                if (success == 1) {
+                    modal.info("Debunk theory", "Debunked theory successfully.");
+                }
+                if (success == 0) {
+                    modal.info("Debunk theory", "Couldn't debunk theory.");
+                }
+
             } catch (NotEnoughActionsException e1) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }

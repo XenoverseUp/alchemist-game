@@ -77,7 +77,6 @@ public class Client {
             }
         });
 
-
         HttpResponse<String> response = request.post("/http/createPlayer", body);
 
         if (response.statusCode() == 200)
@@ -95,8 +94,8 @@ public class Client {
 
     public Map<String, String> getPlayerScores() {
         HttpResponse<String> response = request.get("/http/game/scores");
-        Map<String, String> data = JON.parseMap((String)response.body());
-        
+        Map<String, String> data = JON.parseMap((String) response.body());
+
         return data;
     }
 
@@ -253,16 +252,20 @@ public class Client {
             throw new ServerSideException();
     }
 
-    public void publishTheory() throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/publishTheory");
+    public int publishTheory() throws ServerSideException {
+        HttpResponse<String> response = request.get("/http/publishTheory");
         if (response.statusCode() != 200)
             throw new ServerSideException();
+
+        return Integer.parseInt((String) response.body());
     }
 
-    public void debunkTheory() throws ServerSideException {
-        HttpResponse<String> response = request.put("/http/debunkTheory");
+    public int debunkTheory() throws ServerSideException {
+        HttpResponse<String> response = request.get("/http/debunkTheory");
         if (response.statusCode() != 200)
             throw new ServerSideException();
+
+        return Integer.parseInt((String) response.body());
     }
 
     public int getMarkerId(int i) throws ServerSideException {
@@ -290,17 +293,17 @@ public class Client {
         if (response.statusCode() != 200)
             throw new ServerSideException();
 
-       request.put("/http/toggleDeductionTable");
+        request.put("/http/toggleDeductionTable");
     }
 
     public void finishGame() {
         request.put("/http/finishGame");
     }
 
-    public ArrayList<Integer> calculateWinner(){
+    public ArrayList<Integer> calculateWinner() {
         HttpResponse<String> response = request.put("/http/calculateWinner");
 
-        return JON.parseListInt((String)response.body());
+        return JON.parseListInt((String) response.body());
 
     }
 
@@ -331,33 +334,36 @@ public class Client {
 
         return null;
     }
-  
+
     public Potion makeExperiment(
-        String ingredientName1, 
-        String ingredientName2, 
-        String testOn
-    ) throws WrongGameRoundException, NotEnoughActionsException, Exception {
-        HashMap<String, String> data = new HashMap<>() {{
-            put("ingredient1", ingredientName1);
-            put("ingredient2", ingredientName2);
-            put("testOn", testOn);
-        }};
+            String ingredientName1,
+            String ingredientName2,
+            String testOn) throws WrongGameRoundException, NotEnoughActionsException, Exception {
+        HashMap<String, String> data = new HashMap<>() {
+            {
+                put("ingredient1", ingredientName1);
+                put("ingredient2", ingredientName2);
+                put("testOn", testOn);
+            }
+        };
         String body = JON.build(data);
         HttpResponse<String> response = request.put("/http/makeExperiment", body);
 
         if (response.statusCode() == 200) {
-            return Potion.valueOf(((String)response.body()));
-        } else if (response.statusCode() == 400) throw new NotEnoughActionsException();
-        else if (response.statusCode() == 401) throw new WrongGameRoundException();
-        else if (response.statusCode() == 402) throw new Exception((String)response.body());
-        
+            return Potion.valueOf(((String) response.body()));
+        } else if (response.statusCode() == 400)
+            throw new NotEnoughActionsException();
+        else if (response.statusCode() == 401)
+            throw new WrongGameRoundException();
+        else if (response.statusCode() == 402)
+            throw new Exception((String) response.body());
+
         return null;
     }
 
     public void restart() {
         request.put("/http/restartGame");
     }
-
 
     /** Cache Supplier Methods */
 
@@ -389,9 +395,8 @@ public class Client {
                         BroadcastPackage incoming = ((BroadcastPackage) in.readObject());
                         BroadcastAction action = incoming.getAction();
 
-
                         if (action == BroadcastAction.CLIENT_CONNECTED) {
-                            id = ((DynamicTypeValue<Integer>)(incoming.get("id"))).getValue().intValue();
+                            id = ((DynamicTypeValue<Integer>) (incoming.get("id"))).getValue().intValue();
 
                         }
 
@@ -447,4 +452,3 @@ public class Client {
             l.onBroadcast(action, payload);
     }
 }
-

@@ -121,13 +121,13 @@ public class TheAlchemistGame implements IGameRegister {
     }
 
     @Override
-    public void publishTheory() throws NotEnoughActionsException {
-        gameBoard.publishTheory();
+    public int publishTheory() throws NotEnoughActionsException {
+        return gameBoard.publishTheory();
     }
 
     @Override
-    public void debunkTheory() throws NotEnoughActionsException {
-        gameBoard.debunkTheory();
+    public int debunkTheory() throws NotEnoughActionsException {
+        return gameBoard.debunkTheory();
     }
 
     @Override
@@ -194,7 +194,7 @@ public class TheAlchemistGame implements IGameRegister {
         return gameBoard.getAuth().getCurrentPlayer().deductionBoard.getDeductionTokens();
     }
 
-    public ArrayList<Integer> calculateWinner(){
+    public ArrayList<Integer> calculateWinner() {
         return this.gameBoard.getAuth().calculateWinner();
     }
 
