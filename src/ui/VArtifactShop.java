@@ -111,7 +111,7 @@ public class VArtifactShop extends VComponent {
             try {
                 result =  game.getRegister().drawMysteryCard();
                 if (result == 0) router.to(View.Inventory);
-                else modal.info("Not enough money!", "Fuck you bitch.");
+                else modal.info("Not enough money!", "You are so poor, my dear.");
             } catch (NotEnoughActionsException e1) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }
@@ -230,7 +230,7 @@ public class VArtifactShop extends VComponent {
             try {
                 result = game.getRegister().buyArtifact(name);
                 if (result == 0) router.to(View.Inventory);
-                else modal.info("Not enough money!", "Fuck you bitch.");
+                else modal.info("Not enough money!", "You're more poor than I expected, dear.");
             } catch (NotEnoughActionsException e) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
             }
