@@ -39,31 +39,7 @@ public class VCardDeck extends VComponent {
     }
 
     private void update() {
-        try {
-            if (game.getRegister().hasArtifactCard("Elixir of Insight")) {
-                JPanel cards = new JPanel(new WrapLayout(FlowLayout.CENTER, 24, 24));
-                cards.setPreferredSize(new Dimension(120, 300));
-                game.getRegister()
-                        .getCurrentPlayerIngredients().stream().limit(3)
-                        .map(name -> this.generateIngredientCard(name))
-                        .forEach(cards::add);
 
-                JTextField inputField = new JTextField();
-                JButton rearrange = new JButton("rearrange");
-                inputField.setBounds(60, 120, 120, 60);
-                rearrange.setBounds(60, 190, 120, 60);
-                cards.setBounds(60, 300, 200, 200);
-
-                panel.add(inputField);
-                panel.add(rearrange);
-                panel.add(cards);
-
-                // rearrange.addActionListener(game.getRegister.rearrange());
-            }
-        } catch (ServerSideException e) {
-
-            e.printStackTrace();
-        }
     }
 
     @Override
