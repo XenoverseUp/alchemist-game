@@ -232,44 +232,46 @@ public class Board {
 	// need to state the correct theory
 	public void debunkTheory() throws NotEnoughActionsException {
 		auth.checkLeftActionsOfCurrentPlayer();
-		if (this.publicationCardDeck.getChosen().getAlchemyMarker() != null) {
-			Molecule m = this.publicationCardDeck.getChosen().getIngredient().getMolecule();
-			if (this.publicationCardDeck.getChosen().getAlchemyMarker().getMolecule().equals(m)) {
-				auth.getCurrentPlayer().decreaseReputation(1);
-				SwingUtilities.invokeLater(() -> {
-					JOptionPane.showMessageDialog(null, "Published Theory Was Correct.\n Reputation: -1",
-							"Failed!", JOptionPane.PLAIN_MESSAGE);
-				});
-				String formattedString = String.format("%s tried to debunk a theory but was not successful.",
-						auth.getCurrentPlayer().name);
-				writetoFile(formattedString);
-				auth.decreaseLeftActionsOfCurrentPlayer();
-			} else {
-				this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
-				AlchemyMarker marker = null;
-				auth.getCurrentPlayer().increaseReputation(2);
-				if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Robe of Respect").equals(true)) {
-					auth.getCurrentPlayer().increaseReputation(1);
-				}
-				if (this.publicationCardDeck.getChosen().getPlayer().inventory.hasArtifactCard("Wisdom Idol")
-						.equals(false)) {
-					this.publicationCardDeck.getChosen().getPlayer().decreaseReputation(2);
-				}
-				for (int i = 0; i < this.ingredientCardDeck.getDeck().size(); i++) {
-					if (this.ingredientCardDeck.getDeck().get(i).getMolecule()
-							.equals(this.alchemyMarkerDeck.getMarker(i).getMolecule())) {
-						marker = this.alchemyMarkerDeck.getMarker(i);
+		if (!this.publicationCardDeck.getChosen().getPlayer().equals(auth.getCurrentPlayer())) {
+			if ((this.publicationCardDeck.getChosen().getAlchemyMarker() != null)) {
+				Molecule m = this.publicationCardDeck.getChosen().getIngredient().getMolecule();
+				if (this.publicationCardDeck.getChosen().getAlchemyMarker().getMolecule().equals(m)) {
+					auth.getCurrentPlayer().decreaseReputation(1);
+					SwingUtilities.invokeLater(() -> {
+						JOptionPane.showMessageDialog(null, "Published Theory Was Correct.\n Reputation: -1",
+								"Failed!", JOptionPane.PLAIN_MESSAGE);
+					});
+					String formattedString = String.format("%s tried to debunk a theory but was not successful.",
+							auth.getCurrentPlayer().name);
+					writetoFile(formattedString);
+					auth.decreaseLeftActionsOfCurrentPlayer();
+				} else {
+					this.publicationCardDeck.getChosen().getAlchemyMarker().dissociate();
+					AlchemyMarker marker = null;
+					auth.getCurrentPlayer().increaseReputation(2);
+					if (getAuth().getCurrentPlayer().inventory.hasArtifactCard("Robe of Respect").equals(true)) {
+						auth.getCurrentPlayer().increaseReputation(1);
 					}
+					if (this.publicationCardDeck.getChosen().getPlayer().inventory.hasArtifactCard("Wisdom Idol")
+							.equals(false)) {
+						this.publicationCardDeck.getChosen().getPlayer().decreaseReputation(2);
+					}
+					for (int i = 0; i < this.ingredientCardDeck.getDeck().size(); i++) {
+						if (this.ingredientCardDeck.getDeck().get(i).getMolecule()
+								.equals(this.alchemyMarkerDeck.getMarker(i).getMolecule())) {
+							marker = this.alchemyMarkerDeck.getMarker(i);
+						}
+					}
+					this.publicationCardDeck.getChosen().setAlchemyMarker(marker);
+					SwingUtilities.invokeLater(() -> {
+						JOptionPane.showMessageDialog(null, "Debunked Theory Successfully!\n Reputation: +2",
+								"Success!", JOptionPane.PLAIN_MESSAGE);
+					});
+					String formattedString = String.format("%s successfully debunked a theory.",
+							auth.getCurrentPlayer().name);
+					writetoFile(formattedString);
+					auth.decreaseLeftActionsOfCurrentPlayer();
 				}
-				this.publicationCardDeck.getChosen().setAlchemyMarker(marker);
-				SwingUtilities.invokeLater(() -> {
-					JOptionPane.showMessageDialog(null, "Debunked Theory Successfully!\n Reputation: +2",
-							"Success!", JOptionPane.PLAIN_MESSAGE);
-				});
-				String formattedString = String.format("%s successfully debunked a theory.",
-						auth.getCurrentPlayer().name);
-				writetoFile(formattedString);
-				auth.decreaseLeftActionsOfCurrentPlayer();
 			}
 		}
 	}
@@ -293,7 +295,7 @@ public class Board {
 
 	}
 
-	public void clearPlayers(){
+	public void clearPlayers() {
 		this.auth.clearPlayers();
 		this.phase = GamePhase.FirstRound;
 		this.numberOfTurns = 0;
