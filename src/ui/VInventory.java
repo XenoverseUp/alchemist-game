@@ -306,7 +306,14 @@ public class VInventory extends VComponent {
             this.update();
         });
 
-        card.add(activateButton);
+        try {
+            if (!game.getRegister().hasArtifactCard(name)) {
+                card.add(activateButton);
+            }
+        } catch (ServerSideException e) {
+            System.out.println("You don't have this card.");
+        }
+
         card.add(bg);
 
         return card;
