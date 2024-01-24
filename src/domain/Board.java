@@ -266,7 +266,7 @@ public class Board {
 				}
 			}
 		}
-		return 0;
+		return 2;
 	}
 
 	public void updatePhase() {

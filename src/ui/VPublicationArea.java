@@ -271,6 +271,9 @@ public class VPublicationArea extends VComponent {
                 if (success == 0) {
                     modal.info("Debunk theory", "Couldn't debunk theory.");
                 }
+                if (success == 2) {
+                    modal.info("Debunk theory", "You cannot debunk your theory.");
+                }
 
             } catch (NotEnoughActionsException e1) {
                 modal.info("No Actions Left", "For this round you don't have any actions left! Wait till next round!");
