@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;
 
+import ui.framework.VComponent;
+
 
 public class VHelp extends VComponent {
     @Override

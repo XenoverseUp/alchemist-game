@@ -2,66 +2,84 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class ArtifactCardDeck {
 	private ArrayList<ArtifactCard> artifactCardDeck = new ArrayList<>();
+	private Random random = new Random();
 
 	public ArtifactCardDeck() {
-		ArtifactCard artifactCard1 = new ArtifactCard(
-			"one-time",
-			"allows a player to view the top three cards of the ingredient deck and rearrange them in any order",
-			"Elixir of Insight", 
-			10
-		);
-		ArtifactCard artifactCard2 = new ArtifactCard(
-			"one-time", 
-			"Once per round, the player can swap the position of two alchemy markers on the Deduction Board", 
-			"Philosopher’s Compass", 
-			5
-		);
-		ArtifactCard artifactCard3 = new ArtifactCard(
-			"one-time", 
-			"Player chooses getting one of the potions that another player has and adding their own inventory", 
-			"Request Potion", 
-			3
-		);
-		ArtifactCard artifactCard4 = new ArtifactCard(
-			"one-time", 
-			"player skips that round and does nothing", 
-			"Terminate the Player", 
-			7
-		);
+		// NOTICE: Max price of an artifact should be 9 gold.
 
-		artifactCardDeck.add(artifactCard1);
-		artifactCardDeck.add(artifactCard2);
-		artifactCardDeck.add(artifactCard3);
-		artifactCardDeck.add(artifactCard4);
+		artifactCardDeck.add(new ArtifactCard(
+				"Elixir of Insight",
+				9,
+				4,
+				"Allows a player to view the top three cards of the ingredient deck and rearrange them in any order."));
 
+		artifactCardDeck.add(new ArtifactCard(
+				"Robe of Respect",
+				6,
+				2,
+				"Each gain of reputation is bigger by 1. For example, if you debunk a theory, instead of gaining 2 points, you gain 3."));
+
+		artifactCardDeck.add(new ArtifactCard(
+				"Trader's Touch",
+				4,
+				1,
+				"Transmuting ingredients gives you 2 golds instead of one for the rest of the game."));
+
+		artifactCardDeck.add(new ArtifactCard(
+				"Stanley Parable",
+				6,
+				2,
+				"Every other player is paralyses 1 round except you. Use it wisely, though."));
+
+		artifactCardDeck.add(new ArtifactCard(
+				"Magic Mortar",
+				8,
+				3,
+				"You get to keep the first ingredient after making your experiment. Useful for making more research or money."));
+
+		artifactCardDeck.add(new ArtifactCard(
+				"Printing Press",
+				5,
+				1,
+				"Publish a theory free of charge. So, you don't need to pay 1 gold to the bank."));
+
+		artifactCardDeck.add(new ArtifactCard(
+				"Wisdom Idol",
+				3,
+				7,
+				"When your theory is debunked, you don't lose reputation points. However, keeping it till the end would be pretty cool, I guess."));
+
+		shuffle();
 	}
 
+	public ArtifactCard get(String name) {
+		return this.artifactCardDeck
+				.stream()
+				.filter(card -> card.getName().equals(name))
+				.findFirst()
+				.get();
+	}
 
-	
 	public void shuffle() {
 		Collections.shuffle(artifactCardDeck);
-		
-	}
-	
-	public ArtifactCard drawCard() {
-		ArtifactCard aCard = artifactCardDeck.remove(artifactCardDeck.size() - 1);
-		return aCard;	
 	}
 
-	public ArrayList<ArtifactCard> getArtifactCardDeck(){
+	public ArtifactCard drawMysteryCard() {
+		ArrayList<ArtifactCard> weighted = new ArrayList<>();
+		this.artifactCardDeck.forEach(card -> {
+			for (int i = 0; i < 12 - card.getPrice(); i++)
+				weighted.add(card);
+		});
+
+		return weighted.get(random.nextInt(weighted.size()));
+	}
+
+	public ArrayList<ArtifactCard> getArtifactCardDeck() {
 		return this.artifactCardDeck;
-	}
-
-	public int getPriceOfNextArtifact(){
-
-		if (artifactCardDeck.size() == 0){
-			return -1;
-		}
-
-		return artifactCardDeck.get(artifactCardDeck.size() - 1).getPrice();
 	}
 
 }

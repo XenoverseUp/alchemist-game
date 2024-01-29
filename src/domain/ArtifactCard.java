@@ -1,19 +1,18 @@
 package domain;
 
-
 public class ArtifactCard {
-
-	private final String effectType;
-	private final String ability;
 	private final String name;
+	private final String description;
 	private final int price;
+	private final int victoryPoints;
+	private int activated;
 
-
-	public ArtifactCard(String effectType, String ability, String name, int price) {
-		this.effectType = effectType;
-		this.ability = ability;
+	public ArtifactCard(String name, int price, int victoryPoints, String description) {
 		this.name = name;
+		this.description = description;
 		this.price = price;
+		this.victoryPoints = victoryPoints;
+		this.activated = 0;
 	}
 
 	public String getName() {
@@ -23,14 +22,20 @@ public class ArtifactCard {
 	public int getPrice() {
 		return price;
 	}
-	
-	public String getEffectType() {
-		return effectType;
+
+	public String getDescription() {
+		return description;
 	}
 
-	public String getAbility() {
-		return ability;
+	public int getVictoryPoints() {
+		return victoryPoints;
 	}
 
-	
+	public int getActivation() {
+		return activated;
+	}
+
+	public void setActivation(int i) {
+		activated = i;
+	}
 }
